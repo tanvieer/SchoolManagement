@@ -22,7 +22,7 @@ namespace SchoolMgmt.Controllers
 
         }
         [HttpPost]
-        public ActionResult Login(UserViewModel loginData)
+        public ActionResult Login(LoginViewModel loginData)
         {
             var user = _userRepository.GetUserInfo(loginData);
 

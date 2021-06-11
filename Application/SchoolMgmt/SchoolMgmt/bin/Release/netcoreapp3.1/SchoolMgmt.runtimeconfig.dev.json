@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\tanvi\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\tanvi\\.nuget\\packages"
+    ]
+  }
+}

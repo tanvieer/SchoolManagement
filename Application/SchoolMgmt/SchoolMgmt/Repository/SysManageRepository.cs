@@ -9,12 +9,12 @@ namespace SchoolMgmt.Repository
 {
     public class SysManageRepository
     {
-        public SYS_USER_MASTER GetUserInfo(UserViewModel model)
+        public SYS_USER_MASTER GetUserInfo(LoginViewModel model)
         {
             SYS_USER_MASTER user = new SYS_USER_MASTER();
             user.Email = "tanvieer@gmail.com";
             user.Id = "123";
-            user.UserName = "tanvieer";
+            user.UserName = model.UserName.ToLower().Trim();
             user.EncKey = "123";
             user.MakerTime = Convert.ToDateTime("24-Aug-1993");
             user.P_OUT = 0;

@@ -1,0 +1,10 @@
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\SchoolMgmt\SchoolMgmt\obj\Release\netcoreapp3.1\PubTmp\Out\SchoolMgmt.exe
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\SchoolMgmt\SchoolMgmt\obj\Release\netcoreapp3.1\PubTmp\Out\appsettings.Development.json
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\SchoolMgmt\SchoolMgmt\obj\Release\netcoreapp3.1\PubTmp\Out\appsettings.json
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\SchoolMgmt\SchoolMgmt\obj\Release\netcoreapp3.1\PubTmp\Out\SchoolMgmt.dll
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\SchoolMgmt\SchoolMgmt\obj\Release\netcoreapp3.1\PubTmp\Out\SchoolMgmt.deps.json
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\SchoolMgmt\SchoolMgmt\obj\Release\netcoreapp3.1\PubTmp\Out\SchoolMgmt.runtimeconfig.json
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\SchoolMgmt\SchoolMgmt\obj\Release\netcoreapp3.1\PubTmp\Out\SchoolMgmt.pdb
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\SchoolMgmt\SchoolMgmt\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.IdentityModel.Tokens.DLL
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\SchoolMgmt\SchoolMgmt\obj\Release\netcoreapp3.1\PubTmp\Out\System.IdentityModel.dll
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\SchoolMgmt\SchoolMgmt\obj\Release\netcoreapp3.1\PubTmp\Out\System.IdentityModel.Tokens.Jwt.dll
