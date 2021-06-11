@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "dgSpecHash": "HOr1nn9vs3JmWcb1Ff0ZMAoF9jh6he3BAvbE2huEncLKf+sfhPawXd7MTIKYxUo+xm7C8phKbkaOFI0jeIW0Yg==",
+  "success": false,
+  "projectFilePath": "F:\\C sharp projects\\SchoolManagemet\\SchoolManagement\\Other\\tanvieer-dentalproject-7abdb03abd16\\PlanteenCareDotnetCore2.0\\Planteen.Web\\Planteen.Web.csproj",
+  "expectedPackageFiles": [],
+  "logs": [
+    {
+      "code": "NU1101",
+      "level": "Error",
+      "message": "Unable to find package Microsoft.AspNetCore.All. No packages exist with this id in source(s): Microsoft Visual Studio Offline Packages",
+      "libraryId": "Microsoft.AspNetCore.All",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.0"
+      ]
+    },
+    {
+      "code": "NU1101",
+      "level": "Error",
+      "message": "Unable to find package Microsoft.EntityFrameworkCore.Tools. No packages exist with this id in source(s): Microsoft Visual Studio Offline Packages",
+      "libraryId": "Microsoft.EntityFrameworkCore.Tools",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.0"
+      ]
+    },
+    {
+      "code": "NU1101",
+      "level": "Error",
+      "message": "Unable to find package Microsoft.NETCore.App. No packages exist with this id in source(s): Microsoft Visual Studio Offline Packages",
+      "libraryId": "Microsoft.NETCore.App",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.0"
+      ]
+    },
+    {
+      "code": "NU1101",
+      "level": "Error",
+      "message": "Unable to find package Microsoft.VisualStudio.Web.CodeGeneration.Design. No packages exist with this id in source(s): Microsoft Visual Studio Offline Packages",
+      "libraryId": "Microsoft.VisualStudio.Web.CodeGeneration.Design",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.0"
+      ]
+    }
+  ]
+}

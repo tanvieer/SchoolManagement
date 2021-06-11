@@ -1,0 +1,126 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETCoreApp,Version=v2.0": {}
+  },
+  "libraries": {},
+  "projectFileDependencyGroups": {
+    ".NETCoreApp,Version=v2.0": [
+      "Microsoft.AspNetCore.All >= 2.0.6",
+      "Microsoft.EntityFrameworkCore.Tools >= 2.0.2",
+      "Microsoft.NETCore.App >= 2.0.0",
+      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 2.0.2"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\tanvi\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "F:\\C sharp projects\\SchoolManagemet\\SchoolManagement\\Other\\tanvieer-dentalproject-7abdb03abd16\\PlanteenCareDotnetCore2.0\\Planteen.Web\\Planteen.Web.csproj",
+      "projectName": "Planteen.Web",
+      "projectPath": "F:\\C sharp projects\\SchoolManagemet\\SchoolManagement\\Other\\tanvieer-dentalproject-7abdb03abd16\\PlanteenCareDotnetCore2.0\\Planteen.Web\\Planteen.Web.csproj",
+      "packagesPath": "C:\\Users\\tanvi\\.nuget\\packages\\",
+      "outputPath": "F:\\C sharp projects\\SchoolManagemet\\SchoolManagement\\Other\\tanvieer-dentalproject-7abdb03abd16\\PlanteenCareDotnetCore2.0\\Planteen.Web\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\tanvi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "netcoreapp2.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {}
+      },
+      "frameworks": {
+        "netcoreapp2.0": {
+          "targetAlias": "netcoreapp2.0",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netcoreapp2.0": {
+        "targetAlias": "netcoreapp2.0",
+        "dependencies": {
+          "Microsoft.AspNetCore.All": {
+            "target": "Package",
+            "version": "[2.0.6, )"
+          },
+          "Microsoft.EntityFrameworkCore.Tools": {
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[2.0.2, )"
+          },
+          "Microsoft.NETCore.App": {
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[2.0.0, )",
+            "autoReferenced": true
+          },
+          "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[2.0.2, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+      }
+    }
+  },
+  "logs": [
+    {
+      "code": "NU1101",
+      "level": "Error",
+      "message": "Unable to find package Microsoft.AspNetCore.All. No packages exist with this id in source(s): Microsoft Visual Studio Offline Packages",
+      "libraryId": "Microsoft.AspNetCore.All",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.0"
+      ]
+    },
+    {
+      "code": "NU1101",
+      "level": "Error",
+      "message": "Unable to find package Microsoft.EntityFrameworkCore.Tools. No packages exist with this id in source(s): Microsoft Visual Studio Offline Packages",
+      "libraryId": "Microsoft.EntityFrameworkCore.Tools",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.0"
+      ]
+    },
+    {
+      "code": "NU1101",
+      "level": "Error",
+      "message": "Unable to find package Microsoft.NETCore.App. No packages exist with this id in source(s): Microsoft Visual Studio Offline Packages",
+      "libraryId": "Microsoft.NETCore.App",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.0"
+      ]
+    },
+    {
+      "code": "NU1101",
+      "level": "Error",
+      "message": "Unable to find package Microsoft.VisualStudio.Web.CodeGeneration.Design. No packages exist with this id in source(s): Microsoft Visual Studio Offline Packages",
+      "libraryId": "Microsoft.VisualStudio.Web.CodeGeneration.Design",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.0"
+      ]
+    }
+  ]
+}

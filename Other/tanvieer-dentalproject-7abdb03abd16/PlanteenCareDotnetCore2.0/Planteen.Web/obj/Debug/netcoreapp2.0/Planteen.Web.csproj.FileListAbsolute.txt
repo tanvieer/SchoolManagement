@@ -1,0 +1,12 @@
+C:\Users\tanvi\source\repos\PlanteenCare\Planteen.Web\bin\Debug\netcoreapp2.0\Planteen.Web.deps.json
+C:\Users\tanvi\source\repos\PlanteenCare\Planteen.Web\bin\Debug\netcoreapp2.0\Planteen.Web.runtimeconfig.json
+C:\Users\tanvi\source\repos\PlanteenCare\Planteen.Web\bin\Debug\netcoreapp2.0\Planteen.Web.runtimeconfig.dev.json
+C:\Users\tanvi\source\repos\PlanteenCare\Planteen.Web\bin\Debug\netcoreapp2.0\Planteen.Web.dll
+C:\Users\tanvi\source\repos\PlanteenCare\Planteen.Web\bin\Debug\netcoreapp2.0\Planteen.Web.pdb
+C:\Users\tanvi\source\repos\PlanteenCare\Planteen.Web\obj\Debug\netcoreapp2.0\Planteen.Web.csprojResolveAssemblyReference.cache
+C:\Users\tanvi\source\repos\PlanteenCare\Planteen.Web\obj\Debug\netcoreapp2.0\Planteen.Web.csproj.CoreCompileInputs.cache
+C:\Users\tanvi\source\repos\PlanteenCare\Planteen.Web\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs
+C:\Users\tanvi\source\repos\PlanteenCare\Planteen.Web\obj\Debug\netcoreapp2.0\Planteen.Web.AssemblyInfoInputs.cache
+C:\Users\tanvi\source\repos\PlanteenCare\Planteen.Web\obj\Debug\netcoreapp2.0\Planteen.Web.AssemblyInfo.cs
+C:\Users\tanvi\source\repos\PlanteenCare\Planteen.Web\obj\Debug\netcoreapp2.0\Planteen.Web.dll
+C:\Users\tanvi\source\repos\PlanteenCare\Planteen.Web\obj\Debug\netcoreapp2.0\Planteen.Web.pdb

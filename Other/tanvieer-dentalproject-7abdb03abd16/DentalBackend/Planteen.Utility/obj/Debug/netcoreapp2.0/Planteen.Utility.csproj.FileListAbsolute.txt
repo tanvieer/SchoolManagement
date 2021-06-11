@@ -1,0 +1,9 @@
+C:\Users\tanvi\source\repos\DentalProject\DentalBackend\Planteen.Utility\bin\Debug\netcoreapp2.0\Planteen.Utility.deps.json
+C:\Users\tanvi\source\repos\DentalProject\DentalBackend\Planteen.Utility\bin\Debug\netcoreapp2.0\Planteen.Utility.dll
+C:\Users\tanvi\source\repos\DentalProject\DentalBackend\Planteen.Utility\bin\Debug\netcoreapp2.0\Planteen.Utility.pdb
+C:\Users\tanvi\source\repos\DentalProject\DentalBackend\Planteen.Utility\obj\Debug\netcoreapp2.0\Planteen.Utility.csprojResolveAssemblyReference.cache
+C:\Users\tanvi\source\repos\DentalProject\DentalBackend\Planteen.Utility\obj\Debug\netcoreapp2.0\Planteen.Utility.csproj.CoreCompileInputs.cache
+C:\Users\tanvi\source\repos\DentalProject\DentalBackend\Planteen.Utility\obj\Debug\netcoreapp2.0\Planteen.Utility.AssemblyInfoInputs.cache
+C:\Users\tanvi\source\repos\DentalProject\DentalBackend\Planteen.Utility\obj\Debug\netcoreapp2.0\Planteen.Utility.AssemblyInfo.cs
+C:\Users\tanvi\source\repos\DentalProject\DentalBackend\Planteen.Utility\obj\Debug\netcoreapp2.0\Planteen.Utility.dll
+C:\Users\tanvi\source\repos\DentalProject\DentalBackend\Planteen.Utility\obj\Debug\netcoreapp2.0\Planteen.Utility.pdb

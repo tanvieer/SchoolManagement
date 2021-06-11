@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.IdentityModel.Tokens">
+      <HintPath>PKGs\Microsoft.IdentityModel.Tokens\Microsoft.IdentityModel.Tokens.DLL</HintPath>
+    </Reference>
+    <Reference Include="System.IdentityModel.Tokens.Jwt">
+      <HintPath>PKGs\System.IdentityModel.Tokens.Jwt\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IdentityModel">
+      <HintPath>PKGs\System.IdentityModel\System.IdentityModel.dll</HintPath>
+    </Reference>
+
+  </ItemGroup>
+
+
+</Project>
