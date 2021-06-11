@@ -6,9 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Common;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Data.Common; 
 
 namespace SchoolMgmt.Repository
 {
@@ -19,12 +17,12 @@ namespace SchoolMgmt.Repository
         {
             SYS_USER_MASTER user = new SYS_USER_MASTER
             {
-                Email = "tanvieer@gmail.com",
-                Id = "123",
-                UserName = model.UserName.ToLower().Trim(),
-                EncKey = "123",
-                MakerTime = Convert.ToDateTime("24-Aug-1993"),
-                P_OUT = 0
+                Email        = "tanvieer@gmail.com",
+                Id           = "123",
+                UserName     = model.UserName.ToLower().Trim(),
+                EncKey       = "123",
+                MakerTime    = Convert.ToDateTime("24-Aug-1993"),
+                P_OUT        = 0
             };
             return user;
         }
@@ -96,11 +94,6 @@ namespace SchoolMgmt.Repository
 
             return user;
         }
-
-
-
-
-
-        }
-
+         
     }
+}
