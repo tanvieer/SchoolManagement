@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace SchoolMgmt.Repository
 {
-    public class SysManageRepository
+    public static class SysManageRepository
     {
-        public SYS_USER_MASTER GetUserInfo(LoginViewModel model)
+        public static SYS_USER_MASTER VerifyUser(LoginViewModel model)
         {
             SYS_USER_MASTER user = new SYS_USER_MASTER();
             user.Email = "tanvieer@gmail.com";
@@ -21,7 +21,7 @@ namespace SchoolMgmt.Repository
             return user;
         }
 
-        public SYS_USER_MASTER RegisterUser(UserViewModel model)
+        public static SYS_USER_MASTER RegisterUser(UserViewModel model)
         {
             SYS_USER_MASTER user = new SYS_USER_MASTER();
             return user;

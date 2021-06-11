@@ -32,6 +32,7 @@
       "SchoolMgmt/1.0.0": {
         "dependencies": {
           "Microsoft.IdentityModel.Tokens": "5.1.4.0",
+          "Newtonsoft.Json": "6.0.0.0",
           "System.IdentityModel": "4.0.0.0",
           "System.IdentityModel.Tokens.Jwt": "4.0.40306.1554",
           "Microsoft.AspNetCore.Antiforgery": "3.1.0.0",
@@ -333,6 +334,17 @@
         },
         "compile": {
           "Microsoft.IdentityModel.Tokens.DLL": {}
+        }
+      },
+      "Newtonsoft.Json/6.0.0.0": {
+        "runtime": {
+          "Newtonsoft.Json.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.4.17603"
+          }
+        },
+        "compile": {
+          "Newtonsoft.Json.dll": {}
         }
       },
       "System.IdentityModel/4.0.0.0": {
@@ -2058,6 +2070,11 @@
       "sha512": ""
     },
     "Microsoft.IdentityModel.Tokens/5.1.4.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Newtonsoft.Json/6.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

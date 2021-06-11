@@ -22,3 +22,5 @@ F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\SchoolMgmt\Scho
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\SchoolMgmt\SchoolMgmt\obj\Debug\netcoreapp3.1\SchoolMgmt.pdb
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\SchoolMgmt\SchoolMgmt\obj\Debug\netcoreapp3.1\SchoolMgmt.genruntimeconfig.cache
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\SchoolMgmt\SchoolMgmt\obj\Debug\netcoreapp3.1\SchoolMgmt.csproj.AssemblyReference.cache
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\SchoolMgmt\SchoolMgmt\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\SchoolMgmt\SchoolMgmt\bin\Debug\netcoreapp3.1\Newtonsoft.Json.xml

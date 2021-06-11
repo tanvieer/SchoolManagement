@@ -14,17 +14,11 @@ namespace SchoolMgmt.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly SysManageRepository _userRepository;
-        public AuthController(SysManageRepository authRepository)
-        { 
-
-            _userRepository = authRepository;
-
-        }
+      
         [HttpPost]
         public ActionResult Login(LoginViewModel loginData)
         {
-            var user = _userRepository.GetUserInfo(loginData);
+            var user = SysManageRepository.VerifyUser(loginData);
 
             if (user.P_OUT == 1)
                 return NotFound(user.ErrorCode + " ~ " + user.ErrorMsg);
@@ -36,7 +30,7 @@ namespace SchoolMgmt.Controllers
         [HttpPost]
         public JwtPacket Register(UserViewModel user)
         {
-            var registerUser = _userRepository.RegisterUser(user);
+            var registerUser = SysManageRepository.RegisterUser(user);
 
             return CreateJwtPacket(registerUser);
 
