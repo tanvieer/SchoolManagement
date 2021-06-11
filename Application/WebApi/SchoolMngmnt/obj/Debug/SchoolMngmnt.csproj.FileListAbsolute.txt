@@ -1,0 +1,2 @@
+F:\C sharp projects\SchoolManagemet\WebApi\SchoolMngmnt\obj\Debug\SchoolMngmnt.csproj.AssemblyReference.cache
+F:\C sharp projects\SchoolManagemet\WebApi\SchoolMngmnt\obj\Debug\SchoolMngmnt.csproj.CoreCompileInputs.cache
