@@ -19,7 +19,8 @@ namespace SchoolMngmnt.Controllers
         public StatusResult<JwtPacket> Login([FromBody] LoginViewModel model)
         {
             StatusResult<JwtPacket> result = new StatusResult<JwtPacket>();
-            var user = SysManageRepository.VerifyUser(model);
+            // var user = SysManageRepository.VerifyUser(model);
+            var user = SysManageRepository.GetUserInfo(model.UserName);
             if (user.P_OUT == 1)
             {
                 result.Status = "FAILED";
