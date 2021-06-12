@@ -19,8 +19,8 @@ namespace SchoolMngmnt.Controllers
         public StatusResult<JwtPacket> Login([FromBody] LoginViewModel model)
         {
             StatusResult<JwtPacket> result = new StatusResult<JwtPacket>();
-            // var user = SysManageRepository.VerifyUser(model);
-            var user = SysManageRepository.GetUserInfo(model.UserName);
+             var user = SysManageRepository.VerifyUser(model);
+           // var user = SysManageRepository.GetUserInfo(model.UserName);
             if (user.P_OUT == 1)
             {
                 result.Status = "FAILED";
@@ -29,7 +29,7 @@ namespace SchoolMngmnt.Controllers
             else
             {
                 result.Status = "SUCCESS";
-                result.Message = "Successfully Logged In.";
+                result.Message = user.ErrorMsg;
                 result.Result = UtilityService.CreateJwtPacket(user);
             }
             return result;

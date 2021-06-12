@@ -5,6 +5,12 @@ create or replace package pkg_user_master is
   -- Purpose : 
 
   -- Public type declarations
+  procedure sp_sys_verify_user(p_username in nvarchar2,
+                               p_password in nvarchar2,
+                               p_out      out number, 
+                               p_err_code out nvarchar2,
+                               p_err_msg  out nvarchar2,
+                               T_CURSOR   out sys_refcursor);
 
   procedure sp_sys_user_master_gk(p_username in nvarchar2,
                                   p_out      out number,

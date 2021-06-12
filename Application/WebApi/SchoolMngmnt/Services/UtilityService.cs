@@ -65,10 +65,11 @@ namespace SchoolMngmnt.Controllers.Services
 
             return new JwtPacket()
             {
-                Token = Guid.NewGuid().ToString(),
+                Token = user.Session,
+                SessionExpireTime = user.SessionExpireTime,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Email = user.RoleName,
+                Email = user.Email,
                 RoleId = user.RoleId,
                 RoleName = user.RoleName
             };

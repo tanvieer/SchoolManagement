@@ -13,5 +13,6 @@ namespace SchoolMngmnt.Model
         public string Email { get; set; }
         public string RoleName { get; set; }
         public int RoleId { get; set; }
+        public DateTime SessionExpireTime { get; set; }
     }
 }

@@ -23,6 +23,9 @@ namespace SchoolMngmnt.Model
         public string LastUpdateBy { get; set; }
         public string RoleName { get; set; } 
         public string FullName { get { return this.FirstName + " " + this.LastName; } }
+        public string Session { get; set; }
+
+        public DateTime SessionExpireTime { get; set; }
 
         public int P_OUT { get; set; }
         public string ErrorCode { get; set; }
