@@ -1,0 +1,8 @@
+
+*.pdb
+Application/WebApi/.vs/WebApi/v16/.suo
+*.pdb
+*.pdb
+*.~pck
+Application/WebApi/SchoolMngmnt/obj/Debug/SchoolMngmnt.pdb
+*.pdb
