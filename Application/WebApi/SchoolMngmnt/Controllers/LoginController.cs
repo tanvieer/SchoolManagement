@@ -28,7 +28,7 @@ namespace SchoolMngmnt.Controllers
             }
             else
             {
-                result.Status = "FAILED";
+                result.Status = "SUCCESS";
                 result.Message = "Successfully Logged In.";
                 result.Result = UtilityService.CreateJwtPacket(user);
             }
