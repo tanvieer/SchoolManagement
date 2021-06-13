@@ -33,7 +33,7 @@ namespace SchoolMngmnt.Controllers.Services
 
         //}
 
-        public static JwtPacket CreateJwtPacket(SYS_USER_MASTER user)//SigningCredentials
+        public static JwtPacket CreateJwtPacket(UserMaster user)//SigningCredentials
         {
             //var key = Encoding.ASCII.GetBytes(user.Email + DateTime.UtcNow.ToString());
             //var signingKey = new System.IdentityModel.Tokens.SymmetricSecurityKey(key);

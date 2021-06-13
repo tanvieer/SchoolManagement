@@ -15,9 +15,9 @@ namespace SchoolMgmt.Repository
         private static readonly string SP_PREFIX = ConfigurationManager.AppSettings["SP_PREFIX"].ToString();
       
 
-        public static SYS_USER_MASTER RegisterUser(UserViewModel model)
+        public static UserMaster RegisterUser(UserViewModel model)
         {
-            SYS_USER_MASTER user = new SYS_USER_MASTER
+            UserMaster user = new UserMaster
             {
                 Email        = "tanvieer@gmail.com",
                 Id           = "123",
@@ -29,14 +29,14 @@ namespace SchoolMgmt.Repository
             return user;
         }
 
-        public static SYS_USER_MASTER VerifyUser(LoginViewModel model)
+        public static UserMaster VerifyUser(LoginViewModel model)
         {
             if (model is null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var user = new SYS_USER_MASTER
+            var user = new UserMaster
             {
                 UserName = model.UserName.ToUpper()
             };
@@ -101,9 +101,9 @@ namespace SchoolMgmt.Repository
          
 
 
-        public static SYS_USER_MASTER GetUserInfo(string userName)
+        public static UserMaster GetUserInfo(string userName)
         {
-            var user = new SYS_USER_MASTER
+            var user = new UserMaster
             {
                 UserName = userName.ToUpper()
             };
@@ -127,7 +127,7 @@ namespace SchoolMgmt.Repository
 
 
             try {  
-                using (DbDataReader dr = objCDataAccess.ExecuteReader(objDbCommand, SP_PREFIX + "pkg_user_master.sp_sys_user_master_gk", CommandType.StoredProcedure, objList))
+                using (DbDataReader dr = objCDataAccess.ExecuteReader(objDbCommand, SP_PREFIX + "pkg_user_master.sp_UserMaster_gk", CommandType.StoredProcedure, objList))
                 {
                     p_out = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString();
                     if (p_out == "1")  err_code = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_code")].Value.ToString();

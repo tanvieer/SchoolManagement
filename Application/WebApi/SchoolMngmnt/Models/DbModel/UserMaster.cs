@@ -1,11 +1,12 @@
-﻿using System;
+﻿using SchoolMngmnt.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace SchoolMngmnt.Model
 {
-    public class SYS_USER_MASTER
+    public class UserMaster : CommonModel
     {
         public string Id { get; set; }
         public string UserName { get; set; }
@@ -20,17 +21,8 @@ namespace SchoolMngmnt.Model
         public string EncKey { get; set; }
         public string Status { get; set; }
         public string MakerId { get; set; }
-        public string LastUpdateBy { get; set; }
-        public string RoleName { get; set; } 
-        public string FullName { get { return this.FirstName + " " + this.LastName; } }
-        public string Session { get; set; }
-
-        public DateTime SessionExpireTime { get; set; }
-
-        public int P_OUT { get; set; }
-        public string ErrorCode { get; set; }
-        public string ErrorMsg { get; set; }
-         
+        public string LastUpdateBy { get; set; } 
+        public string FullName { get { return this.FirstName + " " + this.LastName; } } 
 
     }
 }

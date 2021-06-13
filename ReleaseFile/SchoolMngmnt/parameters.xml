@@ -1,0 +1,9 @@
+﻿<parameters>
+  <parameter name="IIS Web Application Name" defaultValue="localhost" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^F:\\C\ sharp\ projects\\SchoolManagemet\\SchoolManagement\\Application\\WebApi\\SchoolMngmnt\\obj\\Release\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^F:\\C\ sharp\ projects\\SchoolManagemet\\SchoolManagement\\Application\\WebApi\\SchoolMngmnt\\obj\\Release\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="application-Web.config Connection String" description="application Connection String used in web.config by the application to access the database." defaultValue="data source=budev; user id=schoolmgmt;password=schoolmgmt;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="F:\\C\ sharp\ projects\\SchoolManagemet\\SchoolManagement\\Application\\WebApi\\SchoolMngmnt\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='application']/@connectionString" />
+  </parameter>
+</parameters>

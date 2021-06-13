@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="application-Web.config Connection String" description="application Connection String used in web.config by the application to access the database." defaultValue="data source=budev; user id=schoolmgmt;password=schoolmgmt;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="F:\\C\ sharp\ projects\\SchoolManagemet\\SchoolManagement\\Application\\WebApi\\SchoolMngmnt\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='application']/@connectionString" />
+  </parameter>
+</parameters>

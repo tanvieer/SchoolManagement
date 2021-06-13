@@ -12,3 +12,4 @@ Application/WebApi/SchoolMngmnt/bin/SchoolMngmnt.pdb
 *.pdb
 *.~sql
 DATABASE.zip
+*.zip
