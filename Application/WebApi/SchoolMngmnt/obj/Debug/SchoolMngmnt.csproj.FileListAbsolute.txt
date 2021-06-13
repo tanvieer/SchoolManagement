@@ -1,5 +1,7 @@
 F:\C sharp projects\SchoolManagemet\WebApi\SchoolMngmnt\obj\Debug\SchoolMngmnt.csproj.AssemblyReference.cache
 F:\C sharp projects\SchoolManagemet\WebApi\SchoolMngmnt\obj\Debug\SchoolMngmnt.csproj.CoreCompileInputs.cache
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\obj\Debug\SchoolMngmnt.csproj.AssemblyReference.cache
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\obj\Debug\SchoolMngmnt.csproj.CoreCompileInputs.cache
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\SchoolMngmnt.dll.config
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\SchoolMngmnt.dll
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\SchoolMngmnt.pdb
@@ -67,6 +69,8 @@ F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMn
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\NewId.dll
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Newtonsoft.Json.Bson.dll
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Newtonsoft.Json.dll
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Oracle.DataAccess.dll
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Oracle.ManagedDataAccess.EntityFramework.dll
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\System.Buffers.dll
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\System.Diagnostics.DiagnosticSource.dll
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\System.IdentityModel.Tokens.Jwt.dll
@@ -119,10 +123,6 @@ F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMn
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\System.Web.WebPages.Razor.xml
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Antlr3.Runtime.pdb
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\obj\Debug\SchoolMngmnt.csproj.CoreCompileInputs.cache
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\obj\Debug\SchoolMngmnt.csproj.CopyComplete
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\obj\Debug\SchoolMngmnt.dll
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\obj\Debug\SchoolMngmnt.pdb
-F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Oracle.DataAccess.dll
-F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\obj\Debug\SchoolMngmnt.csproj.AssemblyReference.cache
-F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Oracle.ManagedDataAccess.EntityFramework.dll
