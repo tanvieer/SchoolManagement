@@ -5,7 +5,7 @@ create or replace package pkg_user_master is
   -- Purpose : 
 
   -- Public type declarations
-  procedure sp_sys_user_master(p_activity     in char,
+  procedure sp_sys_user_master(p_activity     in char, 
                                p_username     in sys_user_master.username%type,
                                p_first_name   in sys_user_master.first_name%type,
                                p_last_name    in sys_user_master.last_name%type,
@@ -47,17 +47,12 @@ create or replace package pkg_user_master is
                             p_enc_pass out varchar2);
 
   procedure sp_sys_user_master_gk(p_username in nvarchar2,
-                                  p_session  in nvarchar2,
+                                  p_user_id  in nvarchar2,
                                   p_out      out number,
                                   p_err_code out nvarchar2,
                                   p_err_msg  out nvarchar2,
                                   T_CURSOR   out sys_refcursor);
-  procedure sp_sys_user_master_ga(p_user_type in number,
-                                  p_session   in nvarchar2,
-                                  p_out       out number,
-                                  p_err_code  out nvarchar2,
-                                  p_err_msg   out nvarchar2,
-                                  T_CURSOR    out sys_refcursor);
+
   procedure sp_check_session(p_username   in sys_user_master.username%type,
                              p_session_id in sys_user_master.session_id%type,
                              p_role_name  out sys_role.role_name%type,
@@ -89,7 +84,7 @@ end pkg_user_master;
 /
 create or replace package body pkg_user_master is
 
-  procedure sp_sys_user_master(p_activity     in char,
+  procedure sp_sys_user_master(p_activity     in char, 
                                p_username     in sys_user_master.username%type,
                                p_first_name   in sys_user_master.first_name%type,
                                p_last_name    in sys_user_master.last_name%type,
@@ -159,44 +154,44 @@ create or replace package body pkg_user_master is
     
     END IF;
   
-    IF p_activity = 'U' OR p_activity = 'I' THEN
-      IF P_OUT = 0 THEN
-        pkg_user_master.IS_NULL('FIRST NAME',
-                                p_first_name,
-                                'USR-sp_sys_user_master',
-                                P_OUT,
-                                P_ERR_CODE,
-                                P_ERR_MSG);
-      ELSE
-        RETURN;
-      END IF;
-    
-      IF P_OUT = 0 THEN
-        pkg_user_master.IS_NULL('LAST NAME',
-                                p_last_name,
-                                'USR-sp_sys_user_master',
-                                P_OUT,
-                                P_ERR_CODE,
-                                P_ERR_MSG);
-      ELSE
-        RETURN;
-      END IF;
-    
-      IF P_OUT = 0 THEN
-        pkg_user_master.IS_NULL('EMAIL',
-                                p_email,
-                                'USR-sp_sys_user_master',
-                                P_OUT,
-                                P_ERR_CODE,
-                                P_ERR_MSG);
-      ELSE
-        RETURN;
-      END IF;
+   IF p_activity = 'U' OR p_activity = 'I'  THEN
+    IF P_OUT = 0 THEN
+      pkg_user_master.IS_NULL('FIRST NAME',
+                              p_first_name,
+                              'USR-sp_sys_user_master',
+                              P_OUT,
+                              P_ERR_CODE,
+                              P_ERR_MSG);
+    ELSE
+      RETURN;
     END IF;
+  
+    IF P_OUT = 0 THEN
+      pkg_user_master.IS_NULL('LAST NAME',
+                              p_last_name,
+                              'USR-sp_sys_user_master',
+                              P_OUT,
+                              P_ERR_CODE,
+                              P_ERR_MSG);
+    ELSE
+      RETURN;
+    END IF;
+  
+    IF P_OUT = 0 THEN
+      pkg_user_master.IS_NULL('EMAIL',
+                              p_email,
+                              'USR-sp_sys_user_master',
+                              P_OUT,
+                              P_ERR_CODE,
+                              P_ERR_MSG);
+    ELSE
+      RETURN;
+    END IF;
+  END IF;
     IF P_OUT = 0 THEN
       IF P_ACTIVITY = 'I' THEN
       
-        v_user_id := sys_guid();
+        v_user_id := sys_guid(); 
         v_enc_key := to_char(sysdate, 'ddmmyyhhmiss') ||
                      dbms_random.string(9, 10);
       
@@ -255,17 +250,20 @@ create or replace package body pkg_user_master is
          where username = p_username;
         commit;
         p_err_msg := initcap('User updated successfully!');
-      
-      ELSIF P_ACTIVITY = 'D' THEN
-      
+        
+        
+       ELSIF P_ACTIVITY = 'D' THEN 
+       
+        
+       
         update sys_user_master
-           set status           = 'D',
+           set status = 'D',
                last_update_by   = p_user_id,
                last_update_time = sysdate
          where username = p_username;
         commit;
         p_err_msg := initcap('User deleted successfully!');
-      
+        
       ELSE
         begin
           p_out      := 1;
@@ -290,12 +288,12 @@ create or replace package body pkg_user_master is
     when others then
       p_out      := 1;
       p_err_code := 'usr-1003';
-      p_err_msg  := initcap('unexpected error in user save') || sqlerrm;
+      p_err_msg  := initcap('unexpected error in sp_sys_user_master ') || sqlerrm;
       ROLLBACK;
   end sp_sys_user_master;
 
   procedure sp_sys_user_master_gk(p_username in nvarchar2,
-                                  p_session  in nvarchar2,
+                                  p_user_id  in nvarchar2,
                                   p_out      out number,
                                   p_err_code out nvarchar2,
                                   p_err_msg  out nvarchar2,
@@ -306,8 +304,8 @@ create or replace package body pkg_user_master is
     P_OUT := 0;
   
     IF P_OUT = 0 THEN
-      pkg_user_master.IS_NULL('session',
-                              p_session,
+      pkg_user_master.IS_NULL('p_user_id',
+                              p_user_id,
                               'USR-sp_sys_user_master_gk',
                               P_OUT,
                               P_ERR_CODE,
@@ -357,8 +355,9 @@ create or replace package body pkg_user_master is
       rollback;
   end sp_sys_user_master_gk;
 
-  procedure sp_sys_user_master_ga(p_user_type in number,
-                                  p_session   in nvarchar2,
+  procedure sp_sys_user_master_ga(p_username  in nvarchar2,
+                                  p_user_type in number,
+                                  p_user_id   in nvarchar2,
                                   p_out       out number,
                                   p_err_code  out nvarchar2,
                                   p_err_msg   out nvarchar2,
@@ -369,8 +368,8 @@ create or replace package body pkg_user_master is
     P_OUT := 0;
   
     IF P_OUT = 0 THEN
-      pkg_user_master.IS_NULL('session',
-                              p_session,
+      pkg_user_master.IS_NULL('p_user_id',
+                              p_user_id,
                               'USR-sp_sys_user_master_ga',
                               P_OUT,
                               P_ERR_CODE,
@@ -390,16 +389,30 @@ create or replace package body pkg_user_master is
       RETURN;
     END IF;
   
-    IF P_USER_TYPE NOT IN (0, 1, 2, 3) THEN
-      p_out      := 1;
-      p_err_code := 'usr-1004';
-      p_err_msg  := 'P_USER_TYPE Must be in 0,1,2,3 !';
+    IF P_OUT = 0 THEN
+      pkg_user_master.IS_NULL('USERNAME',
+                              p_username,
+                              'USR-sp_sys_user_master_ga',
+                              P_OUT,
+                              P_ERR_CODE,
+                              P_ERR_MSG);
+    ELSE
       RETURN;
+    END IF; 
+  
+  
+    IF P_USER_TYPE NOT IN (0,1,2,3) 
+      THEN
+        p_out      := 1;
+        p_err_code := 'usr-1004';
+        p_err_msg  := 'P_USER_TYPE Must be in 0,1,2,3 !'; 
+        RETURN;
     END IF;
   
     IF P_OUT <> 0 THEN
       RETURN;
     END IF;
+  
   
     open T_CURSOR for
       select t.id,
@@ -427,7 +440,13 @@ create or replace package body pkg_user_master is
       p_err_msg  := sqlerrm;
       rollback;
   end sp_sys_user_master_ga;
-
+  
+  
+  
+   
+  
+  
+  
   procedure sp_sys_verify_user(p_username in nvarchar2,
                                p_password in nvarchar2,
                                p_out      out number,
@@ -622,7 +641,7 @@ create or replace package body pkg_user_master is
                                   p_err_msg   out nvarchar2) is
     v_enc_key nvarchar2(100);
     v_pas_enc sys_user_master.enc_key%type;
-    v_user_id sys_user_master.id%type;
+    v_user_id sys_user_master.id%type; 
   begin
     p_out := 0;
   
@@ -743,7 +762,7 @@ create or replace package body pkg_user_master is
       p_out      := 1;
       p_err_code := 'usr-1006';
       p_err_msg  := initcap('session does not exist!');
-    
+      return;
     end if;
   
     if v_session_expired < v_current_time then

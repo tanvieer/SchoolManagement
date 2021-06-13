@@ -16,7 +16,7 @@ namespace SchoolMgmt.Repository
         private static readonly string SP_PREFIX = ConfigurationManager.AppSettings["SP_PREFIX"].ToString();
       
 
-        public static StatusResult<UserMaster> RegisterUser(UserViewModel model,string p_activity)
+        public static StatusResult<UserMaster> ManageUser(UserViewModel model,string p_activity)
         {
                
             CDataAccess objCDataAccess = CDataAccess.NewCDataAccess();
@@ -178,7 +178,7 @@ namespace SchoolMgmt.Repository
                 {
                     rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
                 } 
-                else
+                else 
                     rslt.Result = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_role_name")].Value.ToString();
             }
             catch (Exception ex)
