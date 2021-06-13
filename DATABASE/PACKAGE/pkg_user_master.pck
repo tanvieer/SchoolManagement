@@ -750,6 +750,16 @@ create or replace package body pkg_user_master is
   begin
     p_out          := 0;
     v_current_time := sysdate;
+    
+    if p_session_id is null or p_session_id = ''
+      then
+        p_out      := 1;
+        p_err_code := 'sys-1011';
+        p_err_msg := Initcap('Session id cannot be empty');
+      return;
+    end if;
+    
+    
     select session_id,
            (select role_name from sys_role where role_id = u.role_id),
            u.session_exp_time
@@ -769,6 +779,7 @@ create or replace package body pkg_user_master is
       p_out      := 1;
       p_err_code := 'usr-1007';
       p_err_msg  := initcap('session is expired!');
+      return;
     end if;
   
   exception
