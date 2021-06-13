@@ -10,3 +10,5 @@ Application/WebApi/.vs/WebApi/v16/.suo
 *.dll
 Application/WebApi/SchoolMngmnt/bin/SchoolMngmnt.pdb
 *.pdb
+*.~sql
+DATABASE.zip
