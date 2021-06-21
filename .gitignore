@@ -13,3 +13,6 @@ Application/WebApi/SchoolMngmnt/bin/SchoolMngmnt.pdb
 *.~sql
 DATABASE.zip
 *.zip
+*.nupkg
+*.config
+*.p7s

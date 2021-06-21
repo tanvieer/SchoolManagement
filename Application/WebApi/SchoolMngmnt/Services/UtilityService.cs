@@ -5,34 +5,45 @@ using System;
 using System.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text; 
 
 namespace SchoolMngmnt.Controllers.Services
 {
     public class UtilityService
     {
+
+        private const string _alg = "HmacSHA256";
+        private const string _salt = "rz8LuOtFBXphj9WQfvFh";
+
+        public string GenerateToken(string username, string password, string ip, string userAgent, long ticks)
+        {
+            string hash = string.Join(":", new string[] { username, ip, userAgent, ticks.ToString() });
+            string hashLeft = "";
+            string hashRight = "";
+            using (HMAC hmac = HMACSHA256.Create(_alg))
+            {
+                hmac.Key = Encoding.UTF8.GetBytes(GetHashedPassword(password));
+                hmac.ComputeHash(Encoding.UTF8.GetBytes(hash));
+                hashLeft = Convert.ToBase64String(hmac.Hash);
+                hashRight = string.Join(":", new string[] { username, ticks.ToString() });
+            }
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Join(":", hashLeft, hashRight)));
+        }
+        private string GetHashedPassword(string password)
+        {
+            string key = string.Join(":", new string[] { password, _salt });
+            using (HMAC hmac = HMACSHA256.Create(_alg))
+            {
+                // Hash the key.
+                hmac.Key = Encoding.UTF8.GetBytes(_salt);
+                hmac.ComputeHash(Encoding.UTF8.GetBytes(key));
+                return Convert.ToBase64String(hmac.Hash);
+            }
+        }
+
+
          
-     
-        //public ActionResult Login(LoginViewModel loginData)
-        //{
-        //    var user = _userRepository.GetUserInfo(loginData);
-
-        //    if (user.P_OUT == 1)
-        //        return NotFound(user.ErrorCode + " ~ " + user.ErrorMsg);
-        //    // User userEntiy = new User();
-        //    return Ok(CreateJwtPacket(user));
-        //}
-
-
-        //[HttpPost]
-        //public JwtPacket Register(UserViewModel user)
-        //{
-        //    var registerUser = _userRepository.RegisterUser(user);
-
-        //    return CreateJwtPacket(registerUser);
-
-        //}
-
         public static JwtPacket CreateJwtPacket(UserMaster user)//SigningCredentials
         {
             //var key = Encoding.ASCII.GetBytes(user.Email + DateTime.UtcNow.ToString());
