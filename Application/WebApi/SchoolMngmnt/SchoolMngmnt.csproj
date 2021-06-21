@@ -267,7 +267,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\CommonModel.cs" />
+    <Compile Include="Models\DbModel\TucClass.cs" />
+    <Compile Include="Models\DbModel\TucClassSubjectMap.cs" />
+    <Compile Include="Models\DbModel\TucResult.cs" />
+    <Compile Include="Models\DbModel\TucSubject.cs" />
+    <Compile Include="Models\DbModel\TucTest.cs" />
     <Compile Include="Models\DbModel\UserMaster.cs" />
+    <Compile Include="Models\DbModel\UserRole.cs" />
     <Compile Include="Models\SysModel\JwtPacket.cs" />
     <Compile Include="Models\SysModel\StatusResult.cs" />
     <Compile Include="Models\ViewModel\LoginViewModel.cs" />

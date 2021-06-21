@@ -10,6 +10,8 @@ namespace SchoolMngmnt.Models
         public string Session { get; set; } 
         public DateTime SessionExpireTime { get; set; } 
         public string RoleName { get; set; }
-        public string make_by { get; set; } 
+        public string Status { get; set; }
+        public string make_by { get; set; }
+        public DateTime Maker_Time { get; set; }
     }
 }

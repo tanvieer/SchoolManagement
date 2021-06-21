@@ -18,9 +18,9 @@ namespace SchoolMngmnt.Model
         public DateTime MakerTime { get; set; }
         public DateTime LastUpdateTime { get; set; }
         public int RoleId { get; set; }
-        public string EncKey { get; set; }
-        public string Status { get; set; }
+        public string EncKey { get; set; } 
         public string MakerId { get; set; }
+        public string ClassId { get; set; } 
         public string LastUpdateBy { get; set; } 
         public string FullName { get { return this.FirstName + " " + this.LastName; } } 
 
