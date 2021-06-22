@@ -6,6 +6,33 @@ create or replace package pkg_tuc_user_mast is
 
   -- Public type declarations
  
+  procedure sp_tuc_sys_user_mast_i(p_activity     in char,
+                                   p_username     in tuc_sys_user_mast.username%type,
+                                   p_first_name   in tuc_sys_user_mast.first_name%type,
+                                   p_last_name    in tuc_sys_user_mast.last_name%type,
+                                   p_email        in tuc_sys_user_mast.email%type,
+                                   p_phone_number in tuc_sys_user_mast.phone_number%type,
+                                   p_password     in tuc_sys_user_mast.password%type,
+                                   p_role_id      in tuc_sys_user_mast.role_id%type,
+                                   p_user_id      in tuc_sys_user_mast.maker_id%type,
+                                   p_out          out number,
+                                   p_err_code     out varchar2,
+                                   p_err_msg      out varchar2);
+  procedure sp_tuc_sys_user_mast_gk(p_username in nvarchar2,
+                                      p_user_id  in nvarchar2,
+                                      p_out      out number,
+                                      p_err_code out nvarchar2,
+                                      p_err_msg  out nvarchar2,
+                                      T_CURSOR   out sys_refcursor);
+  
+  procedure sp_tuc_sys_user_mast_ga(p_username  in nvarchar2,
+                                      p_user_type in number,
+                                      p_user_id   in nvarchar2,
+                                      p_out       out number,
+                                      p_err_code  out nvarchar2,
+                                      p_err_msg   out nvarchar2,
+                                      T_CURSOR    out sys_refcursor);
+  
   procedure sp_sys_verify_user(p_username in nvarchar2,
                                p_password in nvarchar2,
                                p_out      out number,

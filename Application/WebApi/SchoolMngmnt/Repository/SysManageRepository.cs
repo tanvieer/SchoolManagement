@@ -15,7 +15,7 @@ namespace SchoolMgmt.Repository
     {
         private static readonly string SP_PREFIX = ConfigurationManager.AppSettings["SP_PREFIX"].ToString();
       
-
+        // user insert update
         public static StatusResult<UserMaster> ManageUser(UserViewModel model,string p_activity)
         {
                
@@ -41,7 +41,7 @@ namespace SchoolMgmt.Repository
                 objList.Add(new DSSQLParam("p_err_code", string.Empty, ParameterDirection.Output));
                 objList.Add(new DSSQLParam("p_err_msg", string.Empty, ParameterDirection.Output));
 
-                objCDataAccess.ExecuteNonQuery(objDbCommand, SP_PREFIX + "pkg_user_master.sp_sys_user_master", CommandType.StoredProcedure, objList);
+                objCDataAccess.ExecuteNonQuery(objDbCommand, SP_PREFIX + "pkg_tuc_user_mast.sp_tuc_sys_user_mast_i", CommandType.StoredProcedure, objList);
                 p_out = Convert.ToInt32(objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString());
                 if (p_out== 1)
                 {
@@ -71,6 +71,7 @@ namespace SchoolMgmt.Repository
             return rslt;
         }
 
+        // login
         public static StatusResult<UserMaster> VerifyUser(LoginViewModel model)
         {
             if (model is null)
@@ -102,7 +103,7 @@ namespace SchoolMgmt.Repository
 
             try
             {
-                using (DbDataReader dr = objCDataAccess.ExecuteReader(objDbCommand, SP_PREFIX + "pkg_user_master.sp_sys_verify_user", CommandType.StoredProcedure, objList))
+                using (DbDataReader dr = objCDataAccess.ExecuteReader(objDbCommand, SP_PREFIX + "pkg_tuc_user_mast.sp_sys_verify_user", CommandType.StoredProcedure, objList))
                 {
                     p_out = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString();
                     err_msg = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
@@ -147,10 +148,10 @@ namespace SchoolMgmt.Repository
             return rslt;
         }
     
-
-        public static StatusResult<string> CheckSession(string userName, string sessionId)
+        // to check session
+        public static StatusResult<UserMaster> CheckSession(string userName, string sessionId)
         {
-            StatusResult<string> rslt = new StatusResult<string>();
+            StatusResult<UserMaster> rslt = new StatusResult<UserMaster>();
 
 
             CDataAccess objCDataAccess = CDataAccess.NewCDataAccess();
@@ -160,8 +161,8 @@ namespace SchoolMgmt.Repository
             List<DSSQLParam> objList = new List<DSSQLParam>();
 
 
-            objList.Add(new DSSQLParam("p_username", userName, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_session_id", sessionId, ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_username", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_role_name", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_err_code", string.Empty, ParameterDirection.Output));
@@ -170,7 +171,7 @@ namespace SchoolMgmt.Repository
 
             try
             {
-                objCDataAccess.ExecuteNonQuery(objDbCommand, SP_PREFIX + "pkg_user_master.sp_check_session", CommandType.StoredProcedure, objList);
+                objCDataAccess.ExecuteNonQuery(objDbCommand, SP_PREFIX + "pkg_tuc_user_mast.sp_check_session", CommandType.StoredProcedure, objList);
                 
                 rslt.Status = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString() == "0" ? "SUCCESS" : "FAILED";
 
@@ -178,8 +179,12 @@ namespace SchoolMgmt.Repository
                 {
                     rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
                 } 
-                else 
-                    rslt.Result = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_role_name")].Value.ToString();
+                else
+                {
+                    rslt.Result.RoleName = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_role_name")].Value.ToString();
+                    rslt.Result.UserName = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_username")].Value.ToString();
+                }
+                   
             }
             catch (Exception ex)
             {
@@ -195,7 +200,7 @@ namespace SchoolMgmt.Repository
             return rslt;
         }
 
-
+        //to get single user information
         public static StatusResult< UserMaster> GetUserInfo(string userName, string p_session)
         {
             StatusResult<UserMaster> rslt = new StatusResult<UserMaster>();
@@ -222,7 +227,7 @@ namespace SchoolMgmt.Repository
 
 
             try {  
-                using (DbDataReader dr = objCDataAccess.ExecuteReader(objDbCommand, SP_PREFIX + "pkg_user_master.sp_sys_user_master_gk", CommandType.StoredProcedure, objList))
+                using (DbDataReader dr = objCDataAccess.ExecuteReader(objDbCommand, SP_PREFIX + "pkg_tuc_user_mast.sp_tuc_sys_user_mast_gk", CommandType.StoredProcedure, objList))
                 {
                     p_out = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString();
                     if (p_out == "1")
@@ -262,6 +267,8 @@ namespace SchoolMgmt.Repository
             }
             return rslt;
         }
+       
+        // to get user list by role
         public static StatusResult<List<UserMaster>> GetUserList(int userType, string p_session)
         {
             StatusResult<List<UserMaster>> rslt = new StatusResult<List<UserMaster>>();
@@ -285,7 +292,7 @@ namespace SchoolMgmt.Repository
 
 
             try {  
-                using (DbDataReader dr = objCDataAccess.ExecuteReader(objDbCommand, SP_PREFIX + "pkg_user_master.sp_sys_user_master_ga", CommandType.StoredProcedure, objList))
+                using (DbDataReader dr = objCDataAccess.ExecuteReader(objDbCommand, SP_PREFIX + "pkg_tuc_user_mast.sp_tuc_sys_user_mast_ga", CommandType.StoredProcedure, objList))
                 {
                     p_out = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString();
                     if (p_out == "1")
@@ -331,7 +338,7 @@ namespace SchoolMgmt.Repository
             return rslt;
         }
 
-
+        // to reset password
         public static StatusResult<string> ResetPassword(string userName, string makeBy)
         {
             StatusResult<string> rslt = new StatusResult<string>();
@@ -355,7 +362,7 @@ namespace SchoolMgmt.Repository
 
             try
             {
-                objCDataAccess.ExecuteNonQuery(objDbCommand, SP_PREFIX + "pkg_user_master.sp_sys_reset_password", CommandType.StoredProcedure, objList);
+                objCDataAccess.ExecuteNonQuery(objDbCommand, SP_PREFIX + "pkg_tuc_user_mast.sp_sys_reset_password", CommandType.StoredProcedure, objList);
 
                 rslt.Status = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString() == "0" ? "SUCCESS" : "FAILED";
                 rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
@@ -379,6 +386,7 @@ namespace SchoolMgmt.Repository
             return rslt;
         }
 
+        // to change password
         public static StatusResult<string> ChangePassword(string userName, string oldPassword, string newPassword, string makeBy)
         {
             StatusResult<string> rslt = new StatusResult<string>();
@@ -399,7 +407,7 @@ namespace SchoolMgmt.Repository
              
             try
             {
-                objCDataAccess.ExecuteNonQuery(objDbCommand, SP_PREFIX + "pkg_user_master.sp_sys_change_password", CommandType.StoredProcedure, objList);
+                objCDataAccess.ExecuteNonQuery(objDbCommand, SP_PREFIX + "pkg_tuc_user_mast.sp_sys_change_password", CommandType.StoredProcedure, objList);
 
                 rslt.Status = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString() == "0" ? "SUCCESS" : "FAILED";
                 rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
