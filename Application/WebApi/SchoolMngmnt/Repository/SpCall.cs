@@ -211,10 +211,9 @@ namespace SchoolMngmnt.Repository
 
 
 
-        public static StatusResult<TucClass> GetClassInfo(TucClass model, string makeBy)
+        public static StatusResult<TucClass> GetClassInfo(string classId, string makeBy)
         {
-            StatusResult<TucClass> rslt = new StatusResult<TucClass>();
-            rslt.Result = model; 
+            StatusResult<TucClass> rslt = new StatusResult<TucClass>(); 
             string p_out = "1";
             string err_code, err_msg;
 
@@ -225,7 +224,7 @@ namespace SchoolMngmnt.Repository
             List<DSSQLParam> objList = new List<DSSQLParam>();
 
 
-            objList.Add(new DSSQLParam("p_class_id", model.ClassId, ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_class_id", classId, ParameterDirection.Input));
 
             objList.Add(new DSSQLParam("p_user_id", makeBy, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
@@ -253,9 +252,9 @@ namespace SchoolMngmnt.Repository
 
                     while (dr.Read())
                     {
-                        model.ClassId = dr["class_id"].ToString();
-                        model.ClassName = dr["class_name"].ToString();
-                        model.Status = dr["status"].ToString();                          
+                        rslt.Result.ClassId = dr["class_id"].ToString();
+                        rslt.Result.ClassName = dr["class_name"].ToString();
+                        rslt.Result.Status = dr["status"].ToString();                          
                     }
                     dr.Close();
                 }
@@ -269,17 +268,15 @@ namespace SchoolMngmnt.Repository
                 objDbCommand.Connection.Close();
                 objCDataAccess.Dispose(objDbCommand);
                 objList.Clear();
-            }
-            rslt.Result = model;
+            } 
             return rslt;
         }
 
 
 
-        public static StatusResult<TucSubject> GetSubjectInfo(TucSubject model, string makeBy)
+        public static StatusResult<TucSubject> GetSubjectInfo(string subjectId, string makeBy)
         {
-            StatusResult<TucSubject> rslt = new StatusResult<TucSubject>();
-            rslt.Result = model;
+            StatusResult<TucSubject> rslt = new StatusResult<TucSubject>(); 
             string p_out = "1";
             string err_code, err_msg;
 
@@ -290,7 +287,7 @@ namespace SchoolMngmnt.Repository
             List<DSSQLParam> objList = new List<DSSQLParam>();
 
 
-            objList.Add(new DSSQLParam("p_subject_id", model.SubjectId, ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_subject_id", subjectId, ParameterDirection.Input));
 
             objList.Add(new DSSQLParam("p_user_id", makeBy, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
@@ -318,12 +315,12 @@ namespace SchoolMngmnt.Repository
 
                     while (dr.Read())
                     {
-                        model.SubjectId = dr["subject_id"].ToString();
-                        model.SubjectName = dr["subject_name"].ToString();
-                        model.SubjectName = dr["teacher_id"].ToString();
-                        model.TeacherUserName = dr["teacher_username"].ToString();
-                        model.TeacherName = dr["teacher_full_name"].ToString();
-                        model.Status = dr["status"].ToString();
+                        rslt.Result.SubjectId = dr["subject_id"].ToString();
+                        rslt.Result.SubjectName = dr["subject_name"].ToString();
+                        rslt.Result.SubjectName = dr["teacher_id"].ToString();
+                        rslt.Result.TeacherUserName = dr["teacher_username"].ToString();
+                        rslt.Result.TeacherName = dr["teacher_full_name"].ToString();
+                        rslt.Result.Status = dr["status"].ToString();
                     }
                     dr.Close();
                 }
@@ -337,8 +334,7 @@ namespace SchoolMngmnt.Repository
                 objDbCommand.Connection.Close();
                 objCDataAccess.Dispose(objDbCommand);
                 objList.Clear();
-            }
-            rslt.Result = model;
+            } 
             return rslt;
         }
 

@@ -55,5 +55,33 @@ namespace SchoolMngmnt.Controllers
             return rslt;
         }
 
+
+        [HttpPost]
+        [Route("api/User/GetUserList")]
+        public StatusResult<List<UserMaster>> GetUserList([FromBody] JwtPacket model)
+        {
+
+            StatusResult<List<UserMaster>> rslt = new StatusResult<List<UserMaster>>();
+            var checkSession = SysManageRepository.CheckSession(model.make_by, model.Session);
+
+            if (checkSession.Status == "FAILED")
+            {
+                rslt.Status = checkSession.Status;
+                rslt.Message = checkSession.Message;
+                return rslt;
+            }
+
+            if (checkSession.Result.RoleId == 1) // ADMIN
+            {
+                rslt = SysManageRepository.GetUserList(0, model.Session);
+            }
+            else if (checkSession.Result.RoleId == 2) // Teacher
+            { 
+                rslt = SysManageRepository.GetUserList(2, model.Session);
+            }
+
+            return rslt;
+        }
+
     }
 }
