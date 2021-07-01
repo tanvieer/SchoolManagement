@@ -1,4 +1,5 @@
-﻿using SchoolMgmt.Repository;
+﻿using Microsoft.AspNetCore.Cors;
+using SchoolMgmt.Repository;
 using SchoolMngmnt.Model;
 using SchoolMngmnt.Model.SysModel;
 using SchoolMngmnt.Model.ViewModel;
@@ -13,8 +14,10 @@ namespace SchoolMngmnt.Controllers
 {
     public class UserController : ApiController
     {
-         
+
         // POST: api/User
+        // [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [EnableCors("AllowOrigin")] 
         [HttpPost]
         [Route("api/User/Register")]
         public StatusResult<UserMaster> RegisterUser([FromBody] UserViewModel model)
@@ -35,6 +38,7 @@ namespace SchoolMngmnt.Controllers
             return rslt;
         }
 
+        [DisableCors()]
         [HttpPost]
         [Route("api/User/UpdateUser")]
         public StatusResult<UserMaster> UpdateUser([FromBody] UserViewModel model)
@@ -55,7 +59,7 @@ namespace SchoolMngmnt.Controllers
             return rslt;
         }
 
-
+        [DisableCors()]
         [HttpPost]
         [Route("api/User/GetUserList")]
         public StatusResult<List<UserMaster>> GetUserList([FromBody] JwtPacket model)

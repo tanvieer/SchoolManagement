@@ -142,3 +142,14 @@ F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMn
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Microsoft.Extensions.Primitives.xml
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Microsoft.Net.Http.Headers.xml
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\System.Text.Encodings.Web.xml
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Microsoft.AspNetCore.Cors.dll
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Microsoft.AspNetCore.Http.Extensions.dll
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Microsoft.Extensions.FileProviders.Abstractions.dll
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Microsoft.Extensions.Options.dll
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\System.ComponentModel.Annotations.dll
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Microsoft.AspNetCore.Cors.xml
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Microsoft.AspNetCore.Http.Extensions.xml
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Microsoft.Extensions.DependencyInjection.Abstractions.xml
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Microsoft.Extensions.FileProviders.Abstractions.xml
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Microsoft.Extensions.Options.xml
