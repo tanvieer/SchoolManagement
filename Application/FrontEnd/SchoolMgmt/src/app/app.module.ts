@@ -9,7 +9,8 @@ import { TeachersComponent } from './teachers/teachers.component';
 import { TeacherComponent } from './teachers/teacher/teacher.component';
 import { TeacherListComponent } from './teachers/teacher-list/teacher-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ToastrModule } from 'ngx-toastr'; 
+import { ToastrModule } from 'ngx-toastr';
+import { LoginComponent } from './login/login.component'; 
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { ToastrModule } from 'ngx-toastr';
     AppComponent,
     TeachersComponent,
     TeacherComponent,
-    TeacherListComponent 
+    TeacherListComponent,
+    LoginComponent 
   ],
   imports: [
     BrowserModule,

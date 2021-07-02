@@ -48,7 +48,8 @@ export class TeacherComponent implements OnInit {
  }
 
  insertRecord(form: NgForm){ 
-    this.service.postTeacher(form.value).subscribe((res : any)  =>{
+    this.service.postTeacher(form.value)
+    .subscribe((res : any)  =>{
       
      // this._statusResultO as statusResultO;
       console.log(res.Message);
