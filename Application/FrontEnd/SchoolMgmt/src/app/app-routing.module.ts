@@ -5,10 +5,12 @@ import { LoginComponent } from './login/login.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {Routes, RouterModule} from '@angular/router';
+import { LogoutComponent } from './logout/logout.component';
 
 const routes : Routes = [
   {path: 'login' , component: LoginComponent},
-  {path: 'teacher', component: TeacherComponent}
+  {path: 'teacher', component: TeacherComponent},
+  {path: 'logout', component: LogoutComponent}
 ];
 
 
@@ -24,5 +26,6 @@ export class AppRoutingModule { }
 export const routingComponents = [LoginComponent, 
                                   TeacherComponent,
                                   TeachersComponent,
-                                  TeacherListComponent]
+                                  TeacherListComponent,
+                                  LogoutComponent ]
 

@@ -56,12 +56,13 @@ export class AuthenticationService {
           localStorage.setItem('Name', res.Result.FirstName + " " + res.Result.LastName); 
           this.toastr.success(res.Message, 'Login Success');
 
-          this.router.navigate([this._returnUrl]);
+          this.router.navigate([this._returnUrl]); 
+          window.location.reload();
         }
         else {
           localStorage.setItem('isLoggedIn', "0");
           this.toastr.error(res.Message, 'Login Failed');
-          this.router.navigate(['/']);
+          this.router.navigate(['/login']);
         }
          
           
@@ -75,5 +76,12 @@ export class AuthenticationService {
       localStorage.removeItem('Email');
       localStorage.removeItem('RoleName');
       localStorage.removeItem('Name');
+      localStorage.setItem("Name","");
+
+      this.router.navigateByUrl('/login', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/login']);
+      window.location.reload();
+    });       
+      
     }
 }

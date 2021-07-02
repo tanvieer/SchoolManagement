@@ -12,9 +12,7 @@ export class statusResultO {
 
 
 export class JwtToken {
-    Token!: string;
-    FirstName!: string;
-    LastName!: string;
+    Token!: string; 
     Email!: string;
     RoleId!: string;
     getIdKey!: string;
@@ -24,6 +22,7 @@ export class JwtToken {
     Status!: string;
     make_by!: string;
     Maker_Time!: string;
+    Name!: string;
   }
  
 
