@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';  
-import { AuthenticationService } from '../shared/authentication.service';
+import { NgForm } from '@angular/forms'; 
+import { AuthenticationService } from '../shared/authentication.service'; 
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -10,13 +10,16 @@ import { AuthenticationService } from '../shared/authentication.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
-  constructor(public service : AuthenticationService, 
-    private toastr : ToastrService ) { }
+   
+  constructor(public service : AuthenticationService,  
+              private router: Router ) { }
 
 
   ngOnInit(): void {
     this.resetForm();
+    if(localStorage.getItem('isLoggedIn') == "1" ) {
+      this.router.navigate(['/teacher']);
+    } 
   }
 
   resetForm(form? : NgForm){
