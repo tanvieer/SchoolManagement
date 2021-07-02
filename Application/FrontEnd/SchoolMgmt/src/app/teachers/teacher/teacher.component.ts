@@ -1,6 +1,7 @@
+ 
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr'; 
 import { TeacherService } from 'src/app/shared/teacher.service';
 
 
@@ -10,6 +11,7 @@ import { TeacherService } from 'src/app/shared/teacher.service';
   styleUrls: ['./teacher.component.css']
 })
 export class TeacherComponent implements OnInit {
+ // private _statusResultO: statusResultO;
 
   constructor(public service : TeacherService, 
               private toastr : ToastrService ) { }
@@ -40,13 +42,21 @@ export class TeacherComponent implements OnInit {
       }       
   }
 
- onSubmit(form : NgForm){
+  onSubmit(form : NgForm){
+ // await this.service.getTeacherList();
    this.insertRecord(form);
  }
 
- insertRecord(form: NgForm){
-    this.service.postTeacher(form.value).subscribe(res =>{
-      this.toastr.success('Inserted Successfully', 'Teacher Register');
+ insertRecord(form: NgForm){ 
+    this.service.postTeacher(form.value).subscribe((res : any)  =>{
+      
+     // this._statusResultO as statusResultO;
+      console.log(res.Message);
+
+      localStorage.setItem('currentUser', JSON.stringify(res));
+
+      this.toastr.success(res.Message, 'Teacher Register');
+
       this.resetForm();
     });
  }

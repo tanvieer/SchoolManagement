@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿
 using SchoolMgmt.Repository;
 using SchoolMngmnt.Model;
 using SchoolMngmnt.Model.SysModel;
@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace SchoolMngmnt.Controllers
 {
@@ -16,8 +17,8 @@ namespace SchoolMngmnt.Controllers
     {
 
         // POST: api/User
-        // [EnableCors(origins: "*", headers: "*", methods: "*")]
-        [EnableCors("AllowOrigin")] 
+         [EnableCors(origins: "*", headers: "*", methods: "*")]
+        //[EnableCors("AllowOrigin")] 
         [HttpPost]
         [Route("api/User/Register")]
         public StatusResult<UserMaster> RegisterUser([FromBody] UserViewModel model)
@@ -38,7 +39,7 @@ namespace SchoolMngmnt.Controllers
             return rslt;
         }
 
-        [DisableCors()]
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPost]
         [Route("api/User/UpdateUser")]
         public StatusResult<UserMaster> UpdateUser([FromBody] UserViewModel model)
@@ -59,13 +60,19 @@ namespace SchoolMngmnt.Controllers
             return rslt;
         }
 
-        [DisableCors()]
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPost]
         [Route("api/User/GetUserList")]
         public StatusResult<List<UserMaster>> GetUserList([FromBody] JwtPacket model)
         {
 
             StatusResult<List<UserMaster>> rslt = new StatusResult<List<UserMaster>>();
+
+            rslt = SysManageRepository.GetUserList(0, "s");
+
+            return rslt;
+
+
             var checkSession = SysManageRepository.CheckSession(model.make_by, model.Session);
 
             if (checkSession.Status == "FAILED")
@@ -86,6 +93,17 @@ namespace SchoolMngmnt.Controllers
 
             return rslt;
         }
+
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [HttpGet]
+        [Route("api/User/Get")]
+        public string Get()
+        {  
+            return "success";
+        }
+
+
+
 
     }
 }

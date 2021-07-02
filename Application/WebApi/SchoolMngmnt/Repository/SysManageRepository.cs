@@ -179,11 +179,11 @@ namespace SchoolMgmt.Repository
                 {
                     rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
                 } 
-                else
-                {
-                    rslt.Result.RoleName = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_role_name")].Value.ToString();
-                    rslt.Result.UserName = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_username")].Value.ToString();
-                }
+                //else
+                //{
+                //    rslt.Result.RoleName = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_role_name")].Value == null ? "" :  objDbCommand.Parameters[CParameter.GetOutputParameterName("p_role_name")].Value.ToString();
+                //    rslt.Result.UserName = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_username")].Value == null ?  "" : objDbCommand.Parameters[CParameter.GetOutputParameterName("p_username")].Value.ToString();
+                //}
                    
             }
             catch (Exception ex)
@@ -283,8 +283,7 @@ namespace SchoolMgmt.Repository
             List<DSSQLParam> objList = new List<DSSQLParam>();
 
 
-            objList.Add(new DSSQLParam("p_user_type", userType.ToString(), ParameterDirection.Input));
-            objList.Add(new DSSQLParam("p_session", p_session, ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_user_type", userType.ToString(), ParameterDirection.Input)); 
             objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_err_code", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_err_msg", string.Empty, ParameterDirection.Output));
@@ -305,13 +304,13 @@ namespace SchoolMgmt.Repository
                     else
                     {
                         rslt.Status = "SUCCESS";
-                        err_msg = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
+                        rslt.Message =  objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
                     }
-                    
 
+                    rslt.Result = new List<UserMaster>();
                     while (dr.Read())
                     {
-                        user = new UserMaster(); 
+                        user = new UserMaster();  
                         user.Id          = dr["ID"].ToString();
                         user.FirstName   = dr["FIRST_NAME"].ToString(); 
                         user.LastName    = dr["LAST_NAME"].ToString();

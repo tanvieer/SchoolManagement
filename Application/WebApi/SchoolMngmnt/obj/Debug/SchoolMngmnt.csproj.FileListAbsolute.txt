@@ -153,3 +153,6 @@ F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMn
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Microsoft.Extensions.DependencyInjection.Abstractions.xml
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Microsoft.Extensions.FileProviders.Abstractions.xml
 F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\Microsoft.Extensions.Options.xml
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\System.Web.Cors.dll
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\System.Web.Http.Cors.dll
+F:\C sharp projects\SchoolManagemet\SchoolManagement\Application\WebApi\SchoolMngmnt\bin\System.Web.Http.Cors.xml
