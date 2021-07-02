@@ -26,3 +26,12 @@ export class JwtToken {
     Maker_Time!: string;
   }
  
+
+  export class User { 
+    isLoggedIn!: string;
+    Name!: string; 
+    Email!: string;    
+    RoleName!: string; 
+    Token!: string;
+  }
+ 
