@@ -1,6 +1,6 @@
  
 import { Injectable } from '@angular/core';
-import { Teacher, JwtToken,statusResultL,statusResultO } from './teacher.model';
+import { Teacher, JwtToken } from './teacher.model';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable({
@@ -8,15 +8,15 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 })
 export class TeacherService {
   
-  formData!: Teacher; 
-  _statusResultL!: statusResultL;
-  _statusResultO!: statusResultO;
-  _jwtToken!: JwtToken;
-  _list : Teacher[] | undefined;
+  formData!: Teacher;  
+  _jwtToken!: JwtToken; 
 
   readonly rootUrl = "https://localhost:44358/api/";
 
-  constructor(private http : HttpClient) { }
+  constructor(private http : HttpClient) {
+    this._jwtToken = new JwtToken();
+
+   }
 
   postTeacher(_formData : Teacher){
     //this.getTeacherList();
@@ -29,12 +29,11 @@ export class TeacherService {
 
   }
 
-  getTeacherList(){
-     this._jwtToken.RoleId = "1";
+  getTeacherList(){ 
+     this._jwtToken.RoleId = "2";
      this._jwtToken.make_by = "t"; 
-     this._jwtToken.Session = localStorage.getItem("Token")?? "";
-      console.log(this._jwtToken);
-      return this.http.post(this.rootUrl + 'User/GetUserList',this._jwtToken);  
+     this._jwtToken.Session = localStorage.getItem("Token")?? ""; 
+     return this.http.post(this.rootUrl + 'User/GetUserList',this._jwtToken);  
   }
 
   

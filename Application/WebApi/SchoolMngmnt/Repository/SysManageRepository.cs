@@ -312,6 +312,7 @@ namespace SchoolMgmt.Repository
                     {
                         user = new UserMaster();  
                         user.Id          = dr["ID"].ToString();
+                        user.UserName    = dr["USERNAME"].ToString();
                         user.FirstName   = dr["FIRST_NAME"].ToString(); 
                         user.LastName    = dr["LAST_NAME"].ToString();
                         user.PhoneNumber = dr["PHONE_NUMBER"].ToString();

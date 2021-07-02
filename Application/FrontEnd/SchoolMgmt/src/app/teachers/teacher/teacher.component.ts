@@ -24,7 +24,8 @@ export class TeacherComponent implements OnInit {
     if(form != null)
       form.resetForm();
       this.service.formData = {
-        Id: '',     
+        Id: '',  
+        index: 1,   
         UserName: '',    
         Password: '',    
         Email: '',    

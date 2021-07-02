@@ -10,6 +10,7 @@ import { LogoutComponent } from './logout/logout.component';
 const routes : Routes = [
   {path: 'login' , component: LoginComponent},
   {path: 'teacher', component: TeacherComponent},
+  {path: 'teachers', component: TeachersComponent},
   {path: 'logout', component: LogoutComponent}
 ];
 
@@ -27,5 +28,6 @@ export const routingComponents = [LoginComponent,
                                   TeacherComponent,
                                   TeachersComponent,
                                   TeacherListComponent,
-                                  LogoutComponent ]
+                                  LogoutComponent,
+                                  TeachersComponent ]
 

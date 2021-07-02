@@ -1,16 +1,4 @@
-export class statusResultL {  
-
-    Status!:string;     
-    Message!:string;    
-    Result!: Teacher[]; 
-}
-export class statusResultO {  
-
-    Status!:string;     
-    Message!:string;    
-    Result!: Teacher; 
-}
-
+ 
 
 export class JwtToken {
     Token!: string;
@@ -29,9 +17,10 @@ export class JwtToken {
 
 export class Teacher {  
 
-    Id!:string;     
+    Id!:string; 
+    index!: number;    
     UserName!:string;    
-    Password!:string;    
+    Password!:string;     
     Email!:string;    
     FirstName!:string;    
     LastName!:string;    
@@ -43,7 +32,7 @@ export class Teacher {
     RoleName!:string;    
     Status!:string;    
     make_by!:string;    
-    Maker_Time!: string;
+    Maker_Time!: string; 
 }
 
 
