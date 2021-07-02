@@ -6,11 +6,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {Routes, RouterModule} from '@angular/router';
 import { LogoutComponent } from './logout/logout.component';
+import { CreateUserComponent } from './create-user/create-user.component';
 
 const routes : Routes = [
   {path: 'login' , component: LoginComponent},
   {path: 'teacher', component: TeacherComponent},
   {path: 'teachers', component: TeachersComponent},
+  {path: 'teacher-list', component: TeacherListComponent},
+  {path: 'create-user', component: CreateUserComponent},
   {path: 'logout', component: LogoutComponent}
 ];
 
@@ -29,5 +32,6 @@ export const routingComponents = [LoginComponent,
                                   TeachersComponent,
                                   TeacherListComponent,
                                   LogoutComponent,
-                                  TeachersComponent ]
+                                  TeachersComponent,
+                                  CreateUserComponent ]
 

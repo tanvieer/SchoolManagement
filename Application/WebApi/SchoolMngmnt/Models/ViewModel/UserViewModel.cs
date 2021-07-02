@@ -16,6 +16,7 @@ namespace SchoolMngmnt.Model.ViewModel
         public string LastName { get; set; }
         public string PhoneNumber { get; set; } 
         public int RoleId { get; set; } 
+        public int ClassId { get; set; } 
         public string FullName { get { return this.FirstName + " " + this.LastName; } }
     }
 }

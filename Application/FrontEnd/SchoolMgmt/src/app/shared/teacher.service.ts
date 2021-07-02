@@ -18,12 +18,15 @@ export class TeacherService {
 
    }
 
-  postTeacher(_formData : Teacher){
-    //this.getTeacherList();
-    _formData.RoleId = "1";
-    _formData.make_by = "t";
-    _formData.Password = _formData.UserName;
+  postTeacher(_formData : Teacher){ 
+    _formData.make_by = localStorage.getItem("UserName")?? "admin"; 
+    if(_formData.Password == "") {
+      _formData.Password = _formData.UserName;
+    }
+    
     _formData.Session = localStorage.getItem("Token")?? "";
+
+    console.log(_formData);
 
     return this.http.post(this.rootUrl + 'User/Register',_formData); 
 
@@ -36,7 +39,19 @@ export class TeacherService {
      return this.http.post(this.rootUrl + 'User/GetUserList',this._jwtToken);  
   }
 
-  
+  getStudentList(){ 
+    this._jwtToken.RoleId = "3";
+    this._jwtToken.make_by = "t"; 
+    this._jwtToken.Session = localStorage.getItem("Token")?? ""; 
+    return this.http.post(this.rootUrl + 'User/GetUserList',this._jwtToken);  
+ }
 
+ getAllUserList(){ 
+  this._jwtToken.RoleId = "0";
+  this._jwtToken.make_by = "t"; 
+  this._jwtToken.Session = localStorage.getItem("Token")?? ""; 
+  return this.http.post(this.rootUrl + 'User/GetUserList',this._jwtToken);  
+}
+ 
 
 }

@@ -1,12 +1,14 @@
-<div class="card-body">
-    <table class="table table-striped">
-    <caption>List of all teacher</caption>
+ 
+<div class="card-body"> 
+    <table class="table table-striped"> 
+        <caption>Teacher List</caption>
     <thead class="thead-dark">
       <tr>
         <th scope="col">#</th>
         <th scope="col">Username</th>
         <th scope="col">Forename</th>
         <th scope="col">Surename</th>
+        <th scope="col">Role</th>
         <th scope="col">Action</th>
       </tr>
     </thead>
@@ -16,6 +18,7 @@
         <td>{{item.UserName}}</td>
         <td>{{item.FirstName}}</td>
         <td>{{item.LastName}}</td>
+        <td>{{item.RoleName}}</td>
         <td>
           <button type="button" class="btn btn-sm btn-primary">Edit</button>&nbsp;<button type="button"
             class="btn btn-sm btn-danger">Delete</button>

@@ -84,11 +84,11 @@ namespace SchoolMngmnt.Controllers
 
             if (checkSession.Result.RoleId == 1) // ADMIN
             {
-                rslt = SysManageRepository.GetUserList(0, model.Session);
+                rslt = SysManageRepository.GetUserList(model.RoleId, model.Session);
             }
             else if (checkSession.Result.RoleId == 2) // Teacher
             { 
-                rslt = SysManageRepository.GetUserList(2, model.Session);
+                rslt = SysManageRepository.GetUserList(model.RoleId, model.Session);
             }
 
             return rslt;

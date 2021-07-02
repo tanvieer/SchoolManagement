@@ -36,6 +36,7 @@ namespace SchoolMgmt.Repository
                 objList.Add(new DSSQLParam("p_phone_number", model.PhoneNumber, ParameterDirection.Input));
                 objList.Add(new DSSQLParam("p_password", model.Password, ParameterDirection.Input));
                 objList.Add(new DSSQLParam("p_role_id", model.RoleId, ParameterDirection.Input));
+                objList.Add(new DSSQLParam("p_class_id", model.ClassId, ParameterDirection.Input));
                 objList.Add(new DSSQLParam("p_user_id", model.make_by, ParameterDirection.Input)); 
                 objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
                 objList.Add(new DSSQLParam("p_err_code", string.Empty, ParameterDirection.Output));
@@ -125,6 +126,7 @@ namespace SchoolMgmt.Repository
                         user.FirstName      = dr["FIRST_NAME"].ToString();
                         user.LastName       = dr["LAST_NAME"].ToString();
                         user.PhoneNumber    = dr["PHONE_NUMBER"].ToString();
+                        user.UserName       = dr["USERNAME"].ToString();
                         user.Email          = dr["EMAIL"].ToString();
                         user.RoleId         = Convert.ToInt32(dr["ROLE_ID"].ToString());
                         user.RoleName       = dr["ROLE_NAME"] == null ? "" : dr["ROLE_NAME"].ToString();

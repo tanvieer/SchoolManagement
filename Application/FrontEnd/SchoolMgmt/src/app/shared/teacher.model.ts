@@ -25,7 +25,8 @@ export class Teacher {
     FirstName!:string;    
     LastName!:string;    
     PhoneNumber!:string;    
-    RoleId!:string;
+    RoleId!: number;
+    ClassId!: number;
     FullName!:string;
     Session!:string;    
     SessionExpireTime!:string;    

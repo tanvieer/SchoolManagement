@@ -2,15 +2,7 @@ export class Login {
     Username! : string;
     Password! : string;
 }
-
-export class statusResultO {  
-
-    Status!:string;     
-    Message!:string;    
-    Result!: JwtToken; 
-}
-
-
+ 
 export class JwtToken {
     Token!: string; 
     Email!: string;
@@ -33,4 +25,14 @@ export class JwtToken {
     RoleName!: string; 
     Token!: string;
   }
- 
+  
+  export class Role {
+    RoleId!: number;
+    RoleName!: string;
+    RoleDes!: string;
+  }
+
+  export class ClassModel{
+    ClassId!: number;
+    ClassName!: string;
+  }

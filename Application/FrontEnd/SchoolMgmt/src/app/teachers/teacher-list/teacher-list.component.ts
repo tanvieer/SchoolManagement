@@ -51,7 +51,7 @@ export class TeacherListComponent implements OnInit {
       data.RoleId = jsonData[i].RoleId;  
       this.teacherList.push(data);
     } 
-    this.refreshTeachers();
+    //this.refreshTeachers();
   }
 
 

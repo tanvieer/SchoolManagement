@@ -53,6 +53,7 @@ export class AuthenticationService {
           localStorage.setItem('Token', res.Result.Token);
           localStorage.setItem('Email',   res.Result.Email);
           localStorage.setItem('RoleName',res.Result.RoleName);
+          localStorage.setItem('UserName',res.Result.UserName);
           localStorage.setItem('Name', res.Result.FirstName + " " + res.Result.LastName); 
           this.toastr.success(res.Message, 'Login Success');
 
