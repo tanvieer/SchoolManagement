@@ -13,3 +13,10 @@ input.ng-touched.ng-invalid{
 table tr:hover{
     cursor: pointer;
 }
+nav a.active {
+    color: #039be5;
+}
+nav a:hover {
+    color: #039be5;
+    background-color: #CFD8DC;
+}

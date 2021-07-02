@@ -1,3 +1,4 @@
+<div class="hold-transition login-page">
  <div class="login-box">
    <div class="login-logo">
      <a href="#">Login</a>
@@ -15,7 +16,7 @@
            <!-- <input name="Username"  #Username="ngModel" [(ngModel)]="service.formData.Username"  type="text" class="form-control" placeholder="Username" required> -->
 
            <input name="Username" #Username="ngModel" [(ngModel)]="service.formData.Username" type="text"
-             class="form-control" required>
+             class="form-control" placeholder="Username" required>
            <div class="input-group-append">
              <div class="input-group-text">
                <span class="fas fa-envelope"></span>
@@ -27,7 +28,7 @@
          <div class="input-group mb-3">
            <!-- <input #Password="ngModel" [(ngModel)]="service.formData.Password"  type="password" class="form-control" placeholder="Password" required> -->
            <input name="Password" #Password="ngModel" [(ngModel)]="service.formData.Password" type="text"
-             class="form-control" required>
+             class="form-control" placeholder="Password" required>
 
            <div class="input-group-append">
              <div class="input-group-text">
@@ -43,10 +44,11 @@
            <div class="col-12">
              <button [disabled]="form.invalid" type="submit" class="btn btn-primary btn-block">Sign In</button>
            </div>
-           <a routerLink="/teachers" class="btn btn-link">Register</a>
+           <a routerLink="/teacher" class="btn btn-link">Register</a>
            <!-- /.col -->
          </div>
        </form>
      </div>
    </div>
  </div>
+</div>

@@ -4,29 +4,24 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 
-import { AppComponent } from './app.component';
-import { TeachersComponent } from './teachers/teachers.component';
-import { TeacherComponent } from './teachers/teacher/teacher.component';
-import { TeacherListComponent } from './teachers/teacher-list/teacher-list.component';
+import { AppComponent } from './app.component'; 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ToastrModule } from 'ngx-toastr';
-import { LoginComponent } from './login/login.component'; 
+import { ToastrModule } from 'ngx-toastr'; 
+import { AppRoutingModule, routingComponents } from './app-routing.module'; 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    TeachersComponent,
-    TeacherComponent,
-    TeacherListComponent,
-    LoginComponent 
+    routingComponents 
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    AppRoutingModule
   ],
   providers: [TeacherService],
   bootstrap: [AppComponent]

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr'; 
-import { LoginService } from 'src/app/shared/login.service';
+import { ToastrService } from 'ngx-toastr';  
+import { AuthenticationService } from '../shared/authentication.service';
 
 
 @Component({
@@ -11,7 +11,7 @@ import { LoginService } from 'src/app/shared/login.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(public service : LoginService, 
+  constructor(public service : AuthenticationService, 
     private toastr : ToastrService ) { }
 
 
@@ -40,15 +40,8 @@ export class LoginComponent implements OnInit {
     insertRecord(form: NgForm){ 
         
       //console.log();
-      this.service.Login(form.value);
-
-      //console.log("Printing from login.component.ts");
-
-     
-
-      
-    //  console.log(localStorage.getItem('currentUser'));
-
+      this.service.login(form.value);
+  
       this.resetForm();
     };
 

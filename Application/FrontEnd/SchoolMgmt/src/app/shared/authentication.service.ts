@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { Login, User } from './login.model';
 import {HttpClient} from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr'; 
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
  
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
     private isLoggedIn!: string;
+    public formData!: Login;
     readonly rootUrl = "https://localhost:44358/api/Login";
 
     private _currentUser!: User;
@@ -20,7 +21,7 @@ export class AuthenticationService {
                 private router: Router) {
         
         this.isLoggedIn = localStorage.getItem('isLoggedIn') ?? "0";
-        this._returnUrl = "/teachers";
+        this._returnUrl = "/teacher";
          
     }
 
@@ -30,7 +31,7 @@ export class AuthenticationService {
         else return false;
     }
 
-    public get getCurrentUser(): User {
+    public getCurrentUser(): User {
       if (this.isLoggdIn() == true){
         this._currentUser.isLoggedIn = "1";
         this._currentUser.Name = localStorage.getItem('Email') ?? "0";
