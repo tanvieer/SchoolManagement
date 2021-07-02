@@ -24,7 +24,7 @@ export class LoginService {
       //console.log(res);
        
       if(res.Status == "SUCCESS") {
-        localStorage.setItem('session', res.Result.Token);
+        localStorage.setItem('Token', res.Result.Token);
         localStorage.setItem('Email',   res.Result.Email);
         localStorage.setItem('RoleName',res.Result.RoleName);
         localStorage.setItem('Name', res.Result.FirstName + " " + res.Result.LastName); 

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Login, User } from './login.model';
 import {HttpClient} from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr'; 
+import { Router, ActivatedRoute } from '@angular/router';
  
 
 @Injectable({ providedIn: 'root' })
@@ -11,12 +12,15 @@ export class AuthenticationService {
     readonly rootUrl = "https://localhost:44358/api/Login";
 
     private _currentUser!: User;
+    private _returnUrl!: string;
  
 
     constructor(private http: HttpClient, 
-                private toastr : ToastrService) {
+                private toastr : ToastrService,
+                private router: Router) {
         
         this.isLoggedIn = localStorage.getItem('isLoggedIn') ?? "0";
+        this._returnUrl = "/teachers";
          
     }
 
@@ -50,10 +54,13 @@ export class AuthenticationService {
           localStorage.setItem('RoleName',res.Result.RoleName);
           localStorage.setItem('Name', res.Result.FirstName + " " + res.Result.LastName); 
           this.toastr.success(res.Message, 'Login Success');
+
+          this.router.navigate([this._returnUrl]);
         }
         else {
           localStorage.setItem('isLoggedIn', "0");
           this.toastr.error(res.Message, 'Login Failed');
+          this.router.navigate(['/']);
         }
          
           
