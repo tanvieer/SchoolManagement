@@ -12,9 +12,7 @@ export class UsersService {
   formData!: Teacher;  
   _jwtToken!: JwtToken; 
   config = new Config();
-
-  readonly rootUrl = "https://localhost:44358/api/";
-
+ 
   constructor(private http : HttpClient) {
     this._jwtToken = new JwtToken();
 

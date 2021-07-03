@@ -31,7 +31,7 @@ namespace SchoolMngmnt.Controllers
             else
             {
                 rslt.Status = "FAILED";
-                rslt.Message = "User token not found!";
+                rslt.Message = "User not logged in!!";
                 return rslt;
             }
 
@@ -75,7 +75,7 @@ namespace SchoolMngmnt.Controllers
             else
             {
                 rslt.Status = "FAILED";
-                rslt.Message = "User token not found!";
+                rslt.Message = "User not logged in!!";
                 return rslt;
             }
 
@@ -120,7 +120,7 @@ namespace SchoolMngmnt.Controllers
             else
             {
                 rslt.Status = "FAILED";
-                rslt.Message = "User token not found!";
+                rslt.Message = "User not logged in!!";
                 return rslt;
             }
 
@@ -165,7 +165,7 @@ namespace SchoolMngmnt.Controllers
             else
             {
                 rslt.Status = "FAILED";
-                rslt.Message = "User token not found!";
+                rslt.Message = "User not logged in!!";
                 return rslt;
             }
 
@@ -208,7 +208,7 @@ namespace SchoolMngmnt.Controllers
             else
             {
                 rslt.Status = "FAILED";
-                rslt.Message = "User token not found!";
+                rslt.Message = "User not logged in!!";
                 return rslt;
             }
 
@@ -257,7 +257,7 @@ namespace SchoolMngmnt.Controllers
             else
             {
                 rslt.Status = "FAILED";
-                rslt.Message = "User token not found!";
+                rslt.Message = "User not logged in!!";
                 return rslt;
             }
 
@@ -301,7 +301,7 @@ namespace SchoolMngmnt.Controllers
             else
             {
                 rslt.Status = "FAILED";
-                rslt.Message = "User token not found!";
+                rslt.Message = "User not logged in!!";
                 return rslt;
             }
 
