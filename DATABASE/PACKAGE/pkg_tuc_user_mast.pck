@@ -14,6 +14,7 @@ create or replace package pkg_tuc_user_mast is
                                    p_phone_number in tuc_sys_user_mast.phone_number%type,
                                    p_password     in tuc_sys_user_mast.password%type,
                                    p_role_id      in tuc_sys_user_mast.role_id%type,
+                                   p_class_id      in tuc_sys_user_mast.class_id%type,
                                    p_user_id      in tuc_sys_user_mast.maker_id%type,
                                    p_out          out number,
                                    p_err_code     out varchar2,
@@ -25,9 +26,7 @@ create or replace package pkg_tuc_user_mast is
                                       p_err_msg  out nvarchar2,
                                       T_CURSOR   out sys_refcursor);
   
-  procedure sp_tuc_sys_user_mast_ga(p_username  in nvarchar2,
-                                      p_user_type in number,
-                                      p_user_id   in nvarchar2,
+  procedure sp_tuc_sys_user_mast_ga(  p_user_type in number, 
                                       p_out       out number,
                                       p_err_code  out nvarchar2,
                                       p_err_msg   out nvarchar2,
@@ -103,6 +102,7 @@ create or replace package body pkg_tuc_user_mast is
                                    p_phone_number in tuc_sys_user_mast.phone_number%type,
                                    p_password     in tuc_sys_user_mast.password%type,
                                    p_role_id      in tuc_sys_user_mast.role_id%type,
+                                   p_class_id      in tuc_sys_user_mast.class_id%type,
                                    p_user_id      in tuc_sys_user_mast.maker_id%type,
                                    p_out          out number,
                                    p_err_code     out varchar2,
@@ -223,6 +223,7 @@ create or replace package body pkg_tuc_user_mast is
            enc_key,
            status,
            role_id,
+           class_id,
            maker_id,
            maker_time,
            last_update_by,
@@ -241,6 +242,7 @@ create or replace package body pkg_tuc_user_mast is
            v_enc_key,
            'R',
            p_role_id,
+           p_class_id,
            p_user_id,
            sysdate,
            p_user_id,
@@ -256,6 +258,8 @@ create or replace package body pkg_tuc_user_mast is
            set first_name       = p_first_name,
                last_name        = p_last_name,
                email            = p_email,
+               role_id          = p_role_id,
+               class_id         = p_class_id,
                phone_number     = p_phone_number,
                last_update_by   = p_user_id,
                last_update_time = sysdate
@@ -367,10 +371,14 @@ create or replace package body pkg_tuc_user_mast is
              t.last_logged_in,
              t.session_exp_time,
              t.session_id,
+             t.class_id,
              t.role_id,
              (select upper(role_name)
                 from tuc_sys_role
-               where role_id = t.role_id) as role_name
+               where role_id = t.role_id) as role_name,
+             (select upper(class_name)
+                from tuc_class
+               where class_id = t.class_id) as class_name
         from tuc_sys_user_mast t
        where upper(t.username) = upper(p_username) and t.status <> 'D';
   
@@ -388,9 +396,7 @@ create or replace package body pkg_tuc_user_mast is
       rollback;
   end sp_tuc_sys_user_mast_gk;
 
-  procedure sp_tuc_sys_user_mast_ga(p_username  in nvarchar2,
-                                      p_user_type in number,
-                                      p_user_id   in nvarchar2,
+  procedure sp_tuc_sys_user_mast_ga(  p_user_type in number, 
                                       p_out       out number,
                                       p_err_code  out nvarchar2,
                                       p_err_msg   out nvarchar2,
@@ -400,16 +406,7 @@ create or replace package body pkg_tuc_user_mast is
   begin
     P_OUT := 0;
   
-    IF P_OUT = 0 THEN
-      pkg_tuc_user_mast.IS_NULL('p_user_id',
-                              p_user_id,
-                              'USR-sp_tuc_sys_user_mast_ga',
-                              P_OUT,
-                              P_ERR_CODE,
-                              P_ERR_MSG);
-    ELSE
-      RETURN;
-    END IF;
+ 
   
     IF P_OUT = 0 THEN
       pkg_tuc_user_mast.IS_NULL('USER TYPE',
@@ -422,16 +419,7 @@ create or replace package body pkg_tuc_user_mast is
       RETURN;
     END IF;
   
-    IF P_OUT = 0 THEN
-      pkg_tuc_user_mast.IS_NULL('USERNAME',
-                              p_username,
-                              'USR-sp_tuc_sys_user_mast_ga',
-                              P_OUT,
-                              P_ERR_CODE,
-                              P_ERR_MSG);
-    ELSE
-      RETURN;
-    END IF;
+  
   
     IF P_USER_TYPE NOT IN (0, 1, 2, 3) THEN
       p_out      := 1;
@@ -455,21 +443,25 @@ create or replace package body pkg_tuc_user_mast is
              t.session_exp_time,
              t.session_id,
              t.role_id,
+             t.class_id,
              (select upper(role_name)
                 from tuc_sys_role
-               where role_id = t.role_id) as role_name
+               where role_id = t.role_id) as role_name,
+              (select upper(class_name)
+                from tuc_class
+               where class_id = t.class_id) as class_name
         from tuc_sys_user_mast t
-       where T.STATUS <> 'D'
-         and t.username <> p_user_id
-         and (role_id = p_user_type or p_user_type = 0);
+       where T.STATUS <> 'D' 
+         and (role_id = p_user_type or p_user_type = 0)
+         order by role_id,username;
   
     p_err_msg := 'Data found successfully.';
   exception
-    when no_data_found then 
+  /*  when no_data_found then 
         p_out      := 1;
         p_err_code := 'usr-1008';
         p_err_msg  := initcap('No Active User Found by username = ') || p_username;
-        rollback;  
+        rollback; */ 
     when others then
       p_out      := 1;
       p_err_code := sqlcode;
@@ -812,7 +804,7 @@ create or replace package body pkg_tuc_user_mast is
         return;
     end;
   
-    if v_session_expired < v_current_time then
+/*    if v_session_expired < v_current_time then
       p_out      := 1;
       p_err_code := 'usr-1014';
       p_err_msg  := initcap('session is expired!');
@@ -823,7 +815,7 @@ create or replace package body pkg_tuc_user_mast is
        set t.session_exp_time = to_CHAR(sysdate +
                                         (.000694 * v_session_exp_min),
                                         'DD-MON-YYYY HH:MI:SS PM')
-     where username = p_username;
+     where username = p_username;*/
   
   exception
     when no_data_found then
@@ -952,7 +944,8 @@ create or replace package body pkg_tuc_user_mast is
     open T_CURSOR for
       select t.role_id, t.role_name, t.role_description
         from tuc_sys_role t
-       where t.status = 'R';
+       where t.status = 'R'
+        order by role_id;
   
     p_err_msg := 'Data found successfully.';
   exception

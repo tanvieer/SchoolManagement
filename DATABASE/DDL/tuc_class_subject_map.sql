@@ -7,10 +7,7 @@ create table TUC_CLASS_SUBJECT_MAP
   maker_id         VARCHAR2(100) default 'SYSTEM' not null,
   maker_time       DATE default SYSDATE not null,
   last_update_by   VARCHAR2(100) default 'SYSTEM' not null,
-  last_update_time DATE default SYSDATE not null,
-  last_logged_in   DATE,
-  session_id       VARCHAR2(100),
-  session_exp_time DATE
+  last_update_time DATE default SYSDATE not null
 )
 tablespace USERS
   pctfree 10

@@ -491,22 +491,7 @@ namespace SchoolMngmnt.Repository
 
 
 
-        /*
-         
-           
-
-        
-
-          procedure sp_tuc_test_ga(p_in         in nvarchar2,
-                                   p_subject_id number,
-                                   p_user_id    in nvarchar2,
-                                   p_out        out number,
-                                   p_err_code   out nvarchar2,
-                                   p_err_msg    out nvarchar2,
-                                   T_CURSOR     out sys_refcursor);
-         
-         
-         */
+    /****************************************/
 
 
 
@@ -623,7 +608,23 @@ namespace SchoolMngmnt.Repository
                         rslt.Result.TestId = dr["test_id"].ToString();
                         rslt.Result.TestName = dr["test_name"].ToString();
                         rslt.Result.SubjectId = dr["subject_id"].ToString();
-                        rslt.Result.SubjecName = dr["subject_name"].ToString(); 
+                        rslt.Result.SubjecName = dr["subject_name"].ToString();
+
+                        string status = dr["status"].ToString();
+
+                        if (status == "A")
+                        {
+                            rslt.Result.Status = "ARCHIVED";
+                        }
+                        else if (status == "R")
+                        {
+                            rslt.Result.Status = "ACTIVE";
+                        }
+                        else
+                        {
+                            rslt.Result.Status = "DELETED";
+                        }
+
                     }
                     dr.Close();
                 }
@@ -644,7 +645,7 @@ namespace SchoolMngmnt.Repository
 
 
 
-        public static StatusResult<List<TucTest>> GetTestList(string makeBy)
+        public static StatusResult<List<TucTest>> GetTestList(string subjectId,string makeBy)
         {
             StatusResult<List<TucTest>> rslt = new StatusResult<List<TucTest>>();
             TucTest model;
@@ -657,9 +658,10 @@ namespace SchoolMngmnt.Repository
 
 
             List<DSSQLParam> objList = new List<DSSQLParam>();
-
+             
 
             objList.Add(new DSSQLParam("p_in", "1", ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_subject_id", subjectId, ParameterDirection.Input));
 
             objList.Add(new DSSQLParam("p_user_id", makeBy, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
@@ -670,7 +672,7 @@ namespace SchoolMngmnt.Repository
 
             try
             {
-                using (DbDataReader dr = objCDataAccess.ExecuteReader(objDbCommand, SP_PREFIX + "pkg_tuc_manage_op.sp_tuc_Test_ga", CommandType.StoredProcedure, objList))
+                using (DbDataReader dr = objCDataAccess.ExecuteReader(objDbCommand, SP_PREFIX + "pkg_tuc_manage_op.sp_tuc_test_ga", CommandType.StoredProcedure, objList))
                 {
                     p_out = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString();
                     if (p_out == "1")
@@ -689,9 +691,26 @@ namespace SchoolMngmnt.Repository
 
                     while (dr.Read())
                     {
-                        model = new TucTest();
-                        model.TestId = dr["Test_id"].ToString();
-                        model.TestName = dr["Test_name"].ToString();
+                        model = new TucTest(); 
+
+                        model.TestId = dr["test_id"].ToString();
+                        model.TestName = dr["test_name"].ToString();
+                        model.SubjectId = dr["subject_id"].ToString();
+                        model.SubjecName = dr["subject_name"].ToString();
+
+                        string status = dr["status"].ToString();
+
+                        if (status == "A")
+                        {
+                            model.Status = "ARCHIVED";
+                        }
+                        else if (status == "R")
+                        {
+                            model.Status = "ACTIVE";
+                        }else
+                        {
+                            model.Status = "DELETED";
+                        }
 
                         rslt.Result.Add(model);
                     }

@@ -12,5 +12,7 @@ namespace SchoolMngmnt.Models.DbModel
         public string SubjectId { get; set; } 
         public DateTime TestDate { get; set; }
         public string SubjecName { get; set; }
+
+        public string Status { get; set; }
     }
 }

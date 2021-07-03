@@ -4,6 +4,7 @@ import { Config } from '../config';
 import { TucClass } from './models/tuc-class.model';
 import { TucSubjectClassMap } from './models/tuc-subject-class-map.model';
 import { TucSubject } from './models/tuc-subject.model';
+import { TucTest } from './models/tuc-test.model';
 
 @Injectable({
   providedIn: 'root'
@@ -76,7 +77,37 @@ export class OtherService {
     return this.http.post(`${this.config.url}/Subject/ClassSubjectMap`,_formData,this.config.httpOptions);  
   
   }
+
+
+  /************************************** */
  
 
+
+
+
+
+  getTestList(_subjectId:string){  
+    return this.http.get(`${this.config.url}/Test/GetTestList?subjectId=${_subjectId}`,this.config.httpOptions);  
+  }
+
+  getTestInfo(_id:string){  
+    return this.http.get(`${this.config.url}/Test/GetTestInfo?testId=${_id}`,this.config.httpOptions);  
+  }
+
+  deleteTest(_id:string){  
+    return this.http.delete(`${this.config.url}/Test/DeleteTest?id=${_id}`,this.config.httpOptions);  
+  }
+
+
+
+  modifyTest(_formData : TucTest){  
+    return this.http.post(`${this.config.url}/Test/ModifyTestInfo`,_formData,this.config.httpOptions);  
+  
+  }
+
+  addNewTest(_formData : TucTest){  
+    return this.http.post(`${this.config.url}/Test/AddNewTest`,_formData,this.config.httpOptions);  
+  }
+  
 
 }

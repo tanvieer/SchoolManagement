@@ -30,7 +30,7 @@ comment on column TUC_SYS_ROLE.status
   is 'A = archived,  R = active/running';
 -- Create/Recreate primary, unique and foreign key constraints 
 alter table TUC_SYS_ROLE
-  add constraint SYS_ROLE_TUC_PK primary key (ROLE_ID)
+  add constraint SYS_ROLE_PK primary key (ROLE_ID)
   using index 
   tablespace USERS
   pctfree 10
@@ -44,7 +44,7 @@ alter table TUC_SYS_ROLE
     maxextents unlimited
   );
 alter table TUC_SYS_ROLE
-  add constraint SYS_ROLE_TUC_UK unique (ROLE_NAME)
+  add constraint SYS_ROLE_UK unique (ROLE_NAME)
   using index 
   tablespace USERS
   pctfree 10

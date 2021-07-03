@@ -4,7 +4,7 @@ create table TUC_TEST
   test_id          NUMBER(5) not null,
   test_name        VARCHAR2(50) not null,
   subject_id       VARCHAR2(100) not null,
-  test_date        date not null,
+  test_date        DATE not null,
   status           CHAR(1) default 'R' not null,
   maker_id         VARCHAR2(100) default 'SYSTEM' not null,
   maker_time       DATE default SYSDATE not null,
@@ -24,7 +24,7 @@ tablespace USERS
   );
 -- Create/Recreate primary, unique and foreign key constraints 
 alter table TUC_TEST
-  add constraint TUC_TEST_PK primary key (test_id)
+  add constraint TUC_TEST_PK primary key (TEST_ID)
   using index 
   tablespace USERS
   pctfree 10
@@ -36,4 +36,4 @@ alter table TUC_TEST
     next 1M
     minextents 1
     maxextents unlimited
-  ); 
+  );
