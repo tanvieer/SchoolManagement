@@ -25,6 +25,7 @@ namespace SchoolMngmnt.Repository
             }
             StatusResult<TucClassSubjectMap> rslt = new StatusResult<TucClassSubjectMap>();
 
+            rslt.Result = new TucClassSubjectMap();
             
             string p_out = "1";
             string err_code, err_msg;
@@ -68,6 +69,7 @@ namespace SchoolMngmnt.Repository
             }
             catch (Exception ex)
             {
+                rslt.Status = "FAILED";
                 rslt.Message = ex.Message;
             }
             finally
@@ -89,7 +91,7 @@ namespace SchoolMngmnt.Repository
                 throw new ArgumentNullException(nameof(model));
             }
             StatusResult<TucClass> rslt = new StatusResult<TucClass>();
-
+            rslt.Result = new TucClass();
 
             string p_out = "1";
             string err_code, err_msg;
@@ -132,6 +134,7 @@ namespace SchoolMngmnt.Repository
             }
             catch (Exception ex)
             {
+                rslt.Status = "FAILED";
                 rslt.Message = ex.Message;
             }
             finally
@@ -153,6 +156,7 @@ namespace SchoolMngmnt.Repository
             }
             StatusResult<TucSubject> rslt = new StatusResult<TucSubject>();
 
+            rslt.Result = new TucSubject();
 
             string p_out = "1";
             string err_code, err_msg;
@@ -196,6 +200,7 @@ namespace SchoolMngmnt.Repository
             }
             catch (Exception ex)
             {
+                rslt.Status = "FAILED";
                 rslt.Message = ex.Message;
             }
             finally
@@ -213,9 +218,10 @@ namespace SchoolMngmnt.Repository
 
         public static StatusResult<TucClass> GetClassInfo(string classId, string makeBy)
         {
-            StatusResult<TucClass> rslt = new StatusResult<TucClass>(); 
+            StatusResult<TucClass> rslt = new StatusResult<TucClass>();
+            rslt.Result = new TucClass();
             string p_out = "1";
-            string err_code, err_msg;
+            string err_code;
 
             CDataAccess objCDataAccess = CDataAccess.NewCDataAccess();
             DbCommand objDbCommand = objCDataAccess.GetMyCommand(false, IsolationLevel.ReadCommitted, "application", false);
@@ -261,6 +267,7 @@ namespace SchoolMngmnt.Repository
             }
             catch (Exception ex)
             {
+                rslt.Status = "FAILED";
                 rslt.Message = ex.Message;
             }
             finally
@@ -276,9 +283,10 @@ namespace SchoolMngmnt.Repository
 
         public static StatusResult<TucSubject> GetSubjectInfo(string subjectId, string makeBy)
         {
-            StatusResult<TucSubject> rslt = new StatusResult<TucSubject>(); 
+            StatusResult<TucSubject> rslt = new StatusResult<TucSubject>();
+            rslt.Result = new TucSubject();
             string p_out = "1";
-            string err_code, err_msg;
+            string err_code;
 
             CDataAccess objCDataAccess = CDataAccess.NewCDataAccess();
             DbCommand objDbCommand = objCDataAccess.GetMyCommand(false, IsolationLevel.ReadCommitted, "application", false);
@@ -327,6 +335,7 @@ namespace SchoolMngmnt.Repository
             }
             catch (Exception ex)
             {
+                rslt.Status = "FAILED";
                 rslt.Message = ex.Message;
             }
             finally
@@ -343,8 +352,9 @@ namespace SchoolMngmnt.Repository
         {
             StatusResult<List<TucClass>> rslt = new StatusResult<List<TucClass>>();
             TucClass model;
+            rslt.Result = new List<TucClass>();
             string p_out = "1";
-            string err_code, err_msg;
+            string err_code;
 
             CDataAccess objCDataAccess = CDataAccess.NewCDataAccess();
             DbCommand objDbCommand = objCDataAccess.GetMyCommand(false, IsolationLevel.ReadCommitted, "application", false);
@@ -377,7 +387,7 @@ namespace SchoolMngmnt.Repository
                     else
                     {
                         rslt.Status = "SUCCESS";
-                        err_msg = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
+                        rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
                     }
 
 
@@ -386,9 +396,7 @@ namespace SchoolMngmnt.Repository
                         model = new TucClass();
                         model.ClassId = dr["class_id"].ToString();
                         model.ClassName = dr["class_name"].ToString();
-                        model.Status = dr["status"].ToString();
-                         
-                        model.RoleName = dr["ROLE_NAME"] == null ? "" : dr["ROLE_NAME"].ToString();
+                        model.Status = dr["status"].ToString(); 
 
                         rslt.Result.Add(model);
                     }
@@ -397,6 +405,7 @@ namespace SchoolMngmnt.Repository
             }
             catch (Exception ex)
             {
+                rslt.Status = "FAILED";
                 rslt.Message = ex.Message;
             }
             finally
@@ -413,7 +422,8 @@ namespace SchoolMngmnt.Repository
         public static StatusResult<List<TucSubject>> GetSubjectList(string makeBy)
         {
             StatusResult<List<TucSubject>> rslt = new StatusResult<List<TucSubject>>();
-            TucSubject model;
+            rslt.Result = new List<TucSubject>();
+            TucSubject model = new TucSubject();
             string p_out = "1";
             string err_code, err_msg;
 
@@ -471,6 +481,7 @@ namespace SchoolMngmnt.Repository
             }
             catch (Exception ex)
             {
+                rslt.Status = "FAILED";
                 rslt.Message = ex.Message;
             }
             finally
@@ -482,10 +493,7 @@ namespace SchoolMngmnt.Repository
             return rslt;
         }
 
-
-
-
-
+         
 
     }
 }

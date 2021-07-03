@@ -14,8 +14,7 @@ import { UsersService } from '../shared/users.service';
 export class UpdateUserComponent implements OnInit {
   public roleList: Role[] = [];
   private _role!: Role;
-  public classList: ClassModel[] = [];
-  private _class!: ClassModel;
+  public classList: ClassModel[] = []; 
 
 
   constructor(public service: UsersService,
@@ -97,20 +96,14 @@ export class UpdateUserComponent implements OnInit {
   }
 
   initiateClass() {
-    this._class = new ClassModel();
-    this._class.ClassId = 1;
-    this._class.ClassName = "Class 1";
-    this.classList.push(this._class);
-
-    this._class = new ClassModel();
-    this._class.ClassId = 2;
-    this._class.ClassName = "Class 2";
-    this.classList.push(this._class);
-
-    this._class = new ClassModel();
-    this._class.ClassId = 3;
-    this._class.ClassName = "Class 3";
-    this.classList.push(this._class);
+    this.service.getClassList().subscribe((res : any)  =>{  
+       if (res.Status == "SUCCESS"){
+          this.parseClassData(res.Result);
+       } 
+       else {
+         this.toastr.error(res.Message, 'User Update Error'); 
+       } 
+     });
   }
 
 
@@ -144,6 +137,19 @@ export class UpdateUserComponent implements OnInit {
     this.initiateClass();
   }
 
+
+  parseClassData(jsonData: any) { 
+    console.log(jsonData);
+    for (let i = 0; i < jsonData.length; i++) { 
+      const data = new ClassModel();
+      data.ClassId = jsonData[i].ClassId; 
+      data.ClassName = jsonData[i].ClassName; 
+      this.classList.push(data);
+    } 
+    console.log("==========after loop========" + this.classList);
+
+
+  }
 
 
   onSubmit(form : NgForm){ 

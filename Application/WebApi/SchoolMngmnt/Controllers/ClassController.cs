@@ -6,13 +6,14 @@ using SchoolMngmnt.Repository;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace SchoolMngmnt.Controllers
 {
     public class ClassController : ApiController
-    { 
+    {
 
-
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpGet]
         [Route("api/Class/GetClassList")]
         public StatusResult<List<TucClass>> GetClassList()
@@ -57,7 +58,7 @@ namespace SchoolMngmnt.Controllers
         }
 
 
-
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpGet]
         [Route("api/Class/GetClassInfo")]
         public StatusResult<TucClass> GetClassInfo(string id)
@@ -102,7 +103,7 @@ namespace SchoolMngmnt.Controllers
         }
 
 
-
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPost]
         [Route("api/Class/ModifyClassInfo")]
         public StatusResult<TucClass> ModifyClassInfo([FromBody] TucClass model)
@@ -147,7 +148,7 @@ namespace SchoolMngmnt.Controllers
         }
 
 
-
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPost]
         [Route("api/Class/AddNewClass")]
         public StatusResult<TucClass> AddNewClass([FromBody] TucClass model)
@@ -192,7 +193,7 @@ namespace SchoolMngmnt.Controllers
         }
 
 
-
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpDelete]
         [Route("api/Class/DeleteClass")]
         public StatusResult<TucClass> DeleteClass(string id)

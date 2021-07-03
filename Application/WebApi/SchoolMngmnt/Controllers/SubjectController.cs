@@ -6,13 +6,14 @@ using SchoolMngmnt.Repository;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace SchoolMngmnt.Controllers
 {
     public class SubjectController : ApiController
     {
-        
 
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPost]
         [Route("api/Subject/GetSubjectList")]
         public StatusResult<List<TucSubject>> GetSubjectList([FromBody] JwtPacket model)
@@ -57,7 +58,7 @@ namespace SchoolMngmnt.Controllers
         }
 
 
-
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpGet]
         [Route("api/Subject/GetSubjectInfo")]
         public StatusResult<TucSubject> GetSubjectInfo(string id)
@@ -101,7 +102,7 @@ namespace SchoolMngmnt.Controllers
         }
 
 
-
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPost]
         [Route("api/Subject/ModifySubjectInfo")]
         public StatusResult<TucSubject> ModifySubjectInfo([FromBody] TucSubject model)
@@ -146,7 +147,7 @@ namespace SchoolMngmnt.Controllers
         }
 
 
-
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPost]
         [Route("api/Subject/AddNewSubject")]
         public StatusResult<TucSubject> AddNewSubject([FromBody] TucSubject model)
@@ -190,6 +191,8 @@ namespace SchoolMngmnt.Controllers
             return rslt;
         }
 
+
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpDelete]
         [Route("api/Subject/DeleteSubject")]
         public StatusResult<TucSubject> DeleteSubject(string id)
@@ -239,6 +242,7 @@ namespace SchoolMngmnt.Controllers
 
         //   public static StatusResult<TucClassSubjectMap> ClassSubjectMap(TucClassSubjectMap model , string p_activity)
 
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPost]
         [Route("api/Subject/ClassSubjectMap")]
         public StatusResult<TucClassSubjectMap> ClassSubjectMap([FromBody] TucClassSubjectMap model)
@@ -282,7 +286,7 @@ namespace SchoolMngmnt.Controllers
             return rslt;
         }
 
-
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpDelete]
         [Route("api/Subject/ClassSubjectMapRemove")]
         public StatusResult<TucClassSubjectMap> ClassSubjectMapRemove(string classId,string subjectId)

@@ -55,6 +55,10 @@ export class UsersService {
  getUserInfo(_userName : string){ 
   return this.http.get(`${this.config.url}/User/Get?id=${_userName}`,this.config.httpOptions); 
  }
+
+ getClassList(){
+  return this.http.get(`${this.config.url}/Class/GetClassList`,this.config.httpOptions); 
+ }
  
 
 }
