@@ -54,7 +54,7 @@
 
               <div class="form-group" *ngIf="service.formData.RoleId==3">
                   <label for="exampleInputAssignClass2" >Assign Class</label> 
-                  <select name="selectedClass" id="userType" class="form-control" [(ngModel)]="service.formData.ClassId" required>
+                  <select name="ClassId" id="userType" class="form-control" [(ngModel)]="service.formData.ClassId" required>
                     <option *ngFor="let option of classList" [value]="option.ClassId" >{{option.ClassName}}</option>
                   </select> 
               </div>

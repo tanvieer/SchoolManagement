@@ -1,4 +1,4 @@
-import { Teacher } from './../shared/models/teacher.model';
+
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Routes } from '@angular/router';
@@ -23,7 +23,7 @@ export class UpdateUserComponent implements OnInit {
     private arouter: ActivatedRoute) { }
 
   ngOnInit(): void {
-    console.log(this.arouter.snapshot.params.id);
+    //console.log(this.arouter.snapshot.params.id);
     this.resetForm();
     this.getUserInfo(this.arouter.snapshot.params.id);
   }
@@ -48,8 +48,8 @@ export class UpdateUserComponent implements OnInit {
       make_by: '',
       Maker_Time: ''
     }
-    console.log("After Parsing Data");
-    console.log(this.service.formData);
+   // console.log("After Parsing Data");
+   // console.log(this.service.formData);
   }
   //this.refreshTeachers();
 
@@ -60,10 +60,10 @@ export class UpdateUserComponent implements OnInit {
       .subscribe((res: any) => {
 
         // this._statusResultO as statusResultO;
-        console.log(res);
+        //console.log(res);
 
         if (res.Status == "FAILED") {
-          this.toastr.error(res.Message, 'Teacher Register');
+          this.toastr.error(res.Message, 'Update User');
           this.resetForm();
         }
         else {
@@ -76,6 +76,12 @@ export class UpdateUserComponent implements OnInit {
 
 
   initiateRoles() {
+    this._role = new Role();
+    this._role.RoleId = 1;
+    this._role.RoleName = "ADMIN";
+    this._role.RoleDes = "Responsiblity Admin";
+    this.roleList.push(this._role);
+
     this._role = new Role();
     this._role.RoleId = 2;
     this._role.RoleName = "TEACHER";
@@ -137,5 +143,22 @@ export class UpdateUserComponent implements OnInit {
   }
 
 
+
+  onSubmit(form : NgForm){ 
+      //console.log(form.value);
+      //console.log("===========Before Submit=======");
+      this.service.updateUser(form.value,this.arouter.snapshot.params.id).subscribe((res : any)  =>{ 
+        // this._statusResultO as statusResultO;
+        // console.log(res.Message);
+         if (res.Status == "SUCCESS"){
+          this.toastr.success(res.Message, 'User Update Success');
+          this.getUserInfo(this.arouter.snapshot.params.id);
+         } 
+         else {
+           this.toastr.error(res.Message, 'User Update Error'); 
+         }
+         
+       });
+    }
 
 }

@@ -29,8 +29,9 @@ export class UsersService {
     return this.http.post(`${this.config.url}/User/Register`,_formData,this.config.httpOptions);
   }
 
-  updateUser(_formData : Teacher){ 
-    _formData.make_by = localStorage.getItem("UserName")?? "admin"; 
+  updateUser(_formData : Teacher, _userName : string){ 
+    _formData.make_by  = localStorage.getItem("UserName")?? "admin"; 
+    _formData.UserName = _userName; 
     if(_formData.Password == "") {
       _formData.Password = _formData.UserName;
     } 

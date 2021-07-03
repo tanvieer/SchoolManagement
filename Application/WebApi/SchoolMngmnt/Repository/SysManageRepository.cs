@@ -263,6 +263,7 @@ namespace SchoolMgmt.Repository
                         rslt.Result.LastName    = dr["LAST_NAME"].ToString();
                         rslt.Result.PhoneNumber = dr["PHONE_NUMBER"].ToString();
                         rslt.Result.Email       = dr["EMAIL"].ToString();
+                        rslt.Result.ClassId     = dr["CLASS_ID"].ToString();
                         rslt.Result.RoleId      = Convert.ToInt32(dr["ROLE_ID"].ToString());
                         rslt.Result.RoleName    = dr["ROLE_NAME"] == null ? "" : dr["ROLE_NAME"].ToString(); 
                     }
@@ -332,6 +333,7 @@ namespace SchoolMgmt.Repository
                         user.PhoneNumber = dr["PHONE_NUMBER"].ToString();
                         user.Email       = dr["EMAIL"].ToString();
                         user.RoleId      = Convert.ToInt32(dr["ROLE_ID"].ToString());
+                        user.ClassId     = dr["CLASS_ID"].ToString();
                         user.RoleName    = dr["ROLE_NAME"] == null ? "" : dr["ROLE_NAME"].ToString();
 
                         rslt.Result.Add(user);
