@@ -71,6 +71,7 @@ export class CreateUserComponent implements OnInit {
         PhoneNumber: '',    
         RoleId: 2,
         ClassId: 1,
+        ClassName: '',
         FullName:'',
         Session: '',    
         SessionExpireTime: '',    

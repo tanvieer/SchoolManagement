@@ -22,8 +22,9 @@ namespace SchoolMngmnt.Model
         public string MakerId { get; set; }
         public string ClassId { get; set; } 
         public string LastUpdateBy { get; set; } 
-        public string FullName { get { return this.FirstName + " " + this.LastName; } } 
+        public string FullName { get { return this.FirstName + " " + this.LastName; } }
 
+        public string ClassName { get; set; }
     }
 }
  

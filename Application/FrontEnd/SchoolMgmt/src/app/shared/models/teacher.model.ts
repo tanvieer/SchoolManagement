@@ -34,6 +34,7 @@ export class Teacher {
     Status!:string;    
     make_by!:string;    
     Maker_Time!: string; 
+    ClassName!: string; 
 }
 
 

@@ -44,6 +44,8 @@ export class TeacherListComponent implements OnInit {
       data.LastName = jsonData[i].LastName; 
       data.UserName = jsonData[i].UserName; 
       data.RoleName = jsonData[i].RoleName; 
+      data.ClassId  = jsonData[i].ClassId; 
+      data.ClassName = jsonData[i].ClassName; 
       data.Email = jsonData[i].Email; 
       data.Id = jsonData[i].Id; 
       data.PhoneNumber = jsonData[i].PhoneNumber; 

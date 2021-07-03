@@ -333,7 +333,8 @@ namespace SchoolMgmt.Repository
                         user.PhoneNumber = dr["PHONE_NUMBER"].ToString();
                         user.Email       = dr["EMAIL"].ToString();
                         user.RoleId      = Convert.ToInt32(dr["ROLE_ID"].ToString());
-                        user.ClassId     = dr["CLASS_ID"].ToString();
+                        user.ClassId     = dr["CLASS_ID"] == null ? "" : dr["CLASS_ID"].ToString();
+                        user.ClassName   = dr["CLASS_NAME"] == null ? "" : dr["CLASS_NAME"].ToString();
                         user.RoleName    = dr["ROLE_NAME"] == null ? "" : dr["ROLE_NAME"].ToString();
 
                         rslt.Result.Add(user);
