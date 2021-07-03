@@ -1,4 +1,4 @@
-import { JwtToken } from './../shared/login.model';
+ 
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -27,10 +27,7 @@ export class NavMenuComponent implements OnInit {
       this.Name = localStorage.getItem('Name')?? "0"; 
       this.roleName = localStorage.getItem('RoleName')?? "STUDENT"; 
     }
-
-
-
-
+ 
 
   } 
 }

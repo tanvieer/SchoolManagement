@@ -1,6 +1,6 @@
  
 import { Injectable } from '@angular/core';
-import { Teacher, JwtToken } from './teacher.model';
+import { Teacher, JwtToken } from './models/teacher.model';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable({
@@ -17,6 +17,7 @@ export class UsersService {
     this._jwtToken = new JwtToken();
 
    }
+   
 
   postTeacher(_formData : Teacher){ 
     _formData.make_by = localStorage.getItem("UserName")?? "admin"; 

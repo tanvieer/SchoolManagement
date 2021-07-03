@@ -1,4 +1,4 @@
-import { Teacher } from './../../shared/teacher.model';
+import { Teacher } from '../../shared/models/teacher.model';
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from 'src/app/shared/users.service';
 import { ToastrService } from 'ngx-toastr';
@@ -8,7 +8,6 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './teacher-list.component.html',
   styleUrls: ['./teacher-list.component.css']
 })
-
 
 
 export class TeacherListComponent implements OnInit {
