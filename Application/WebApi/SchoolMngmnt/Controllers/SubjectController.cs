@@ -14,9 +14,9 @@ namespace SchoolMngmnt.Controllers
     {
 
         [EnableCors(origins: "*", headers: "*", methods: "*")]
-        [HttpPost]
+        [HttpGet]
         [Route("api/Subject/GetSubjectList")]
-        public StatusResult<List<TucSubject>> GetSubjectList([FromBody] JwtPacket model)
+        public StatusResult<List<TucSubject>> GetSubjectList()
         {
 
             StatusResult<List<TucSubject>> rslt = new StatusResult<List<TucSubject>>();

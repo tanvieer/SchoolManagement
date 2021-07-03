@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Config } from '../config';
 import { TucClass } from './models/tuc-class.model';
+import { TucSubjectClassMap } from './models/tuc-subject-class-map.model';
 import { TucSubject } from './models/tuc-subject.model';
 
 @Injectable({
@@ -22,7 +23,7 @@ export class OtherService {
   }
 
   deleteClass(_id:string){  
-    return this.http.get(`${this.config.url}/Class/DeleteClass?id=${_id}`,this.config.httpOptions);  
+    return this.http.delete(`${this.config.url}/Class/DeleteClass?id=${_id}`,this.config.httpOptions);  
   }
 
 
@@ -51,7 +52,7 @@ export class OtherService {
   }
 
   deleteSubject(_id:string){  
-    return this.http.get(`${this.config.url}/Subject/DeleteSubject?id=${_id}`,this.config.httpOptions);  
+    return this.http.delete(`${this.config.url}/Subject/DeleteSubject?id=${_id}`,this.config.httpOptions);  
   }
 
 
@@ -66,31 +67,16 @@ export class OtherService {
   }
 
 
- /* 
+  deleteClassSubjectMap(_classId: string, _subjectId : string){  
+    return this.http.delete(`${this.config.url}/Subject/ClassSubjectMapRemove?classId=${_classId}&subjectId=${_subjectId}`,this.config.httpOptions);  
+  }
+
+
+  ClassSubjectMap(_formData : TucSubjectClassMap){  
+    return this.http.post(`${this.config.url}/Subject/ClassSubjectMap`,_formData,this.config.httpOptions);  
+  
+  }
  
- POST api/Subject/GetSubjectList	
-No documentation available.
-
-GET api/Subject/GetSubjectInfo?id={id}	
-No documentation available.
-
-POST api/Subject/ModifySubjectInfo	
-No documentation available.
-
-POST api/Subject/AddNewSubject	
-No documentation available.
-
-DELETE api/Subject/DeleteSubject?id={id}	
-No documentation available.
-
-POST api/Subject/ClassSubjectMap	
-No documentation available.
-
-DELETE api/Subject/ClassSubjectMapRemove?classId={classId}&subjectId={subjectId}
- 
- 
- 
- */
 
 
 }
