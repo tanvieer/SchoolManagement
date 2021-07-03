@@ -1,0 +1,13 @@
+prompt Importing table SYS_ROLE...
+set feedback off
+set define off
+insert into SYS_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION, STATUS, MAKER_ID, MAKER_TIME, LAST_UPDATE_TIME, LAST_UPDATE_BY)
+values (1, 'ADMIN', 'SYSTEM ADMIN', 'A', 'SCHOOLMGMT', to_date('11-06-2021 07:22:31', 'dd-mm-yyyy hh24:mi:ss'), to_date('11-06-2021 07:22:31', 'dd-mm-yyyy hh24:mi:ss'), 'SCHOOLMGMT');
+
+insert into SYS_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION, STATUS, MAKER_ID, MAKER_TIME, LAST_UPDATE_TIME, LAST_UPDATE_BY)
+values (2, 'TEACHER', 'TEACHER', 'A', 'SCHOOLMGMT', to_date('11-06-2021 07:22:31', 'dd-mm-yyyy hh24:mi:ss'), to_date('11-06-2021 07:22:31', 'dd-mm-yyyy hh24:mi:ss'), 'SCHOOLMGMT');
+
+insert into SYS_ROLE (ROLE_ID, ROLE_NAME, ROLE_DESCRIPTION, STATUS, MAKER_ID, MAKER_TIME, LAST_UPDATE_TIME, LAST_UPDATE_BY)
+values (3, 'STUDENT', 'PUPIL', 'A', 'SCHOOLMGMT', to_date('11-06-2021 07:22:31', 'dd-mm-yyyy hh24:mi:ss'), to_date('11-06-2021 07:22:31', 'dd-mm-yyyy hh24:mi:ss'), 'SCHOOLMGMT');
+
+prompt Done.
