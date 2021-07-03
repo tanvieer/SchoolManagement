@@ -13,6 +13,7 @@ const routes : Routes = [
   {path: 'teachers', component: TeachersComponent},
   {path: 'teacher-list', component: TeacherListComponent},
   {path: 'create-user', component: CreateUserComponent},
+  {path: 'update-user/:id', component: UpdateUserComponent},
   {path: 'logout', component: LogoutComponent}
 ];
 

@@ -91,15 +91,12 @@ export class CreateUserComponent implements OnInit {
 
  insertRecord(form: NgForm){  
     this.service.postTeacher(form.value)
-    .subscribe((res : any)  =>{
-      
+    .subscribe((res : any)  =>{ 
      // this._statusResultO as statusResultO;
-      console.log(res.Message);
-
-      localStorage.setItem('currentUser', JSON.stringify(res));
-
-      this.toastr.success(res.Message, 'Teacher Register');
-
+     // console.log(res.Message);
+      if (res.Status == "SUCCESS")
+        this.toastr.success(res.Message, 'Teacher Register');
+      else this.toastr.error(res.Message, 'Teacher Register'); 
       this.resetForm();
     });
  }

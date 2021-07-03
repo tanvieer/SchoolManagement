@@ -20,8 +20,9 @@
         <td>{{item.LastName}}</td>
         <td>{{item.RoleName}}</td>
         <td>
-          <button type="button" class="btn btn-sm btn-primary">Edit</button>&nbsp;<button type="button"
-            class="btn btn-sm btn-danger">Delete</button>
+          <button type="button" class="btn btn-sm btn-primary" routerLink="update-user/{{item.UserName}}">Edit</button>
+          &nbsp;
+          <button type="button" class="btn btn-sm btn-danger">Delete</button>
         </td>
       </tr>
 

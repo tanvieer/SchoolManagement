@@ -1,6 +1,9 @@
+import { Teacher } from './../shared/models/teacher.model';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { NgForm } from '@angular/forms';
+import { ActivatedRoute, Routes } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Role, ClassModel } from '../shared/models/login.model';
 import { UsersService } from '../shared/users.service';
 
 @Component({
@@ -9,14 +12,130 @@ import { UsersService } from '../shared/users.service';
   styleUrls: ['./update-user.component.css']
 })
 export class UpdateUserComponent implements OnInit {
+  public roleList: Role[] = [];
+  private _role!: Role;
+  public classList: ClassModel[] = [];
+  private _class!: ClassModel;
 
-  constructor(public service  : UsersService, 
-              private toastr  : ToastrService,
-              private arouter : ActivatedRoute)
-              { }
+
+  constructor(public service: UsersService,
+    private toastr: ToastrService,
+    private arouter: ActivatedRoute) { }
 
   ngOnInit(): void {
     console.log(this.arouter.snapshot.params.id);
+    this.resetForm();
+    this.getUserInfo(this.arouter.snapshot.params.id);
   }
+
+  parseData(jsonData: any) { 
+    this.service.formData = {
+      Id: jsonData.Id,
+      index: 1,
+      UserName: jsonData.UserName,
+      Password: '',
+      Email: jsonData.Email,
+      FirstName: jsonData.FirstName,
+      LastName: jsonData.LastName,
+      PhoneNumber: jsonData.PhoneNumber,
+      RoleId: jsonData.RoleId,
+      ClassId: jsonData.ClassId,
+      FullName: jsonData.FullName,
+      Session: '',
+      SessionExpireTime: '',
+      RoleName: jsonData.RoleName,
+      Status: '',
+      make_by: '',
+      Maker_Time: ''
+    }
+    console.log("After Parsing Data");
+    console.log(this.service.formData);
+  }
+  //this.refreshTeachers();
+
+
+
+  getUserInfo(_userName: string) {
+    this.service.getUserInfo(_userName)
+      .subscribe((res: any) => {
+
+        // this._statusResultO as statusResultO;
+        console.log(res);
+
+        if (res.Status == "FAILED") {
+          this.toastr.error(res.Message, 'Teacher Register');
+          this.resetForm();
+        }
+        else {
+          this.parseData(res.Result);
+        }
+ 
+
+      });
+  }
+
+
+  initiateRoles() {
+    this._role = new Role();
+    this._role.RoleId = 2;
+    this._role.RoleName = "TEACHER";
+    this._role.RoleDes = "Responsiblity Teacher";
+    this.roleList.push(this._role);
+
+    this._role = new Role();
+    this._role.RoleId = 3;
+    this._role.RoleName = "STUDENT";
+    this._role.RoleDes = "Responsiblity Student";
+    this.roleList.push(this._role);
+  }
+
+  initiateClass() {
+    this._class = new ClassModel();
+    this._class.ClassId = 1;
+    this._class.ClassName = "Class 1";
+    this.classList.push(this._class);
+
+    this._class = new ClassModel();
+    this._class.ClassId = 2;
+    this._class.ClassName = "Class 2";
+    this.classList.push(this._class);
+
+    this._class = new ClassModel();
+    this._class.ClassId = 3;
+    this._class.ClassName = "Class 3";
+    this.classList.push(this._class);
+  }
+
+
+  resetForm(form?: NgForm) {
+
+    if (form != null)
+      form.resetForm();
+
+    this.service.formData = {
+      Id: '',
+      index: 1,
+      UserName: '',
+      Password: '',
+      Email: '',
+      FirstName: '',
+      LastName: '',
+      PhoneNumber: '',
+      RoleId: 2,
+      ClassId: 1,
+      FullName: '',
+      Session: '',
+      SessionExpireTime: '',
+      RoleName: '',
+      Status: '',
+      make_by: '',
+      Maker_Time: ''
+    }
+
+    this.initiateRoles();
+    this.initiateClass();
+  }
+
+
 
 }

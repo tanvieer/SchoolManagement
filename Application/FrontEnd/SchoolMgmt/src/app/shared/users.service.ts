@@ -49,7 +49,11 @@ export class UsersService {
 
  getAllUserList(){ 
   return this.http.get(`${this.config.url}/User/GetUserList?userType=0`,this.config.httpOptions); 
-}
+ }
+
+ getUserInfo(_userName : string){ 
+  return this.http.get(`${this.config.url}/User/Get?id=${_userName}`,this.config.httpOptions); 
+ }
  
 
 }
