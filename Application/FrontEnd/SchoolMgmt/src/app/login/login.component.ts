@@ -18,7 +18,17 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.resetForm();
     if(localStorage.getItem('isLoggedIn') == "1" ) {
-      this.router.navigate(['/teacher']);
+
+      if(localStorage.getItem('RoleName') == "ADMIN" ) { 
+        this.router.navigate(['/teachers']);
+      } 
+      else if(localStorage.getItem('RoleName') == "TEACHER" ) { 
+        this.router.navigate(['/students']);
+      } 
+      else if(localStorage.getItem('RoleName') == "STUDENT" ) { 
+        this.router.navigate(['/subjects']);
+      } 
+
     } 
   }
 

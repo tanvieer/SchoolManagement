@@ -21,7 +21,7 @@ export class AuthenticationService {
                 private router: Router) {
         
         this.isLoggedIn = localStorage.getItem('isLoggedIn') ?? "0";
-        this._returnUrl = "/teacher";
+        this._returnUrl = "/teachers";
          
     }
 
