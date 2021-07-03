@@ -19,7 +19,7 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdown"> 
             <a routerLink="/teacher-list" class="dropdown-item"  *ngIf="roleName==='ADMIN'" routerLinkActive="active">Teacher </a>
             <a routerLink="/create-user" class="dropdown-item"  *ngIf="roleName==='ADMIN'" routerLinkActive="active">Create User </a>
-            <a routerLink="/Student" class="dropdown-item"  *ngIf="roleName==='ADMIN' ||roleName==='TEACHER'" routerLinkActive="active">Student </a>
+            <a routerLink="/pupils" class="dropdown-item"  *ngIf="roleName==='ADMIN' ||roleName==='TEACHER'" routerLinkActive="active">Pupils </a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#">Something else here</a>
           </div>

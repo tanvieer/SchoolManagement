@@ -8,11 +8,13 @@ import { CommonModule } from '@angular/common';
 import {Routes, RouterModule} from '@angular/router';
 import { LogoutComponent } from './logout/logout.component';
 import { CreateUserComponent } from './create-user/create-user.component';
+import { PupilsComponent } from './pupils/pupils.component';
 
 const routes : Routes = [
   {path: 'login' , component: LoginComponent}, 
   {path: '' , component: LoginComponent}, 
   {path: 'teachers', component: TeachersComponent , canActivate : [AuthGuardGuard]},
+  {path: 'pupils', component: PupilsComponent , canActivate : [AuthGuardGuard]},
   {path: 'teacher-list', component: TeacherListComponent, canActivate : [AuthGuardGuard]},
   {path: 'create-user', component: CreateUserComponent, canActivate : [AuthGuardGuard]},
   {path: 'update-user/:id', component: UpdateUserComponent, canActivate : [AuthGuardGuard]},
@@ -35,5 +37,6 @@ export const routingComponents = [LoginComponent,
                                   LogoutComponent,
                                   TeachersComponent,
                                   CreateUserComponent,
-                                  UpdateUserComponent ]
+                                  UpdateUserComponent,
+                                  PupilsComponent ]
 
