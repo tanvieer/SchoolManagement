@@ -3,7 +3,8 @@ using SchoolMngmnt.Model;
 using SchoolMngmnt.Model.SysModel;
 using SchoolMngmnt.Models.DbModel;
 using SchoolMngmnt.Repository; 
-using System.Collections.Generic; 
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 
 namespace SchoolMngmnt.Controllers
@@ -12,13 +13,29 @@ namespace SchoolMngmnt.Controllers
     { 
 
 
-        [HttpPost]
+        [HttpGet]
         [Route("api/Class/GetClassList")]
-        public StatusResult<List<TucClass>> GetClassList([FromBody] JwtPacket model)
+        public StatusResult<List<TucClass>> GetClassList()
         {
 
             StatusResult<List<TucClass>> rslt = new StatusResult<List<TucClass>>();
-            var checkSession =  SysManageRepository.CheckSession(model.make_by, model.Session);
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("Authorization"))
+            {
+                token = headers.GetValues("Authorization").First();
+
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User token not found!";
+                return rslt;
+            }
+
+            var checkSession = SysManageRepository.CheckSession(token);
 
             if (checkSession.Status == "FAILED")
             {
@@ -29,7 +46,7 @@ namespace SchoolMngmnt.Controllers
 
             if (checkSession.Result.RoleId == 1 || checkSession.Result.RoleId == 2) // ADMIN or teacher
             {
-                rslt = SpCall.GetClassList(model.make_by);
+                rslt = SpCall.GetClassList(checkSession.Result.UserName);
             }
             else  
             {
@@ -41,13 +58,29 @@ namespace SchoolMngmnt.Controllers
 
 
 
-        [HttpPost]
+        [HttpGet]
         [Route("api/Class/GetClassInfo")]
-        public StatusResult<TucClass> GetClassInfo([FromBody] JwtPacket model)
+        public StatusResult<TucClass> GetClassInfo(string id)
         {
 
             StatusResult<TucClass> rslt = new StatusResult<TucClass>();
-            var checkSession = SysManageRepository.CheckSession(model.make_by, model.Session);
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("Authorization"))
+            {
+                token = headers.GetValues("Authorization").First();
+
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User token not found!";
+                return rslt;
+            }
+
+            var checkSession = SysManageRepository.CheckSession(token);
 
             if (checkSession.Status == "FAILED")
             {
@@ -58,7 +91,7 @@ namespace SchoolMngmnt.Controllers
 
             if (checkSession.Result.RoleId == 1 || checkSession.Result.RoleId == 2) // ADMIN or teacher
             {
-                rslt = SpCall.GetClassInfo(model.getIdKey,model.make_by);
+                rslt = SpCall.GetClassInfo(id, checkSession.Result.UserName);
             }
             else
             {
@@ -76,7 +109,23 @@ namespace SchoolMngmnt.Controllers
         {
 
             StatusResult<TucClass> rslt = new StatusResult<TucClass>();
-            var checkSession = SysManageRepository.CheckSession(model.make_by, model.Session);
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("Authorization"))
+            {
+                token = headers.GetValues("Authorization").First();
+
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User token not found!";
+                return rslt;
+            }
+
+            var checkSession = SysManageRepository.CheckSession(token);
 
             if (checkSession.Status == "FAILED")
             {
@@ -105,7 +154,23 @@ namespace SchoolMngmnt.Controllers
         {
 
             StatusResult<TucClass> rslt = new StatusResult<TucClass>();
-            var checkSession = SysManageRepository.CheckSession(model.make_by, model.Session);
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("Authorization"))
+            {
+                token = headers.GetValues("Authorization").First();
+
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User token not found!";
+                return rslt;
+            }
+
+            var checkSession = SysManageRepository.CheckSession(token);
 
             if (checkSession.Status == "FAILED")
             {
@@ -128,13 +193,29 @@ namespace SchoolMngmnt.Controllers
 
 
 
-        [HttpPost]
+        [HttpDelete]
         [Route("api/Class/DeleteClass")]
-        public StatusResult<TucClass> DeleteClass([FromBody] TucClass model)
+        public StatusResult<TucClass> DeleteClass(string id)
         {
 
             StatusResult<TucClass> rslt = new StatusResult<TucClass>();
-            var checkSession = SysManageRepository.CheckSession(model.make_by, model.Session);
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("Authorization"))
+            {
+                token = headers.GetValues("Authorization").First();
+
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User token not found!";
+                return rslt;
+            }
+
+            var checkSession = SysManageRepository.CheckSession(token);
 
             if (checkSession.Status == "FAILED")
             {
@@ -145,6 +226,9 @@ namespace SchoolMngmnt.Controllers
 
             if (checkSession.Result.RoleId == 1) // ADMIN or teacher
             {
+                TucClass model = new TucClass();
+                model.ClassId = id;
+                model.make_by = checkSession.Result.UserName;
                 rslt = SpCall.ManageClass(model, "D");
             }
             else

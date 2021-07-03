@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Teacher, JwtToken } from './models/teacher.model';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { Config } from '../config';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ export class UsersService {
   
   formData!: Teacher;  
   _jwtToken!: JwtToken; 
+  config = new Config();
 
   readonly rootUrl = "https://localhost:44358/api/";
 
@@ -25,7 +27,8 @@ export class UsersService {
       _formData.Password = _formData.UserName;
     } 
     _formData.Session = localStorage.getItem("Token")?? "";  
-    return this.http.post(this.rootUrl + 'User/Register',_formData);  
+   // return this.http.post(this.rootUrl + 'User/Register',_formData);   
+    return this.http.post(`${this.config.url}/User/Register`,_formData,this.config.httpOptions);
   }
 
   updateUser(_formData : Teacher){ 
@@ -33,29 +36,21 @@ export class UsersService {
     if(_formData.Password == "") {
       _formData.Password = _formData.UserName;
     } 
-    _formData.Session = localStorage.getItem("Token")?? "";  
-    return this.http.post(this.rootUrl + 'User/UpdateUser',_formData);  
+    _formData.Session = localStorage.getItem("Token")?? "";    
+    return this.http.post(`${this.config.url}/User/UpdateUser`,_formData,this.config.httpOptions);  
+  
   }
 
-  getTeacherList(){ 
-     this._jwtToken.RoleId = "2";
-     this._jwtToken.make_by = "t"; 
-     this._jwtToken.Session = localStorage.getItem("Token")?? ""; 
-     return this.http.post(this.rootUrl + 'User/GetUserList',this._jwtToken);  
+  getTeacherList(){  
+     return this.http.get(`${this.config.url}/User/GetUserList?userType=2`,this.config.httpOptions);  
   }
 
   getStudentList(){ 
-    this._jwtToken.RoleId = "3";
-    this._jwtToken.make_by = "t"; 
-    this._jwtToken.Session = localStorage.getItem("Token")?? ""; 
-    return this.http.post(this.rootUrl + 'User/GetUserList',this._jwtToken);  
+    return this.http.get(`${this.config.url}/User/GetUserList?userType=3`,this.config.httpOptions); 
  }
 
  getAllUserList(){ 
-  this._jwtToken.RoleId = "0";
-  this._jwtToken.make_by = "t"; 
-  this._jwtToken.Session = localStorage.getItem("Token")?? ""; 
-  return this.http.post(this.rootUrl + 'User/GetUserList',this._jwtToken);  
+  return this.http.get(`${this.config.url}/User/GetUserList?userType=0`,this.config.httpOptions); 
 }
  
 

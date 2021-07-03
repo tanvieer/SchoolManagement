@@ -24,16 +24,31 @@ namespace SchoolMngmnt.Controllers
         public StatusResult<UserMaster> RegisterUser([FromBody] UserViewModel model)
         {
 
-            StatusResult<UserMaster> rslt = new StatusResult<UserMaster>();
-            var checkSession = SysManageRepository.CheckSession(model.make_by, model.Session);
 
-            if (checkSession.Status == "FAILED")
+            StatusResult<UserMaster> rslt = new StatusResult<UserMaster>();
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("Authorization"))
             {
-                rslt.Status = checkSession.Status;
-                rslt.Message = checkSession.Message;
+                token = headers.GetValues("Authorization").First();
+                var checkSession = SysManageRepository.CheckSession(token);
+
+                if (checkSession.Status == "FAILED")
+                {
+                    rslt.Status = checkSession.Status;
+                    rslt.Message = checkSession.Message;
+                    return rslt;
+                }
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User token not found!";
                 return rslt;
             }
-             
+
             rslt = SysManageRepository.ManageUser(model, "I");
 
             return rslt;
@@ -46,12 +61,26 @@ namespace SchoolMngmnt.Controllers
         {
 
             StatusResult<UserMaster> rslt = new StatusResult<UserMaster>();
-            var checkSession = SysManageRepository.CheckSession(model.make_by, model.Session);
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
 
-            if (checkSession.Status == "FAILED")
+            if (headers.Contains("Authorization"))
             {
-                rslt.Status = checkSession.Status;
-                rslt.Message = checkSession.Message;
+                token = headers.GetValues("Authorization").First();
+                var checkSession = SysManageRepository.CheckSession(token);
+
+                if (checkSession.Status == "FAILED")
+                {
+                    rslt.Status = checkSession.Status;
+                    rslt.Message = checkSession.Message;
+                    return rslt;
+                }
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User token not found!";
                 return rslt;
             }
 
@@ -61,19 +90,29 @@ namespace SchoolMngmnt.Controllers
         }
 
         [EnableCors(origins: "*", headers: "*", methods: "*")]
-        [HttpPost]
+        [HttpGet]
         [Route("api/User/GetUserList")]
-        public StatusResult<List<UserMaster>> GetUserList([FromBody] JwtPacket model)
+        public StatusResult<List<UserMaster>> GetUserList(int userType)
         {
 
             StatusResult<List<UserMaster>> rslt = new StatusResult<List<UserMaster>>();
+            var re = Request;
+            var headers = re.Headers;
+            string token = ""; 
 
-            rslt = SysManageRepository.GetUserList(0, "s");
+            if (headers.Contains("Authorization"))
+            {
+                token = headers.GetValues("Authorization").First();
+               
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User token not found!";
+                return rslt;
+            }
 
-            return rslt;
-
-
-            var checkSession = SysManageRepository.CheckSession(model.make_by, model.Session);
+            var checkSession = SysManageRepository.CheckSession(token);
 
             if (checkSession.Status == "FAILED")
             {
@@ -84,24 +123,53 @@ namespace SchoolMngmnt.Controllers
 
             if (checkSession.Result.RoleId == 1) // ADMIN
             {
-                rslt = SysManageRepository.GetUserList(model.RoleId, model.Session);
+                rslt = SysManageRepository.GetUserList(userType, token);
             }
             else if (checkSession.Result.RoleId == 2) // Teacher
-            { 
-                rslt = SysManageRepository.GetUserList(model.RoleId, model.Session);
+            {
+                rslt = SysManageRepository.GetUserList(userType, token);
             }
-
+             
             return rslt;
+             
         }
 
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpGet]
         [Route("api/User/Get")]
-        public string Get()
-        {  
-            return "success";
-        }
+        public StatusResult<UserMaster> Get(string id)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            StatusResult <UserMaster> rslt = new StatusResult<UserMaster>();
 
+            if (headers.Contains("Authorization"))
+            {
+                token = headers.GetValues("Authorization").First();
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User token not found!";
+                return rslt;
+            }
+
+
+            var checkSession = SysManageRepository.CheckSession(token);
+
+            if (checkSession.Status == "FAILED")
+            {
+                rslt.Status = checkSession.Status;
+                rslt.Message = checkSession.Message;
+                return rslt;
+            }
+
+
+            UserViewModel model = new UserViewModel();
+            rslt = SysManageRepository.GetUserInfo(id, token); 
+            return rslt;
+        }
 
 
 

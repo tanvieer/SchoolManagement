@@ -151,9 +151,10 @@ namespace SchoolMgmt.Repository
         }
     
         // to check session
-        public static StatusResult<UserMaster> CheckSession(string userName, string sessionId)
+        public static StatusResult<UserMaster> CheckSession(string sessionId)
         {
             StatusResult<UserMaster> rslt = new StatusResult<UserMaster>();
+            rslt.Result = new UserMaster();
 
 
             CDataAccess objCDataAccess = CDataAccess.NewCDataAccess();
@@ -175,17 +176,28 @@ namespace SchoolMgmt.Repository
             {
                 objCDataAccess.ExecuteNonQuery(objDbCommand, SP_PREFIX + "pkg_tuc_user_mast.sp_check_session", CommandType.StoredProcedure, objList);
                 
-                rslt.Status = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString() == "0" ? "SUCCESS" : "FAILED";
+                rslt.Status          = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString() == "0" ? "SUCCESS" : "FAILED";
+                
 
                 if (rslt.Status == "FAILED")
                 {
                     rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
                 } 
-                //else
-                //{
-                //    rslt.Result.RoleName = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_role_name")].Value == null ? "" :  objDbCommand.Parameters[CParameter.GetOutputParameterName("p_role_name")].Value.ToString();
-                //    rslt.Result.UserName = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_username")].Value == null ?  "" : objDbCommand.Parameters[CParameter.GetOutputParameterName("p_username")].Value.ToString();
-                //}
+                else
+                {
+                    rslt.Result.UserName = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_username")] == null ? "" : objDbCommand.Parameters[CParameter.GetOutputParameterName("p_username")].Value.ToString();
+                    rslt.Result.RoleName = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_role_name")] == null ? "" :  objDbCommand.Parameters[CParameter.GetOutputParameterName("p_role_name")].Value.ToString();
+
+                    if (rslt.Result.RoleName == "ADMIN")
+                    {
+                        rslt.Result.RoleId = 1;
+                    }
+                    else if (rslt.Result.RoleName == "ADMIN")
+                    {
+                        rslt.Result.RoleId = 2;
+                    }
+                    else rslt.Result.RoleId = 3;
+                }
                    
             }
             catch (Exception ex)

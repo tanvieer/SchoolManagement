@@ -4,6 +4,7 @@ using SchoolMngmnt.Model.SysModel;
 using SchoolMngmnt.Models.DbModel;
 using SchoolMngmnt.Repository;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 
 namespace SchoolMngmnt.Controllers
@@ -18,7 +19,23 @@ namespace SchoolMngmnt.Controllers
         {
 
             StatusResult<List<TucSubject>> rslt = new StatusResult<List<TucSubject>>();
-            var checkSession = SysManageRepository.CheckSession(model.make_by, model.Session);
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("Authorization"))
+            {
+                token = headers.GetValues("Authorization").First();
+
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User token not found!";
+                return rslt;
+            }
+
+            var checkSession = SysManageRepository.CheckSession(token);
 
             if (checkSession.Status == "FAILED")
             {
@@ -41,13 +58,28 @@ namespace SchoolMngmnt.Controllers
 
 
 
-        [HttpPost]
+        [HttpGet]
         [Route("api/Subject/GetSubjectInfo")]
-        public StatusResult<TucSubject> GetSubjectInfo([FromBody] JwtPacket model)
+        public StatusResult<TucSubject> GetSubjectInfo(string id)
         {
-
             StatusResult<TucSubject> rslt = new StatusResult<TucSubject>();
-            var checkSession = SysManageRepository.CheckSession(model.make_by, model.Session);
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("Authorization"))
+            {
+                token = headers.GetValues("Authorization").First();
+
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User token not found!";
+                return rslt;
+            }
+
+            var checkSession = SysManageRepository.CheckSession(token);
 
             if (checkSession.Status == "FAILED")
             {
@@ -58,7 +90,7 @@ namespace SchoolMngmnt.Controllers
 
             if (checkSession.Result.RoleId == 1 || checkSession.Result.RoleId == 2) // ADMIN or teacher
             {
-                rslt = SpCall.GetSubjectInfo(model.getIdKey, model.make_by);
+                rslt = SpCall.GetSubjectInfo(id, checkSession.Result.UserName);
             }
             else
             {
@@ -76,7 +108,23 @@ namespace SchoolMngmnt.Controllers
         {
 
             StatusResult<TucSubject> rslt = new StatusResult<TucSubject>();
-            var checkSession = SysManageRepository.CheckSession(model.make_by, model.Session);
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("Authorization"))
+            {
+                token = headers.GetValues("Authorization").First();
+
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User token not found!";
+                return rslt;
+            }
+
+            var checkSession = SysManageRepository.CheckSession(token);
 
             if (checkSession.Status == "FAILED")
             {
@@ -105,7 +153,23 @@ namespace SchoolMngmnt.Controllers
         {
 
             StatusResult<TucSubject> rslt = new StatusResult<TucSubject>();
-            var checkSession = SysManageRepository.CheckSession(model.make_by, model.Session);
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("Authorization"))
+            {
+                token = headers.GetValues("Authorization").First();
+
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User token not found!";
+                return rslt;
+            }
+
+            var checkSession = SysManageRepository.CheckSession(token);
 
             if (checkSession.Status == "FAILED")
             {
@@ -126,13 +190,29 @@ namespace SchoolMngmnt.Controllers
             return rslt;
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("api/Subject/DeleteSubject")]
-        public StatusResult<TucSubject> DeleteSubject([FromBody] TucSubject model)
+        public StatusResult<TucSubject> DeleteSubject(string id)
         {
 
             StatusResult<TucSubject> rslt = new StatusResult<TucSubject>();
-            var checkSession = SysManageRepository.CheckSession(model.make_by, model.Session);
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("Authorization"))
+            {
+                token = headers.GetValues("Authorization").First();
+
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User token not found!";
+                return rslt;
+            }
+
+            var checkSession = SysManageRepository.CheckSession(token);
 
             if (checkSession.Status == "FAILED")
             {
@@ -143,6 +223,9 @@ namespace SchoolMngmnt.Controllers
 
             if (checkSession.Result.RoleId == 1) // ADMIN or teacher
             {
+                TucSubject model = new TucSubject();
+                model.SubjectId = id;
+                model.make_by = checkSession.Result.UserName;
                 rslt = SpCall.ManageSubject(model, "D");
             }
             else
@@ -162,7 +245,23 @@ namespace SchoolMngmnt.Controllers
         {
 
             StatusResult<TucClassSubjectMap> rslt = new StatusResult<TucClassSubjectMap>();
-            var checkSession = SysManageRepository.CheckSession(model.make_by, model.Session);
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("Authorization"))
+            {
+                token = headers.GetValues("Authorization").First();
+
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User token not found!";
+                return rslt;
+            }
+
+            var checkSession = SysManageRepository.CheckSession(token);
 
             if (checkSession.Status == "FAILED")
             {
@@ -184,13 +283,29 @@ namespace SchoolMngmnt.Controllers
         }
 
 
-        [HttpPost]
+        [HttpDelete]
         [Route("api/Subject/ClassSubjectMapRemove")]
-        public StatusResult<TucClassSubjectMap> ClassSubjectMapRemove([FromBody] TucClassSubjectMap model)
+        public StatusResult<TucClassSubjectMap> ClassSubjectMapRemove(string classId,string subjectId)
         {
 
             StatusResult<TucClassSubjectMap> rslt = new StatusResult<TucClassSubjectMap>();
-            var checkSession = SysManageRepository.CheckSession(model.make_by, model.Session);
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("Authorization"))
+            {
+                token = headers.GetValues("Authorization").First();
+
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User token not found!";
+                return rslt;
+            }
+
+            var checkSession = SysManageRepository.CheckSession(token);
 
             if (checkSession.Status == "FAILED")
             {
@@ -201,6 +316,10 @@ namespace SchoolMngmnt.Controllers
 
             if (checkSession.Result.RoleId == 1) // ADMIN 
             {
+                TucClassSubjectMap model = new TucClassSubjectMap();
+                model.make_by = checkSession.Result.UserName;
+                model.ClassId = classId;
+                model.SubjectId = subjectId;
                 rslt = SpCall.ClassSubjectMap(model, "D");
             }
             else

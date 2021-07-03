@@ -1,3 +1,4 @@
+import { UpdateUserComponent } from './update-user/update-user.component';
 import { TeacherListComponent } from './teachers/teacher-list/teacher-list.component';
 import { TeachersComponent } from './teachers/teachers.component'; 
 import { LoginComponent } from './login/login.component';
@@ -30,5 +31,6 @@ export const routingComponents = [LoginComponent,
                                   TeacherListComponent,
                                   LogoutComponent,
                                   TeachersComponent,
-                                  CreateUserComponent ]
+                                  CreateUserComponent,
+                                  UpdateUserComponent ]
 
