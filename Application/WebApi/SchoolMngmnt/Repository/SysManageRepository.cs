@@ -16,7 +16,7 @@ namespace SchoolMgmt.Repository
         private static readonly string SP_PREFIX = ConfigurationManager.AppSettings["SP_PREFIX"].ToString();
       
         // user insert update
-        public static StatusResult<UserMaster> ManageUser(UserViewModel model,string p_activity)
+        public static StatusResult<UserMaster> ManageUser(UserViewModel model,string p_activity,string makeBy)
         {
                
             CDataAccess objCDataAccess = CDataAccess.NewCDataAccess();
@@ -37,7 +37,7 @@ namespace SchoolMgmt.Repository
                 objList.Add(new DSSQLParam("p_password", model.Password, ParameterDirection.Input));
                 objList.Add(new DSSQLParam("p_role_id", model.RoleId, ParameterDirection.Input));
                 objList.Add(new DSSQLParam("p_class_id", model.ClassId, ParameterDirection.Input));
-                objList.Add(new DSSQLParam("p_user_id", model.make_by, ParameterDirection.Input)); 
+                objList.Add(new DSSQLParam("p_user_id", makeBy, ParameterDirection.Input)); 
                 objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
                 objList.Add(new DSSQLParam("p_err_code", string.Empty, ParameterDirection.Output));
                 objList.Add(new DSSQLParam("p_err_msg", string.Empty, ParameterDirection.Output));

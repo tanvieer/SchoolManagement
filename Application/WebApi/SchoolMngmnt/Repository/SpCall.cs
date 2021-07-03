@@ -17,7 +17,7 @@ namespace SchoolMngmnt.Repository
 
 
 
-        public static StatusResult<TucClassSubjectMap> ClassSubjectMap(TucClassSubjectMap model , string p_activity)
+        public static StatusResult<TucClassSubjectMap> ClassSubjectMap(TucClassSubjectMap model , string p_activity , string makeBy)
         {
             if (model is null)
             {
@@ -42,7 +42,7 @@ namespace SchoolMngmnt.Repository
             objList.Add(new DSSQLParam("p_class_id", model.ClassId, ParameterDirection.Input));
 
 
-            objList.Add(new DSSQLParam("p_user_id", model.make_by, ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_user_id", makeBy, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_err_code", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_err_msg", string.Empty, ParameterDirection.Output));
@@ -84,7 +84,7 @@ namespace SchoolMngmnt.Repository
 
 
 
-        public static StatusResult<TucClass> ManageClass(TucClass model, string p_activity)
+        public static StatusResult<TucClass> ManageClass(TucClass model, string p_activity , string makeBy)
         {
             if (model is null)
             {
@@ -107,7 +107,7 @@ namespace SchoolMngmnt.Repository
             objList.Add(new DSSQLParam("p_class_id", model.ClassId, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_class_name", model.ClassName, ParameterDirection.Input)); 
 
-            objList.Add(new DSSQLParam("p_user_id", model.make_by, ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_user_id", makeBy, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_err_code", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_err_msg", string.Empty, ParameterDirection.Output));
@@ -148,7 +148,7 @@ namespace SchoolMngmnt.Repository
         }
 
 
-        public static StatusResult<TucSubject> ManageSubject(TucSubject model, string p_activity)
+        public static StatusResult<TucSubject> ManageSubject(TucSubject model, string p_activity,string makeBy)
         {
             if (model is null)
             {
@@ -173,7 +173,7 @@ namespace SchoolMngmnt.Repository
             objList.Add(new DSSQLParam("p_subject_name", model.SubjectName, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_teacher_id", model.TeacherId, ParameterDirection.Input));
 
-            objList.Add(new DSSQLParam("p_user_id", model.make_by, ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_user_id", makeBy, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_err_code", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_err_msg", string.Empty, ParameterDirection.Output));
@@ -259,8 +259,7 @@ namespace SchoolMngmnt.Repository
                     while (dr.Read())
                     {
                         rslt.Result.ClassId = dr["class_id"].ToString();
-                        rslt.Result.ClassName = dr["class_name"].ToString();
-                        rslt.Result.Status = dr["status"].ToString();                          
+                        rslt.Result.ClassName = dr["class_name"].ToString();                       
                     }
                     dr.Close();
                 }
@@ -327,8 +326,7 @@ namespace SchoolMngmnt.Repository
                         rslt.Result.SubjectName = dr["subject_name"].ToString();
                         rslt.Result.SubjectName = dr["teacher_id"].ToString();
                         rslt.Result.TeacherUserName = dr["teacher_username"].ToString();
-                        rslt.Result.TeacherName = dr["teacher_full_name"].ToString();
-                        rslt.Result.Status = dr["status"].ToString();
+                        rslt.Result.TeacherName = dr["teacher_full_name"].ToString(); 
                     }
                     dr.Close();
                 }
@@ -395,8 +393,7 @@ namespace SchoolMngmnt.Repository
                     {
                         model = new TucClass();
                         model.ClassId = dr["class_id"].ToString();
-                        model.ClassName = dr["class_name"].ToString();
-                        model.Status = dr["status"].ToString(); 
+                        model.ClassName = dr["class_name"].ToString(); 
 
                         rslt.Result.Add(model);
                     }
@@ -469,10 +466,7 @@ namespace SchoolMngmnt.Repository
                         model.SubjectName = dr["subject_name"].ToString();
                         model.TeacherId = dr["teacher_id"].ToString();
                         model.TeacherUserName = dr["teacher_username"].ToString();
-                        model.TeacherName = dr["teacher_full_name"].ToString();
-                        model.Status = dr["status"].ToString();
-
-                        model.RoleName = dr["ROLE_NAME"] == null ? "" : dr["ROLE_NAME"].ToString();
+                        model.TeacherName = dr["teacher_full_name"].ToString();  
 
                         rslt.Result.Add(model);
                     }

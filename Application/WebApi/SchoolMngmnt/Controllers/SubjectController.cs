@@ -47,7 +47,7 @@ namespace SchoolMngmnt.Controllers
 
             if (checkSession.Result.RoleId == 1 || checkSession.Result.RoleId == 2) // ADMIN or teacher
             {
-                rslt = SpCall.GetSubjectList(model.make_by);
+                rslt = SpCall.GetSubjectList(checkSession.Result.UserName);
             }
             else
             {
@@ -136,7 +136,7 @@ namespace SchoolMngmnt.Controllers
 
             if (checkSession.Result.RoleId == 1) // ADMIN or teacher
             {
-                rslt = SpCall.ManageSubject(model, "U");
+                rslt = SpCall.ManageSubject(model, "U", checkSession.Result.UserName);
             }
             else
             {
@@ -181,7 +181,7 @@ namespace SchoolMngmnt.Controllers
 
             if (checkSession.Result.RoleId == 1) // ADMIN or teacher
             {
-                rslt = SpCall.ManageSubject(model, "I");
+                rslt = SpCall.ManageSubject(model, "I", checkSession.Result.UserName);
             }
             else
             {
@@ -227,9 +227,8 @@ namespace SchoolMngmnt.Controllers
             if (checkSession.Result.RoleId == 1) // ADMIN or teacher
             {
                 TucSubject model = new TucSubject();
-                model.SubjectId = id;
-                model.make_by = checkSession.Result.UserName;
-                rslt = SpCall.ManageSubject(model, "D");
+                model.SubjectId = id; 
+                rslt = SpCall.ManageSubject(model, "D", checkSession.Result.UserName);
             }
             else
             {
@@ -276,7 +275,7 @@ namespace SchoolMngmnt.Controllers
 
             if (checkSession.Result.RoleId == 1) // ADMIN 
             {
-                rslt = SpCall.ClassSubjectMap(model, "I");
+                rslt = SpCall.ClassSubjectMap(model, "I", checkSession.Result.UserName);
             }
             else
             {
@@ -320,11 +319,10 @@ namespace SchoolMngmnt.Controllers
 
             if (checkSession.Result.RoleId == 1) // ADMIN 
             {
-                TucClassSubjectMap model = new TucClassSubjectMap();
-                model.make_by = checkSession.Result.UserName;
+                TucClassSubjectMap model = new TucClassSubjectMap(); 
                 model.ClassId = classId;
                 model.SubjectId = subjectId;
-                rslt = SpCall.ClassSubjectMap(model, "D");
+                rslt = SpCall.ClassSubjectMap(model, "D", checkSession.Result.UserName);
             }
             else
             {

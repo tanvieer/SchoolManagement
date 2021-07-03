@@ -3,7 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Routes } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Role, ClassModel } from '../shared/models/login.model';
+import { Role } from '../shared/models/login.model';
+import { TucClass } from '../shared/models/tuc-class.model';
 import { UsersService } from '../shared/users.service';
 
 @Component({
@@ -14,7 +15,7 @@ import { UsersService } from '../shared/users.service';
 export class UpdateUserComponent implements OnInit {
   public roleList: Role[] = [];
   private _role!: Role;
-  public classList: ClassModel[] = []; 
+  public classList: TucClass[] = []; 
 
 
   constructor(public service: UsersService,
@@ -141,7 +142,7 @@ export class UpdateUserComponent implements OnInit {
   parseClassData(jsonData: any) { 
     console.log(jsonData);
     for (let i = 0; i < jsonData.length; i++) { 
-      const data = new ClassModel();
+      const data = new TucClass();
       data.ClassId = jsonData[i].ClassId; 
       data.ClassName = jsonData[i].ClassName; 
       this.classList.push(data);

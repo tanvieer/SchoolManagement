@@ -38,7 +38,7 @@ export class TeacherListComponent implements OnInit {
     this.collectionSize = jsonData.length;
     for (let i = 0; i < this.collectionSize; i++) {
       const data = new Teacher();
-      data.index = i;
+      data.index = i+1;
       data.FullName = jsonData[i].FullName; 
       data.FirstName = jsonData[i].FirstName; 
       data.LastName = jsonData[i].LastName; 

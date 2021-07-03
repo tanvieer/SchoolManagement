@@ -33,14 +33,7 @@ namespace SchoolMngmnt.Controllers
             if (headers.Contains("Authorization"))
             {
                 token = headers.GetValues("Authorization").First();
-                var checkSession = SysManageRepository.CheckSession(token);
-
-                if (checkSession.Status == "FAILED")
-                {
-                    rslt.Status = checkSession.Status;
-                    rslt.Message = checkSession.Message;
-                    return rslt;
-                }
+               
             }
             else
             {
@@ -49,7 +42,16 @@ namespace SchoolMngmnt.Controllers
                 return rslt;
             }
 
-            rslt = SysManageRepository.ManageUser(model, "I");
+            var checkSession = SysManageRepository.CheckSession(token);
+
+            if (checkSession.Status == "FAILED")
+            {
+                rslt.Status = checkSession.Status;
+                rslt.Message = checkSession.Message;
+                return rslt;
+            }
+
+            rslt = SysManageRepository.ManageUser(model, "I",checkSession.Result.UserName);
 
             return rslt;
         }
@@ -67,15 +69,7 @@ namespace SchoolMngmnt.Controllers
 
             if (headers.Contains("Authorization"))
             {
-                token = headers.GetValues("Authorization").First();
-                var checkSession = SysManageRepository.CheckSession(token);
-
-                if (checkSession.Status == "FAILED")
-                {
-                    rslt.Status = checkSession.Status;
-                    rslt.Message = checkSession.Message;
-                    return rslt;
-                }
+                token = headers.GetValues("Authorization").First(); 
             }
             else
             {
@@ -83,8 +77,16 @@ namespace SchoolMngmnt.Controllers
                 rslt.Message = "User not logged in!!";
                 return rslt;
             }
+            var checkSession = SysManageRepository.CheckSession(token);
 
-            rslt = SysManageRepository.ManageUser(model, "U");
+            if (checkSession.Status == "FAILED")
+            {
+                rslt.Status = checkSession.Status;
+                rslt.Message = checkSession.Message;
+                return rslt;
+            }
+
+            rslt = SysManageRepository.ManageUser(model, "U", checkSession.Result.UserName);
 
             return rslt;
         }

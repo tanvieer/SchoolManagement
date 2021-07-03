@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SchoolMngmnt.Models.DbModel
 {
-    public class TucSubject : CommonModel
+    public class TucSubject  
     {
         public string SubjectId { get; set; }
         public string SubjectName { get; set; }

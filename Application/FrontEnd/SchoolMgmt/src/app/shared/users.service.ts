@@ -1,6 +1,6 @@
  
 import { Injectable } from '@angular/core';
-import { Teacher, JwtToken } from './models/teacher.model';
+import { Teacher } from './models/teacher.model';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Config } from '../config';
 
@@ -9,12 +9,10 @@ import { Config } from '../config';
 })
 export class UsersService {
   
-  formData!: Teacher;  
-  _jwtToken!: JwtToken; 
+  formData!: Teacher;   
   config = new Config();
  
-  constructor(private http : HttpClient) {
-    this._jwtToken = new JwtToken();
+  constructor(private http : HttpClient) { 
 
    }
 

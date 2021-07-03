@@ -31,8 +31,4 @@ export class JwtToken {
     RoleName!: string;
     RoleDes!: string;
   }
-
-  export class ClassModel{
-    ClassId!: number;
-    ClassName!: string;
-  }
+ 

@@ -137,7 +137,7 @@ namespace SchoolMngmnt.Controllers
 
             if (checkSession.Result.RoleId == 1) // ADMIN or teacher
             {
-                rslt = SpCall.ManageClass(model, "U");
+                rslt = SpCall.ManageClass(model, "U", checkSession.Result.UserName);
             }
             else
             {
@@ -182,7 +182,7 @@ namespace SchoolMngmnt.Controllers
 
             if (checkSession.Result.RoleId == 1) // ADMIN or teacher
             {
-                rslt = SpCall.ManageClass(model, "I");
+                rslt = SpCall.ManageClass(model, "I", checkSession.Result.UserName);
             }
             else
             {
@@ -228,9 +228,8 @@ namespace SchoolMngmnt.Controllers
             if (checkSession.Result.RoleId == 1) // ADMIN or teacher
             {
                 TucClass model = new TucClass();
-                model.ClassId = id;
-                model.make_by = checkSession.Result.UserName;
-                rslt = SpCall.ManageClass(model, "D");
+                model.ClassId = id; 
+                rslt = SpCall.ManageClass(model, "D", checkSession.Result.UserName);
             }
             else
             {

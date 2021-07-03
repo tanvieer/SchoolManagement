@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace SchoolMngmnt.Model
 {
-    public class JwtPacket : CommonModel
+    public class JwtPacket  
     {
         public string Token { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; } 
-        public int RoleId { get; set; }  
+        public int RoleId { get; set; }
+        public DateTime SessionExpireTime { get;  set; }
+        public string RoleName { get;  set; }
     }
 }

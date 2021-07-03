@@ -292,7 +292,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\CommonModel.cs" />
     <Compile Include="Models\DbModel\TucClass.cs" />
     <Compile Include="Models\DbModel\TucClassSubjectMap.cs" />
     <Compile Include="Models\DbModel\TucResult.cs" />
