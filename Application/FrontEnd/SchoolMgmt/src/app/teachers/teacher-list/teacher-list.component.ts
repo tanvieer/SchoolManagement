@@ -1,6 +1,6 @@
 import { Teacher } from './../../shared/teacher.model';
 import { Component, OnInit } from '@angular/core';
-import { TeacherService } from 'src/app/shared/teacher.service';
+import { UsersService } from 'src/app/shared/users.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -18,7 +18,7 @@ export class TeacherListComponent implements OnInit {
   public page: number = 1;
   public collectionSize : number = 0;
 
-  constructor(public service: TeacherService,
+  constructor(public service: UsersService,
              private toastr : ToastrService ) { }
 
   ngOnInit(): void {

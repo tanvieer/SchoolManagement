@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ClassModel, Role } from '../shared/login.model';
-import { TeacherService } from '../shared/teacher.service';
+import { UsersService } from '../shared/users.service';
 
 @Component({
   selector: 'app-create-user',
@@ -16,7 +16,7 @@ export class CreateUserComponent implements OnInit {
   public classList : ClassModel[] = [];
   private _class!: ClassModel; 
 
-  constructor(public service : TeacherService, 
+  constructor(public service : UsersService, 
              private toastr : ToastrService ) { }
 
   ngOnInit(): void {  

@@ -6,7 +6,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class TeacherService {
+export class UsersService {
   
   formData!: Teacher;  
   _jwtToken!: JwtToken; 

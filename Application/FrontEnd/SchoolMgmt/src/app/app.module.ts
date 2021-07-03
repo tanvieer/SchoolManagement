@@ -1,4 +1,4 @@
-import { TeacherService } from './shared/teacher.service';
+import { UsersService } from './shared/users.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -26,7 +26,7 @@ import { CreateUserComponent } from './create-user/create-user.component';
     ToastrModule.forRoot(),
     AppRoutingModule
   ],
-  providers: [TeacherService],
+  providers: [UsersService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

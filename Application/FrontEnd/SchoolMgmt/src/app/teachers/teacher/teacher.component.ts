@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr'; 
-import { TeacherService } from 'src/app/shared/teacher.service';
+import { UsersService } from 'src/app/shared/users.service';
 
 
 @Component({
@@ -13,7 +13,7 @@ import { TeacherService } from 'src/app/shared/teacher.service';
 export class TeacherComponent implements OnInit {
  // private _statusResultO: statusResultO;
 
-  constructor(public service : TeacherService, 
+  constructor(public service : UsersService, 
               private toastr : ToastrService ) { }
 
   ngOnInit(): void {
