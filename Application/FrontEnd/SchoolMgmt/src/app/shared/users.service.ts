@@ -17,20 +17,24 @@ export class UsersService {
     this._jwtToken = new JwtToken();
 
    }
-   
+
 
   postTeacher(_formData : Teacher){ 
     _formData.make_by = localStorage.getItem("UserName")?? "admin"; 
     if(_formData.Password == "") {
       _formData.Password = _formData.UserName;
-    }
-    
-    _formData.Session = localStorage.getItem("Token")?? "";
+    } 
+    _formData.Session = localStorage.getItem("Token")?? "";  
+    return this.http.post(this.rootUrl + 'User/Register',_formData);  
+  }
 
-    console.log(_formData);
-
-    return this.http.post(this.rootUrl + 'User/Register',_formData); 
-
+  updateUser(_formData : Teacher){ 
+    _formData.make_by = localStorage.getItem("UserName")?? "admin"; 
+    if(_formData.Password == "") {
+      _formData.Password = _formData.UserName;
+    } 
+    _formData.Session = localStorage.getItem("Token")?? "";  
+    return this.http.post(this.rootUrl + 'User/UpdateUser',_formData);  
   }
 
   getTeacherList(){ 
