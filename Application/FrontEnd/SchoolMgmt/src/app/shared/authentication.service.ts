@@ -64,10 +64,8 @@ export class AuthenticationService {
           localStorage.setItem('isLoggedIn', "0");
           this.toastr.error(res.Message, 'Login Failed');
           this.router.navigate(['/login']);
-        }
-         
-          
-  
+          window.location.reload();
+        } 
        });
     }
 
@@ -81,7 +79,7 @@ export class AuthenticationService {
 
       this.router.navigateByUrl('/login', { skipLocationChange: true }).then(() => {
       this.router.navigate(['/login']);
-      window.location.reload();
+       window.location.reload();
     });       
       
     }

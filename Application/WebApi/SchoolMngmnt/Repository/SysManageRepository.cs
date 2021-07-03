@@ -342,7 +342,8 @@ namespace SchoolMgmt.Repository
                 } 
             }
             catch (Exception ex)
-            { 
+            {
+                rslt.Status = "FAILED";
                 rslt.Message = ex.Message;
             }
             finally

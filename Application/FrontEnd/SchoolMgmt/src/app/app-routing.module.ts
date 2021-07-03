@@ -1,3 +1,4 @@
+import { AuthGuardGuard } from './auth-guard.guard';
 import { UpdateUserComponent } from './update-user/update-user.component';
 import { TeacherListComponent } from './teachers/teacher-list/teacher-list.component';
 import { TeachersComponent } from './teachers/teachers.component'; 
@@ -10,10 +11,11 @@ import { CreateUserComponent } from './create-user/create-user.component';
 
 const routes : Routes = [
   {path: 'login' , component: LoginComponent}, 
-  {path: 'teachers', component: TeachersComponent},
-  {path: 'teacher-list', component: TeacherListComponent},
-  {path: 'create-user', component: CreateUserComponent},
-  {path: 'update-user/:id', component: UpdateUserComponent},
+  {path: '' , component: LoginComponent}, 
+  {path: 'teachers', component: TeachersComponent , canActivate : [AuthGuardGuard]},
+  {path: 'teacher-list', component: TeacherListComponent, canActivate : [AuthGuardGuard]},
+  {path: 'create-user', component: CreateUserComponent, canActivate : [AuthGuardGuard]},
+  {path: 'update-user/:id', component: UpdateUserComponent, canActivate : [AuthGuardGuard]},
   {path: 'logout', component: LogoutComponent}
 ];
 

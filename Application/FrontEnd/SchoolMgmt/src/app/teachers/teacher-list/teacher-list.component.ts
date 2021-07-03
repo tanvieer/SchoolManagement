@@ -27,7 +27,7 @@ export class TeacherListComponent implements OnInit {
         this.parseData(data.Result);
       }
       else {
-        this.toastr.success(data.Message, 'Teacher List');
+        this.toastr.error(data.Message, 'Teacher List');
       } 
       
     });
