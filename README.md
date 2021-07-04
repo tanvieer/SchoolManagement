@@ -33,3 +33,19 @@ ng g guard <guard_name>
 ====================== Links ==============================
 
 https://angular.io/tutorial/toh-pt5   // app-routing 
+
+
+
+================Install Instructions=========================
+
+1. Install Oracle Database 12c
+2. Create schema using command given on folder:  "Database/1. Create Schema Script.sql"  using sys user logged in as sysdba.
+3. Run "Database/2. Table and Package Script.sql , 3. Roles Config.sql , 4. Create Admin User.sql" on database schema "user: schoolmgmt, password: schoolmgmt".
+4. Validate all packages on database.
+
+5. Run Backend project on visual studio 2019 on port: 44358, Url should be: https://localhost:44358
+6. Install nodejs 14.17.1
+7. Open command promt on directory "FrontEnd\SchoolMgmt" 
+8. Install NPM 7.17.0
+9. RUN command: npm install --save-dev package 
+10. RUN command:  ng serve
