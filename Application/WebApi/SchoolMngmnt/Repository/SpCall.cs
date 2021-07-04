@@ -416,7 +416,7 @@ namespace SchoolMngmnt.Repository
 
 
 
-        public static StatusResult<List<TucSubject>> GetSubjectList(string makeBy)
+        public static StatusResult<List<TucSubject>> GetSubjectList(string makeBy, string classId, int p_in)
         {
             StatusResult<List<TucSubject>> rslt = new StatusResult<List<TucSubject>>();
             rslt.Result = new List<TucSubject>();
@@ -429,10 +429,11 @@ namespace SchoolMngmnt.Repository
 
 
             List<DSSQLParam> objList = new List<DSSQLParam>();
+             
 
 
-            objList.Add(new DSSQLParam("p_in", "1", ParameterDirection.Input));
-
+            objList.Add(new DSSQLParam("p_in", p_in, ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_class_id", classId, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_user_id", makeBy, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_err_code", string.Empty, ParameterDirection.Output));

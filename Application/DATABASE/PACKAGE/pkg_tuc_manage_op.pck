@@ -50,6 +50,7 @@ create or replace package pkg_tuc_manage_op is
                               T_CURSOR     out sys_refcursor);
 
   procedure sp_tuc_subject_ga(p_in       in nvarchar2,
+                              p_class_id in nvarchar2,
                               p_user_id  in nvarchar2,
                               p_out      out number,
                               p_err_code out nvarchar2,
@@ -742,6 +743,7 @@ create or replace package body pkg_tuc_manage_op is
   end sp_tuc_subject_gk;
 
   procedure sp_tuc_subject_ga(p_in       in nvarchar2,
+                              p_class_id in nvarchar2,
                               p_user_id  in nvarchar2,
                               p_out      out number,
                               p_err_code out nvarchar2,
@@ -784,6 +786,27 @@ create or replace package body pkg_tuc_manage_op is
                last_update_time
           from tuc_subject s
          where s.status <> 'D'
+          order by subject_id;
+    elsif p_in = 2
+      then
+        open T_CURSOR for
+        select subject_id,
+               subject_name,
+               status,
+               teacher_id,
+               (select username
+                  from tuc_sys_user_mast
+                 where id = s.teacher_id) as teacher_username,
+               (select first_name || ' ' || last_name
+                  from tuc_sys_user_mast
+                 where id = s.teacher_id) as teacher_full_name,
+               maker_id,
+               maker_time,
+               last_update_by,
+               last_update_time
+          from tuc_subject s
+         where s.status <> 'D'
+          and subject_id in (select subject_id from tuc_class_subject_map m where m.class_id = p_class_id and status <> 'R')
           order by subject_id;
     end if;
     p_err_msg := 'Data found successfully.';
