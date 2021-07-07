@@ -28,7 +28,7 @@ const routes : Routes = [
 
 
   {path: 'class-create', component: ClassCreateComponent, canActivate : [AuthGuardGuard]},
-  {path: 'class-edit', component: ClassEditComponent, canActivate : [AuthGuardGuard]},
+  {path: 'class-edit/:id', component: ClassEditComponent, canActivate : [AuthGuardGuard]},
   {path: 'class-list', component: ClassListComponent, canActivate : [AuthGuardGuard]},
 
 

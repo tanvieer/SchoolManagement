@@ -1,1 +1,28 @@
-<p>class-list works!</p>
+ 
+<div class="card-body"> 
+    <table class="table table-striped"> 
+        <caption>Class List</caption>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Class ID</th>
+        <th scope="col">Class Name</th> 
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of classList">
+        <th scope="row">{{ item.Index }}</th>
+        <td>{{item.ClassId}}</td>
+        <td>{{item.ClassName}}</td> 
+        <td>
+          <button type="button" class="btn btn-sm btn-primary" routerLink="/class-edit/{{item.ClassId}}">Edit</button>
+          &nbsp;
+          <button (click)="onDelete(item.ClassId)"  type="button" class="btn btn-sm btn-danger">Delete</button>
+        </td>
+      </tr>
+
+  </table> 
+
+
+</div>

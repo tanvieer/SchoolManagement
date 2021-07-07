@@ -1,1 +1,35 @@
-<p>class-edit works!</p>
+<div class="row">
+    <!-- left column -->
+    <div class="col-md-9">
+      <!-- general form elements -->
+      <div class="card card-primary">
+        <div class="card-header">
+          <h3 class="card-title">Create</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form #form="ngForm" (submit)="onSubmit(form)">
+          <div class="card-body"> 
+            <div class="form-group">
+                <label for="exampleInputAssignClass2" >Class ID</label> 
+                <input autocomplete="off" name="ClassId" readonly #ClassId="ngModel" [(ngModel)]="service.formData_class.ClassId" type="text" placeholder="Class Id" class="form-control" required>
+              </div> 
+   
+           
+              <div class="form-group">
+                <label for="exampleInputAssignClass2" >Class Name</label> 
+                <input autocomplete="off" name="ClassName"  #ClassName="ngModel" [(ngModel)]="service.formData_class.ClassName" type="text" placeholder="Class Name" class="form-control" required>
+              </div> 
+   
+
+          <div class="card-footer">
+            <button [disabled]="form.invalid" type="submit" class="btn btn-primary">Save</button>
+          </div> 
+          </div>
+
+          <!-- /.card-body -->
+        </form>
+      </div>
+    </div>
+    <!--/.col (right) -->
+  </div>

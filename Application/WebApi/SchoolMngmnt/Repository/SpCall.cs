@@ -93,8 +93,7 @@ namespace SchoolMngmnt.Repository
             StatusResult<TucClass> rslt = new StatusResult<TucClass>();
             rslt.Result = new TucClass();
 
-            string p_out = "1";
-            string err_code, err_msg;
+            int p_out = 1; 
 
             CDataAccess objCDataAccess = CDataAccess.NewCDataAccess();
             DbCommand objDbCommand = objCDataAccess.GetMyCommand(false, IsolationLevel.ReadCommitted, "application", false);
@@ -102,34 +101,32 @@ namespace SchoolMngmnt.Repository
 
             List<DSSQLParam> objList = new List<DSSQLParam>();
 
-
+            objList.Clear();
             objList.Add(new DSSQLParam("p_activity", p_activity, ParameterDirection.Input));
-            objList.Add(new DSSQLParam("p_class_id", model.ClassId, ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_class_id", model.ClassId ?? "", ParameterDirection.InputOutput));
             objList.Add(new DSSQLParam("p_class_name", model.ClassName, ParameterDirection.Input)); 
-
             objList.Add(new DSSQLParam("p_user_id", makeBy, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_err_code", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_err_msg", string.Empty, ParameterDirection.Output));
+             
 
 
             try
             {
-                using (DbDataReader dr = objCDataAccess.ExecuteReader(objDbCommand, SP_PREFIX + "pkg_tuc_manage_op.sp_tuc_class", CommandType.StoredProcedure, objList))
+                objCDataAccess.ExecuteNonQuery(objDbCommand, SP_PREFIX + "pkg_tuc_manage_op.sp_tuc_class", CommandType.StoredProcedure, objList);
+
+                p_out = Convert.ToInt32(objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString());
+                if (p_out == 1)
                 {
-                    p_out = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString();
-                    err_msg = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
-                    if (p_out == "1")
-                    {
-                        err_code = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_code")].Value.ToString();
-                        rslt.Message = err_code + "~" + err_msg;
-                        rslt.Status = "FAILED";
-                    }
-                    else
-                    {
-                        rslt.Status = "SUCCESS";
-                        rslt.Message = err_msg;
-                    }
+                    rslt.Status = "FAILED";
+                    rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_code")].Value.ToString()
+                        + "~" + objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
+                }
+                else
+                {
+                    rslt.Status = "SUCCESS";
+                    rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
                 }
             }
             catch (Exception ex)
@@ -241,7 +238,7 @@ namespace SchoolMngmnt.Repository
 
             try
             {
-                using (DbDataReader dr = objCDataAccess.ExecuteReader(objDbCommand, SP_PREFIX + "pkg_tuc_user_mast.sp_tuc_class_gk", CommandType.StoredProcedure, objList))
+                using (DbDataReader dr = objCDataAccess.ExecuteReader(objDbCommand, SP_PREFIX + "pkg_tuc_manage_op.sp_tuc_class_gk", CommandType.StoredProcedure, objList))
                 {
                     p_out = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString();
                     if (p_out == "1")
@@ -258,7 +255,7 @@ namespace SchoolMngmnt.Repository
 
                     while (dr.Read())
                     {
-                        rslt.Result.ClassId = dr["class_id"].ToString();
+                        rslt.Result.ClassId =  dr["class_id"].ToString();
                         rslt.Result.ClassName = dr["class_name"].ToString();                       
                     }
                     dr.Close();

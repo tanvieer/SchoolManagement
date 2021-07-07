@@ -9,19 +9,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr'; 
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { ClassListComponent } from './class/class-list/class-list.component';
-import { ClassCreateComponent } from './class/class-create/class-create.component';
-import { ClassEditComponent } from './class/class-edit/class-edit.component';
+
 
 
 @NgModule({
   declarations: [
     AppComponent,
     routingComponents,
-    NavMenuComponent,
-    ClassListComponent,
-    ClassCreateComponent,
-    ClassEditComponent  
+    NavMenuComponent
   ],
   imports: [
     BrowserModule,

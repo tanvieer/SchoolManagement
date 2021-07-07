@@ -46,17 +46,17 @@ export class CreateUserComponent implements OnInit {
 
   initiateClass() {
     this._class = new TucClass();
-    this._class.ClassId = 1;
+    this._class.ClassId = '1';
     this._class.ClassName = "Class 1";
     this.classList.push(this._class);
 
     this._class = new TucClass();
-    this._class.ClassId = 2;
+    this._class.ClassId = '2';
     this._class.ClassName = "Class 2";
     this.classList.push(this._class);
 
     this._class = new TucClass();
-    this._class.ClassId = 3;
+    this._class.ClassId = '3';
     this._class.ClassName = "Class 3";
     this.classList.push(this._class);
   }

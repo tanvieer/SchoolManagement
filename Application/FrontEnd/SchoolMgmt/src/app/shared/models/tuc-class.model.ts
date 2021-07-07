@@ -1,4 +1,5 @@
 export class TucClass {
-    ClassId!: number;
+    Index !: number;
+    ClassId!: string;
     ClassName!: string;
 }
