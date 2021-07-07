@@ -19,16 +19,7 @@ export class UserListComponent implements OnInit {
              private toastr : ToastrService ) { }
 
   ngOnInit(): void {
-    this.service.getAllUserList()
-    .subscribe((data: any) => {  
-      if(data.Status == "SUCCESS"){
-        this.parseData(data.Result);
-      }
-      else {
-        this.toastr.error(data.Message, 'Teacher List');
-      } 
-      
-    });
+    this.refreshUsers();
   } 
 
   parseData(jsonData: any) {
@@ -55,9 +46,40 @@ export class UserListComponent implements OnInit {
 
 
   refreshUsers() {
-    this.users = this.userList
-      .map((data, i) => ({id: i + 1, ...data}))
-      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
+
+    this.service.getAllUserList()
+    .subscribe((data: any) => {  
+      if(data.Status == "SUCCESS"){
+        this.parseData(data.Result);
+      }
+      else {
+        this.toastr.error(data.Message, 'Teacher List');
+      }       
+    });
+
+    // this.users = this.userList
+    //   .map((data, i) => ({id: i + 1, ...data}))
+    //   .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
   }
+
+  deleteUser(userName : string){
+      if(confirm("Are you sure to delete  '"+userName + "' !")) {
+        console.log("Implement delete functionality here");
+
+        this.service.deleteUser(userName)
+        .subscribe((data: any) => {  
+          if(data.Status == "SUCCESS"){
+            this.toastr.success(data.Message, 'Delete User');
+            this.refreshUsers();
+          }
+          else {
+            this.toastr.error(data.Message, 'Delete User');
+          } ;
+        });
+      }
+   }
+
+
+
 
 }

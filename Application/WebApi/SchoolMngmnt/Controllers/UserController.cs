@@ -175,5 +175,53 @@ namespace SchoolMngmnt.Controllers
 
 
 
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [HttpDelete]
+        [Route("api/User/DeleteUser")]
+        public StatusResult<UserMaster> DeleteUser(string userName)
+        {
+
+            StatusResult<UserMaster> rslt = new StatusResult<UserMaster>();
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("Authorization"))
+            {
+                token = headers.GetValues("Authorization").First();
+
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User not logged in!!";
+                return rslt;
+            }
+
+            var checkSession = SysManageRepository.CheckSession(token);
+
+            if (checkSession.Status == "FAILED")
+            {
+                rslt.Status = checkSession.Status;
+                rslt.Message = checkSession.Message;
+                return rslt;
+            }
+
+            if (checkSession.Result.RoleId == 1) // ADMIN or teacher
+            {
+                UserViewModel model = new UserViewModel();
+                model.UserName = userName;
+                rslt  = SysManageRepository.ManageUser(model, "D", checkSession.Result.UserName);
+            }
+            else
+            {
+                rslt.Message = "This user has no permission to delete user.";
+            }
+
+            return rslt;
+        }
+
+
+
     }
 }

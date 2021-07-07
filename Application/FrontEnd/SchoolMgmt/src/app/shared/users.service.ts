@@ -54,6 +54,11 @@ export class UsersService {
   return this.http.get(`${this.config.url}/User/Get?id=${_userName}`,this.config.httpOptions); 
  }
 
+ deleteUser(_id:string){  
+  return this.http.delete(`${this.config.url}/User/DeleteUser?userName=${_id}`,this.config.httpOptions);  
+}
+
+
  getClassList(){
   return this.http.get(`${this.config.url}/Class/GetClassList`,this.config.httpOptions); 
  }

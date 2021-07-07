@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
     if(localStorage.getItem('isLoggedIn') == "1" ) {
 
       if(localStorage.getItem('RoleName') == "ADMIN" ) { 
-        this.router.navigate(['/teachers']);
+        this.router.navigate(['/user-list']);
       } 
       else if(localStorage.getItem('RoleName') == "TEACHER" ) { 
         this.router.navigate(['/students']);
