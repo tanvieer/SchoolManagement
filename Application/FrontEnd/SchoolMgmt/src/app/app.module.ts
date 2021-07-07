@@ -15,7 +15,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
   declarations: [
     AppComponent,
     routingComponents,
-    NavMenuComponent 
+    NavMenuComponent    
   ],
   imports: [
     BrowserModule,

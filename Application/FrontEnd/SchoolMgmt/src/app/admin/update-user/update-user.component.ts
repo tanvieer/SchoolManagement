@@ -1,11 +1,10 @@
-
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ActivatedRoute, Routes } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Role } from '../shared/models/login.model';
-import { TucClass } from '../shared/models/tuc-class.model';
-import { UsersService } from '../shared/users.service';
+import { Role } from 'src/app/shared/models/login.model';
+import { TucClass } from 'src/app/shared/models/tuc-class.model';
+import { UsersService } from 'src/app/shared/users.service';
 
 @Component({
   selector: 'app-update-user',
@@ -20,7 +19,8 @@ export class UpdateUserComponent implements OnInit {
 
   constructor(public service: UsersService,
     private toastr: ToastrService,
-    private arouter: ActivatedRoute) { }
+    private arouter: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit(): void {
     //console.log(this.arouter.snapshot.params.id);
@@ -162,6 +162,7 @@ export class UpdateUserComponent implements OnInit {
          if (res.Status == "SUCCESS"){
           this.toastr.success(res.Message, 'User Update Success');
           this.getUserInfo(this.arouter.snapshot.params.id);
+          this.router.navigate(['/user-list']);
          } 
          else {
            this.toastr.error(res.Message, 'User Update Error'); 

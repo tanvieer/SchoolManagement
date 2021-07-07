@@ -13,7 +13,7 @@
             <div class="form-group">
               <label for="exampleSelectBorder">User type</label>
              
-              <select name="RoleId" id="userType" class="form-control" [(ngModel)]="service.formData.RoleId" required>
+              <select name="RoleId" id="userType" class="form-control" disabled [(ngModel)]="service.formData.RoleId" required>
                 <option *ngFor="let option of roleList" [value]="option.RoleId" >{{option.RoleName}}</option>
               </select>
  
