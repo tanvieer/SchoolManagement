@@ -10,6 +10,10 @@ import { Routes, RouterModule} from '@angular/router';
 import { LogoutComponent } from './logout/logout.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { PupilsComponent } from './pupils/pupils.component';
+import { UpdateProfileComponent } from './profile/update-profile/update-profile.component'; 
+import { ClassListComponent } from './class/class-list/class-list.component';
+import { ClassCreateComponent } from './class/class-create/class-create.component';
+import { ClassEditComponent } from './class/class-edit/class-edit.component';
 
 const routes : Routes = [
   {path: 'login' , component: LoginComponent}, 
@@ -18,8 +22,16 @@ const routes : Routes = [
   {path: 'pupils', component: PupilsComponent , canActivate : [AuthGuardGuard]},
   {path: 'teacher-list', component: TeacherListComponent, canActivate : [AuthGuardGuard]},
   {path: 'user-list', component: UserListComponent, canActivate : [AuthGuardGuard]},  
-  {path: 'create-user', component: CreateUserComponent, canActivate : [AuthGuardGuard]},
+  {path: 'create-user', component: CreateUserComponent, canActivate : [AuthGuardGuard]}, 
+  {path: 'update-profile', component: UpdateProfileComponent, canActivate : [AuthGuardGuard]},
   {path: 'update-user/:id', component: UpdateUserComponent, canActivate : [AuthGuardGuard]},
+
+
+  {path: 'class-create', component: ClassCreateComponent, canActivate : [AuthGuardGuard]},
+  {path: 'class-edit', component: ClassEditComponent, canActivate : [AuthGuardGuard]},
+  {path: 'class-list', component: ClassListComponent, canActivate : [AuthGuardGuard]},
+
+
   {path: 'logout', component: LogoutComponent}
 ];
 
@@ -41,5 +53,9 @@ export const routingComponents = [LoginComponent,
                                   CreateUserComponent,
                                   UpdateUserComponent,
                                   PupilsComponent,
-                                  UserListComponent ]
+                                  UserListComponent, 
+                                  UpdateProfileComponent,
+                                  ClassListComponent,
+                                  ClassCreateComponent,
+                                  ClassEditComponent     ]
 

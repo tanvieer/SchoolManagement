@@ -53,10 +53,10 @@ export class AuthenticationService {
           localStorage.setItem('Token', res.Result.Token);
           localStorage.setItem('Email',   res.Result.Email);
           localStorage.setItem('RoleName',res.Result.RoleName);
-          localStorage.setItem('UserName',res.Result.UserName);
+          localStorage.setItem('UserName',_formData.Username);
           localStorage.setItem('Name', res.Result.FirstName + " " + res.Result.LastName); 
           this.toastr.success(res.Message, 'Login Success');
-
+ 
           this.router.navigate([this._returnUrl]); 
           window.location.reload();
         }
