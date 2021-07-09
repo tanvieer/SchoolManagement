@@ -9,6 +9,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr'; 
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { NavTopComponent } from './nav/nav-top/nav-top.component';
+import { NavLeftComponent } from './nav/nav-left/nav-left.component';
+import { NavBottomComponent } from './nav/nav-bottom/nav-bottom.component';
+import { NavRightComponent } from './nav/nav-right/nav-right.component'; 
 
 
 
@@ -16,7 +20,11 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
   declarations: [
     AppComponent,
     routingComponents,
-    NavMenuComponent
+    NavMenuComponent,
+    NavTopComponent,
+    NavLeftComponent,
+    NavBottomComponent,
+    NavRightComponent
   ],
   imports: [
     BrowserModule,

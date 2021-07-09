@@ -17,6 +17,7 @@ import { ClassEditComponent } from './class/class-edit/class-edit.component';
 import { SubjectCreateComponent } from './subject/subject-create/subject-create.component';
 import { SubjectEditComponent } from './subject/subject-edit/subject-edit.component';
 import { SubjectListComponent } from './subject/subject-list/subject-list.component';
+import { ContactComponent } from './profile/contact/contact.component';
 
 const routes : Routes = [
   {path: 'login' , component: LoginComponent}, 
@@ -34,7 +35,7 @@ const routes : Routes = [
   {path: 'class-edit/:id', component: ClassEditComponent, canActivate : [AuthGuardGuard]},
   {path: 'class-list', component: ClassListComponent, canActivate : [AuthGuardGuard]},
 
- 
+  {path: 'contact', component: ContactComponent, canActivate : [AuthGuardGuard]},
 
   {path: 'subject-create', component: SubjectCreateComponent, canActivate : [AuthGuardGuard]},
   {path: 'subject-edit/:id', component: SubjectEditComponent, canActivate : [AuthGuardGuard]},
@@ -69,5 +70,6 @@ export const routingComponents = [LoginComponent,
 
                                   SubjectCreateComponent,
                                   SubjectEditComponent,
-                                  SubjectListComponent    ]
+                                  SubjectListComponent,
+                                  ContactComponent    ]
 
