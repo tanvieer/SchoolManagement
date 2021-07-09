@@ -48,19 +48,19 @@ export class ClassListComponent implements OnInit {
    
 
   onDelete(id:string){
-    if(confirm("Are you sure to delete this class?")) { 
+      if(confirm("Are you sure to delete this class?")) { 
 
-      this.service.deleteClass(id)
-      .subscribe((data: any) => {  
-        if(data.Status == "SUCCESS"){
-          this.toastr.success(data.Message, 'Delete Class');
-          this.loadData();
-        }
-        else {
-          this.toastr.error(data.Message, 'Delete Class');
-        } ;
-      });
-    }
- }
+        this.service.deleteClass(id)
+        .subscribe((data: any) => {  
+          if(data.Status == "SUCCESS"){
+            this.toastr.success(data.Message, 'Delete Class');
+            this.loadData();
+          }
+          else {
+            this.toastr.error(data.Message, 'Delete Class');
+          } ;
+        });
+      }
+  }
 
 }

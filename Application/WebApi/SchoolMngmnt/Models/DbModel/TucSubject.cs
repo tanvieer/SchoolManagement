@@ -11,6 +11,9 @@ namespace SchoolMngmnt.Models.DbModel
         public string SubjectName { get; set; }
         public string TeacherId { get; set; } 
         public string TeacherUserName { get; set; } 
-        public string TeacherName { get; set; } 
+        public string TeacherName { get; set; }
+        public string ClassId { get; set; }
+        public string ClassName { get; set; }
+        public string Status { get; set; }
     }
 }

@@ -13,7 +13,7 @@ create or replace package pkg_tuc_manage_op is
                                  p_err_code   out varchar2,
                                  p_err_msg    out varchar2);
   procedure sp_tuc_class(p_activity   in char,
-                         p_class_id   out tuc_class.class_id%type,
+                         p_class_id   in out tuc_class.class_id%type,
                          p_class_name in tuc_class.class_name%type,
                          p_user_id    in tuc_class.maker_id%type,
                          p_out        out number,
@@ -34,7 +34,8 @@ create or replace package pkg_tuc_manage_op is
                             T_CURSOR   out sys_refcursor);
 
   procedure sp_tuc_subject(p_activity     in char,
-                           p_subject_id   out tuc_subject.subject_id%type,
+                           p_subject_id   in out tuc_subject.subject_id%type,
+                           p_class_id     in tuc_subject.class_id%type,
                            p_subject_name in tuc_subject.subject_name%type,
                            p_teacher_id   in tuc_sys_user_mast.id%type,
                            p_user_id      in tuc_subject.maker_id%type,
@@ -219,7 +220,7 @@ create or replace package body pkg_tuc_manage_op is
   EXCEPTION
     WHEN L_USER_ERR THEN
       BEGIN
-        P_OUT := 0;
+        P_OUT := 1;
         ROLLBACK;
       END;
     WHEN EXCP_FK_CONSTRAINT_VIOLATED THEN
@@ -244,7 +245,7 @@ create or replace package body pkg_tuc_manage_op is
   end sp_class_subject_map;
 
   procedure sp_tuc_class(p_activity   in char,
-                         p_class_id   out tuc_class.class_id%type,
+                         p_class_id   in out tuc_class.class_id%type,
                          p_class_name in tuc_class.class_name%type,
                          p_user_id    in tuc_class.maker_id%type,
                          p_out        out number,
@@ -258,7 +259,7 @@ create or replace package body pkg_tuc_manage_op is
     EXCP_FK_CONSTRAINT_VIOLATED EXCEPTION;
     PRAGMA EXCEPTION_INIT(EXCP_FK_CONSTRAINT_VIOLATED, -02291);
     -- l_row_count number(8);
-    -- v_count     number(5);
+    -- v_count     number(5); 
   
   begin
   
@@ -287,17 +288,18 @@ create or replace package body pkg_tuc_manage_op is
         RETURN;
       END IF;
     end if;
-  
-    IF P_OUT = 0 THEN
-      pkg_tuc_user_mast.IS_NULL('Class Name',
-                                p_class_name,
-                                'mng-sp_tuc_class',
-                                P_OUT,
-                                P_ERR_CODE,
-                                P_ERR_MSG);
-    ELSE
-      RETURN;
-    END IF;
+    if p_activity <> 'D' then
+      IF P_OUT = 0 THEN
+        pkg_tuc_user_mast.IS_NULL('Class Name',
+                                  p_class_name,
+                                  'mng-sp_tuc_class',
+                                  P_OUT,
+                                  P_ERR_CODE,
+                                  P_ERR_MSG);
+      ELSE
+        RETURN;
+      END IF;
+    end if;
   
     IF P_OUT = 1 THEN
       RAISE L_USER_ERR;
@@ -359,7 +361,7 @@ create or replace package body pkg_tuc_manage_op is
   EXCEPTION
     WHEN L_USER_ERR THEN
       BEGIN
-        P_OUT := 0;
+        P_OUT := 1;
         ROLLBACK;
       END;
     
@@ -467,6 +469,7 @@ create or replace package body pkg_tuc_manage_op is
                last_update_time
           from tuc_class c
          where c.status <> 'D'
+           and class_id <> 0
          order by class_id;
     end if;
   
@@ -480,7 +483,8 @@ create or replace package body pkg_tuc_manage_op is
   end sp_tuc_class_ga;
 
   procedure sp_tuc_subject(p_activity     in char,
-                           p_subject_id   out tuc_subject.subject_id%type,
+                           p_subject_id   in out tuc_subject.subject_id%type,
+                           p_class_id     in tuc_subject.class_id%type,
                            p_subject_name in tuc_subject.subject_name%type,
                            p_teacher_id   in tuc_sys_user_mast.id%type,
                            p_user_id      in tuc_subject.maker_id%type,
@@ -498,23 +502,15 @@ create or replace package body pkg_tuc_manage_op is
   
     -- l_row_count  number(8);
     -- v_count      number(5);
-    V_STATUS     tuc_subject.STATUS%TYPE;
-    v_teacher_id tuc_sys_user_mast.id%type;
+    V_STATUS                tuc_subject.STATUS%TYPE;
+    v_teacher_id            tuc_sys_user_mast.id%type;
+    v_count                 number(8);
+    v_existing_subject_name tuc_subject.subject_name%type;
   
   begin
   
-    p_out := 0;
-  
-    IF P_OUT = 0 THEN
-      pkg_tuc_user_mast.IS_NULL('subject ID',
-                                p_subject_id,
-                                'mng-sp_tuc_subject',
-                                P_OUT,
-                                P_ERR_CODE,
-                                P_ERR_MSG);
-    ELSE
-      RETURN;
-    END IF;
+    p_out   := 0;
+    v_count := 0;
   
     IF P_OUT = 0 THEN
       pkg_tuc_user_mast.IS_NULL('p_activity',
@@ -527,7 +523,38 @@ create or replace package body pkg_tuc_manage_op is
       RETURN;
     END IF;
   
-    if p_activity = 'I' OR p_activity = 'U' then
+    if p_activity = 'D' OR p_activity = 'U' OR p_activity = 'A' then
+    
+      if p_out = 0 then
+        pkg_tuc_user_mast.is_null('subject id',
+                                  p_subject_id,
+                                  'mng-sp_tuc_subject',
+                                  p_out,
+                                  p_err_code,
+                                  p_err_msg);
+      else
+        raise L_USER_ERR;
+      end if;
+    
+    else
+    
+      if p_out = 0 then
+        select count(1)
+          into v_count
+          from tuc_subject
+         where upper(subject_name) = trim(upper(p_subject_name));
+      
+        if v_count > 0 then
+          p_out      := 1;
+          p_err_code := 'mng-1030';
+          p_err_msg  := initcap(trim(p_subject_name) ||
+                                ' This subject already exists in system!');
+          ROLLBACK;
+          RAISE L_USER_ERR;
+        end if;
+      else
+        raise l_user_err;
+      end if;
     
       IF P_OUT = 0 THEN
         pkg_tuc_user_mast.IS_NULL('p_teacher_id',
@@ -558,24 +585,8 @@ create or replace package body pkg_tuc_manage_op is
   
     IF P_OUT = 0 THEN
     
-      begin
-        select id
-          into v_teacher_id
-          from tuc_sys_user_mast u
-         where upper(u.username) = upper(p_teacher_id)
-           and u.role_id = 2
-           and status <> 'D';
-      exception
-        when others then
-          p_out      := 1;
-          p_err_code := 'mng-1011';
-          p_err_msg  := initcap('No active teacher found by username : ' ||
-                                p_teacher_id);
-          ROLLBACK;
-          raise l_user_err;
-      end;
-    
       IF P_ACTIVITY = 'I' THEN
+      
         select nvl(max(subject_id), 0) + 1
           into p_subject_id
           from tuc_subject;
@@ -584,6 +595,7 @@ create or replace package body pkg_tuc_manage_op is
           (subject_id,
            subject_name,
            teacher_id,
+           class_id,
            status,
            maker_id,
            maker_time,
@@ -591,8 +603,9 @@ create or replace package body pkg_tuc_manage_op is
            last_update_time)
         values
           (P_subject_id,
-           P_subject_name,
+           trim(P_subject_name),
            v_teacher_id,
+           p_class_id,
            'R',
            P_USER_ID,
            SYSDATE,
@@ -632,9 +645,65 @@ create or replace package body pkg_tuc_manage_op is
             RAISE L_USER_ERR;
         END;
       
+        if V_STATUS = 'A' then
+          p_out      := 1;
+          p_err_code := 'mng-1028';
+          p_err_msg  := initcap('This subject is already archived, you cannot change any property.');
+          ROLLBACK;
+          RAISE L_USER_ERR;
+        elsif V_STATUS = 'D' then
+          p_out      := 1;
+          p_err_code := 'mng-1029';
+          p_err_msg  := initcap('This subject is already deleted, you cannot change any property.');
+          ROLLBACK;
+          RAISE L_USER_ERR;
+        end if;
+      
+        begin
+          select id
+            into v_teacher_id
+            from tuc_sys_user_mast u
+           where upper(u.username) = upper(p_teacher_id)
+             and u.role_id = 2
+             and status <> 'D';
+        exception
+          when others then
+            p_out      := 1;
+            p_err_code := 'mng-1031';
+            p_err_msg  := initcap('No active teacher found by username : ' ||
+                                  p_teacher_id);
+            ROLLBACK;
+            raise l_user_err;
+        end;
+      
+        if p_out = 0 then
+          select count(1)
+            into v_count
+            from tuc_subject
+           where upper(subject_name) = trim(upper(p_subject_name));
+        
+          select upper(subject_name)
+            into v_existing_subject_name
+            from tuc_subject
+           where subject_id = p_subject_id;
+        
+          if v_count > 0 and
+             v_existing_subject_name <> trim(upper(p_subject_name)) then
+            p_out      := 1;
+            p_err_code := 'mng-1032';
+            p_err_msg  := initcap(trim(p_subject_name) ||
+                                  ' This subject already exists in system!');
+            ROLLBACK;
+            RAISE L_USER_ERR;
+          end if;
+        else
+          raise l_user_err;
+        end if;
+      
         update tuc_subject s
-           set s.subject_name   = 'A',
-               s.teacher_id     = p_teacher_id,
+           set s.subject_name   = trim(p_subject_name),
+               s.teacher_id     = v_teacher_id,
+               s.class_id       = p_class_id,
                last_update_by   = p_user_id,
                last_update_time = sysdate
          where subject_id = p_subject_id;
@@ -648,6 +717,7 @@ create or replace package body pkg_tuc_manage_op is
         delete tuc_subject where subject_id = p_subject_id;
         commit;
         p_err_msg := initcap('subject deleted successfully!');
+      
       ELSE
         begin
           p_out      := 1;
@@ -665,7 +735,7 @@ create or replace package body pkg_tuc_manage_op is
   EXCEPTION
     WHEN L_USER_ERR THEN
       BEGIN
-        P_OUT := 0;
+        P_OUT := 1;
         ROLLBACK;
       END;
     
@@ -718,6 +788,8 @@ create or replace package body pkg_tuc_manage_op is
              (select first_name || ' ' || last_name
                 from tuc_sys_user_mast
                where id = c.teacher_id) as teacher_full_name,
+             class_id,
+             (select class_name from tuc_class where class_id = c.class_id) as class_name,
              status,
              maker_id,
              maker_time,
@@ -772,7 +844,16 @@ create or replace package body pkg_tuc_manage_op is
       open T_CURSOR for
         select subject_id,
                subject_name,
-               status,
+               CASE
+                 WHEN status = 'A' THEN
+                  'Archived'
+                 WHEN status = 'D' THEN
+                  'Deleted'
+                 WHEN status = 'R' THEN
+                  'Active'
+                 ELSE
+                  status
+               END as status,
                teacher_id,
                (select username
                   from tuc_sys_user_mast
@@ -780,19 +861,29 @@ create or replace package body pkg_tuc_manage_op is
                (select first_name || ' ' || last_name
                   from tuc_sys_user_mast
                  where id = s.teacher_id) as teacher_full_name,
+               class_id,
+               (select class_name from tuc_class where class_id = s.class_id) as class_name,
                maker_id,
                maker_time,
                last_update_by,
                last_update_time
           from tuc_subject s
          where s.status <> 'D'
-          order by subject_id;
-    elsif p_in = 2
-      then
-        open T_CURSOR for
+         order by subject_id;
+    elsif p_in = 2 then
+      open T_CURSOR for
         select subject_id,
                subject_name,
-               status,
+               CASE
+                 WHEN status = 'A' THEN
+                  'Archived'
+                 WHEN status = 'D' THEN
+                  'Deleted'
+                 WHEN status = 'R' THEN
+                  'Active'
+                 ELSE
+                  status
+               END as status,
                teacher_id,
                (select username
                   from tuc_sys_user_mast
@@ -800,14 +891,16 @@ create or replace package body pkg_tuc_manage_op is
                (select first_name || ' ' || last_name
                   from tuc_sys_user_mast
                  where id = s.teacher_id) as teacher_full_name,
+               class_id,
+               (select class_name from tuc_class where class_id = s.class_id) as class_name,
                maker_id,
                maker_time,
                last_update_by,
                last_update_time
           from tuc_subject s
          where s.status <> 'D'
-          and subject_id in (select subject_id from tuc_class_subject_map m where m.class_id = p_class_id and status <> 'R')
-          order by subject_id;
+           and class_id = p_class_id
+         order by subject_id;
     end if;
     p_err_msg := 'Data found successfully.';
   exception
@@ -1195,7 +1288,7 @@ create or replace package body pkg_tuc_manage_op is
           from tuc_test s
          where s.status <> 'D'
            and (s.subject_id = p_subject_id or p_subject_id is null)
-           order by test_id;
+         order by test_id;
     end if;
     p_err_msg := 'Data found successfully.';
   exception

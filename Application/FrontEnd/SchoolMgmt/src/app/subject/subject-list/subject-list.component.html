@@ -1,0 +1,36 @@
+ 
+<div class="card-body"> 
+    <table class="table table-striped"> 
+        <caption>Subject List</caption>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Subject ID</th>
+        <th scope="col">Subject Name</th> 
+        <th scope="col">Class</th>
+        <th scope="col">Teacher</th>
+        <th scope="col">Status</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of subjectList">
+        <th scope="row">{{ item.index }}</th>
+        <td>{{item.SubjectId}}</td>
+        <td>{{item.SubjectName}}</td> 
+        <td>{{item.ClassName}}</td>
+        <td>{{item.TeacherName}}</td>
+        <td>{{item.Status}}</td>
+        <td>
+          <button [disabled]="item.Status!='Active'" type="button" class="btn btn-sm btn-primary" routerLink="/subject-edit/{{item.SubjectId}}">Edit</button>
+          &nbsp;
+          <button [disabled]="item.Status!='Active'"  (click)="onArchive(item.SubjectId)"  type="button" class="btn btn-sm btn-warning">Archive</button>
+          &nbsp;
+          <button [disabled]="item.Status!='Active'"  (click)="onDelete(item.SubjectId)"  type="button" class="btn btn-sm btn-danger">Delete</button>
+        </td>
+      </tr>
+
+  </table> 
+
+
+</div>

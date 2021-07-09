@@ -1,0 +1,43 @@
+<div class="row">
+  <!-- left column -->
+  <div class="col-md-9">
+    <!-- general form elements -->
+    <div class="card card-primary">
+      <div class="card-header">
+        <h3 class="card-title">Add New Subject</h3>
+      </div>
+      <form #form="ngForm" (submit)="onSubmit(form)">
+        <div class="card-body">
+
+
+          <div class="form-group">
+            <label for="inputSubjectName">Subject Name</label> 
+            <input autocomplete="off" name="SubjectName"  #SubjectName="ngModel" [(ngModel)]="serviceOthers.formData_Subject.SubjectName" type="text" placeholder="Subject Name" class="form-control" required>
+          </div>
+
+
+          <div class="form-group">
+            <label for="exampleSelectBorder">Class</label> 
+
+            <select name="ClassId" id="classId" class="form-control" [(ngModel)]="serviceOthers.formData_Subject.ClassId" required>
+              <option *ngFor="let option of classList" [value]="option.ClassId" >{{option.ClassName}}</option>
+            </select>
+
+
+
+          </div>
+          <div class="form-group">
+            <label for="exampleSelectBorder2">Teacher</label>
+            <select name="TeacherUserName" id="TeacherUserName" class="form-control" [(ngModel)]="serviceOthers.formData_Subject.TeacherUserName" required>
+              <option *ngFor="let option of teacherList" [value]="option.UserName" >{{option.FullName}} [{{option.UserName}}] </option>
+            </select>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        <!-- /.card-body -->
+      </form>
+    </div>
+  </div>
+</div>

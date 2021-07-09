@@ -14,6 +14,9 @@ import { UpdateProfileComponent } from './profile/update-profile/update-profile.
 import { ClassListComponent } from './class/class-list/class-list.component';
 import { ClassCreateComponent } from './class/class-create/class-create.component';
 import { ClassEditComponent } from './class/class-edit/class-edit.component';
+import { SubjectCreateComponent } from './subject/subject-create/subject-create.component';
+import { SubjectEditComponent } from './subject/subject-edit/subject-edit.component';
+import { SubjectListComponent } from './subject/subject-list/subject-list.component';
 
 const routes : Routes = [
   {path: 'login' , component: LoginComponent}, 
@@ -31,6 +34,11 @@ const routes : Routes = [
   {path: 'class-edit/:id', component: ClassEditComponent, canActivate : [AuthGuardGuard]},
   {path: 'class-list', component: ClassListComponent, canActivate : [AuthGuardGuard]},
 
+ 
+
+  {path: 'subject-create', component: SubjectCreateComponent, canActivate : [AuthGuardGuard]},
+  {path: 'subject-edit/:id', component: SubjectEditComponent, canActivate : [AuthGuardGuard]},
+  {path: 'subject-list', component: SubjectListComponent, canActivate : [AuthGuardGuard]},
 
   {path: 'logout', component: LogoutComponent}
 ];
@@ -57,5 +65,9 @@ export const routingComponents = [LoginComponent,
                                   UpdateProfileComponent,
                                   ClassListComponent,
                                   ClassCreateComponent,
-                                  ClassEditComponent     ]
+                                  ClassEditComponent,
+
+                                  SubjectCreateComponent,
+                                  SubjectEditComponent,
+                                  SubjectListComponent    ]
 

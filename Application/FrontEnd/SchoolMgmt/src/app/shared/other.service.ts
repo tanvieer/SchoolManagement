@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Config } from '../config';
-import { TucClass } from './models/tuc-class.model';
-import { TucSubjectClassMap } from './models/tuc-subject-class-map.model';
+import { TucClass } from './models/tuc-class.model'; 
 import { TucSubject } from './models/tuc-subject.model';
 import { TucTest } from './models/tuc-test.model';
 
@@ -11,7 +10,8 @@ import { TucTest } from './models/tuc-test.model';
 })
 export class OtherService {
 
-  formData_class!: TucClass;   
+  formData_class!: TucClass;  
+  formData_Subject!: TucSubject;  
 
   config = new Config();
   constructor(private http : HttpClient) {  
@@ -61,7 +61,8 @@ export class OtherService {
 
 
 
-  modifySubject(_formData : TucSubject){  
+  modifySubject(_formData : TucSubject, _subject_id: string){  
+    _formData.SubjectId = _subject_id;
     return this.http.post(`${this.config.url}/Subject/ModifySubjectInfo`,_formData,this.config.httpOptions);  
   
   }
@@ -70,16 +71,9 @@ export class OtherService {
     return this.http.post(`${this.config.url}/Subject/AddNewSubject`,_formData,this.config.httpOptions);  
   }
 
-
-  deleteClassSubjectMap(_classId: string, _subjectId : string){  
-    return this.http.delete(`${this.config.url}/Subject/ClassSubjectMapRemove?classId=${_classId}&subjectId=${_subjectId}`,this.config.httpOptions);  
-  }
-
-
-  ClassSubjectMap(_formData : TucSubjectClassMap){  
-    return this.http.post(`${this.config.url}/Subject/ClassSubjectMap`,_formData,this.config.httpOptions);  
-  
-  }
+  archiveSubject(_id : string){
+    return this.http.delete(`${this.config.url}/Subject/ArchiveSubject?id=${_id}`,this.config.httpOptions);  
+   }
 
 
   /************************************** */
@@ -111,6 +105,9 @@ export class OtherService {
   addNewTest(_formData : TucTest){  
     return this.http.post(`${this.config.url}/Test/AddNewTest`,_formData,this.config.httpOptions);  
   }
-  
+   
+  archiveClass(_id : string){
+    return this.http.delete(`${this.config.url}/Class/ArchiveClass?id=${_id}`,this.config.httpOptions);  
+  }
 
 }
