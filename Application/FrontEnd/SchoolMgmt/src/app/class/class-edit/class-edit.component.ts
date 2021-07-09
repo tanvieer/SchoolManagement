@@ -15,8 +15,7 @@ export class ClassEditComponent implements OnInit {
   constructor(public service: OtherService,
     private toastr: ToastrService,
     private arouter: ActivatedRoute,
-    private router: Router) {  
-      console.log("9");
+    private router: Router) {   
       this.getClassInfo(this.arouter.snapshot.params.id);
     }
 
@@ -33,34 +32,26 @@ export class ClassEditComponent implements OnInit {
             this.toastr.error(res.Message, 'Class Edit');
             this.resetForm();
           }
-          else {
-            console.log(res);
+          else { 
             this.parseData(res.Result); 
-          }
-          console.log("2");
+          } 
         });
     }
   
 
-    parseData(jsonData: any) { 
-      console.log("3");
+    parseData(jsonData: any) {  
       this.service.formData_class = { 
         Index: 1, 
         ClassId: jsonData.ClassId,
         ClassName: jsonData.ClassName 
-      }
-
-
-
+      } 
     }
   
     onSubmit(form: NgForm) { 
-      this.insertRecord(form);
-      console.log("4");
+      this.insertRecord(form); 
     }
   
-    insertRecord(form: NgForm) {
-      console.log("5");
+    insertRecord(form: NgForm) { 
       this.service.modifyClass(form.value)
         .subscribe((res: any) => { 
           if (res.Status == "SUCCESS"){
@@ -75,16 +66,12 @@ export class ClassEditComponent implements OnInit {
     resetForm(form?: NgForm) {
   
       if (form != null)
-        form.resetForm();
-
-        console.log("6");
+        form.resetForm(); 
   
-      this.service.formData_class = {
-        Index: 0,
-        ClassId: '',
-        ClassName: '' 
+        this.service.formData_class = {
+          Index: 0,
+          ClassId: '',
+          ClassName: '' 
       }
-    }
-  
-
+    } 
 }

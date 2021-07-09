@@ -15,10 +15,8 @@ export class ClassCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.resetForm();
-  }
-
-
-
+  } 
+  
   onSubmit(form: NgForm) { 
     this.insertRecord(form);
   }
