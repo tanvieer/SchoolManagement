@@ -115,4 +115,46 @@ export class OtherService {
     return this.http.delete(`${this.config.url}/Class/ArchiveClass?id=${_id}`,this.config.httpOptions);  
   }
 
+
+
+
+
+
+
+
+
+
+
+ /************************************** */
+ 
+
+
+
+
+
+
+addNewResult(_formData : TucTest){  
+  return this.http.post(`${this.config.url}/Result/AddNewResult`,_formData,this.config.httpOptions);   
+}
+editResult(_formData : TucTest){  
+  return this.http.post(`${this.config.url}/Result/EditResult`,_formData,this.config.httpOptions);  
+}
+
+archiveResult(_subjectId:string){  
+  return this.http.delete(`${this.config.url}/Result/ArchiveResult?id=${_subjectId}`,this.config.httpOptions);  
+}
+deleteResult(_id:string){  
+  return this.http.delete(`${this.config.url}/Result/DeleteResult?id=${_id}`,this.config.httpOptions);  
+}
+
+
+
+
+
+
+
+
+
+
+
 }

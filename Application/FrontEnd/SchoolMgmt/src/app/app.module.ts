@@ -11,6 +11,9 @@ import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { NavBottomComponent } from './nav/nav-bottom/nav-bottom.component';
 import { NavRightComponent } from './nav/nav-right/nav-right.component'; 
 import { DatePipe } from '@angular/common';
+import { ResultCreateComponent } from './subject/result-create/result-create.component';
+import { ResultListComponent } from './subject/result-list/result-list.component';
+import { ResultEditComponent } from './subject/result-edit/result-edit.component';
 
 
 @NgModule({
@@ -18,7 +21,10 @@ import { DatePipe } from '@angular/common';
     AppComponent,
     routingComponents,
     NavBottomComponent,
-    NavRightComponent
+    NavRightComponent,
+    ResultCreateComponent,
+    ResultListComponent,
+    ResultEditComponent
   ],
   imports: [
     BrowserModule,

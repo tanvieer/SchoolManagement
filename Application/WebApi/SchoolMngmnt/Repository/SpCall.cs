@@ -90,7 +90,6 @@ namespace SchoolMngmnt.Repository
             rslt.Result = new TucSubject();
 
             int p_out = 1;
-            string err_code, err_msg;
 
             CDataAccess objCDataAccess = CDataAccess.NewCDataAccess();
             DbCommand objDbCommand = objCDataAccess.GetMyCommand(false, IsolationLevel.ReadCommitted, "application", false);
@@ -668,6 +667,221 @@ namespace SchoolMngmnt.Repository
             return rslt;
         }
 
+
+
+        public static StatusResult<List<ResultViewModel>> GetResultByTest(string testId, string makeBy)
+        {
+            StatusResult<List<ResultViewModel>> rslt = new StatusResult<List<ResultViewModel>>();
+            ResultViewModel model;
+            rslt.Result = new List<ResultViewModel>();
+            string p_out = "1";
+            string err_code;
+
+            CDataAccess objCDataAccess = CDataAccess.NewCDataAccess();
+            DbCommand objDbCommand = objCDataAccess.GetMyCommand(false, IsolationLevel.ReadCommitted, "application", false);
+
+
+            List<DSSQLParam> objList = new List<DSSQLParam>();
+
+
+            objList.Add(new DSSQLParam("p_test_id", testId, ParameterDirection.Input)); 
+
+            objList.Add(new DSSQLParam("p_user_id", makeBy, ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
+            objList.Add(new DSSQLParam("p_err_code", string.Empty, ParameterDirection.Output));
+            objList.Add(new DSSQLParam("p_err_msg", string.Empty, ParameterDirection.Output));
+
+
+
+            try
+            {
+                using (DbDataReader dr = objCDataAccess.ExecuteReader(objDbCommand, SP_PREFIX + "pkg_tuc_manage_op.sp_test_result_ga", CommandType.StoredProcedure, objList))
+                {
+                    p_out = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString();
+                    if (p_out == "1")
+                    {
+                        err_code = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_code")].Value.ToString();
+                        rslt.Status = "FAILED";
+                        rslt.Message = err_code + "~" + objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
+                        return rslt;
+                    }
+                    else
+                    {
+                        rslt.Status = "SUCCESS";
+                        rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
+                    }
+
+
+                    while (dr.Read())
+                    {
+                        model = new ResultViewModel();
+
+                        model.ResultId = dr["result_id"].ToString();
+                        model.TestId = dr["test_id"].ToString();
+                        model.Grade = dr["grade"] == null ? 0 : Convert.ToDouble(dr["grade"].ToString());
+                        model.Status = dr["status"].ToString();
+                        model.StudentId = dr["student_id"].ToString();
+                        model.Username = dr["username"].ToString();
+                        model.FirstName = dr["first_name"].ToString();
+                        model.LastName = dr["last_name"].ToString();     
+
+                        rslt.Result.Add(model);
+                    }
+                    dr.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = ex.Message;
+            }
+            finally
+            {
+                objDbCommand.Connection.Close();
+                objCDataAccess.Dispose(objDbCommand);
+                objList.Clear();
+            }
+            return rslt;
+        }
+
+
+        public static StatusResult<ResultViewModel> GetResultInfo(string resultId, string makeBy)
+        {
+            StatusResult<ResultViewModel> rslt = new StatusResult<ResultViewModel>();
+            rslt.Result = new ResultViewModel();
+            string p_out = "1";
+            string err_code;
+
+            CDataAccess objCDataAccess = CDataAccess.NewCDataAccess();
+            DbCommand objDbCommand = objCDataAccess.GetMyCommand(false, IsolationLevel.ReadCommitted, "application", false);
+
+
+            List<DSSQLParam> objList = new List<DSSQLParam>();
+
+
+            objList.Add(new DSSQLParam("p_result_id", resultId, ParameterDirection.Input));
+
+            objList.Add(new DSSQLParam("p_user_id", makeBy, ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
+            objList.Add(new DSSQLParam("p_err_code", string.Empty, ParameterDirection.Output));
+            objList.Add(new DSSQLParam("p_err_msg", string.Empty, ParameterDirection.Output));
+
+
+
+            try
+            {
+                using (DbDataReader dr = objCDataAccess.ExecuteReader(objDbCommand, SP_PREFIX + "pkg_tuc_manage_op.sp_tuc_result_gk", CommandType.StoredProcedure, objList))
+                {
+                    p_out = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString();
+                    if (p_out == "1")
+                    {
+                        err_code = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_code")].Value.ToString();
+                        rslt.Message = err_code + "~" + objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
+                        return rslt;
+                    }
+                    else
+                    {
+                        rslt.Status = "SUCCESS";
+                        rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
+                    }
+
+                    while (dr.Read())
+                    {
+                        rslt.Result.ResultId = dr["result_id"].ToString();
+                        rslt.Result.TestId = dr["test_id"].ToString();
+                        rslt.Result.Grade = dr["grade"] == null ? 0 : Convert.ToDouble(dr["grade"].ToString());
+                        rslt.Result.Status = dr["status"].ToString();
+                        rslt.Result.StudentId = dr["student_id"].ToString();
+                        rslt.Result.Username = dr["username"].ToString();
+                        rslt.Result.FirstName = dr["first_name"].ToString();
+                        rslt.Result.LastName = dr["last_name"].ToString();
+                    }
+                    dr.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = ex.Message;
+            }
+            finally
+            {
+                objDbCommand.Connection.Close();
+                objCDataAccess.Dispose(objDbCommand);
+                objList.Clear();
+            }
+            return rslt;
+        }
+
+
+
+
+
+        public static StatusResult<ResultViewModel> ManageResult(ResultViewModel model, string p_activity, string makeBy)
+        {
+            if (model is null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+            StatusResult<ResultViewModel> rslt = new StatusResult<ResultViewModel>();
+
+            rslt.Result = new ResultViewModel();
+
+            int p_out = 1;
+
+            CDataAccess objCDataAccess = CDataAccess.NewCDataAccess();
+            DbCommand objDbCommand = objCDataAccess.GetMyCommand(false, IsolationLevel.ReadCommitted, "application", false);
+
+
+            List<DSSQLParam> objList = new List<DSSQLParam>();
+
+
+            objList.Add(new DSSQLParam("p_activity", p_activity, ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_result_id", model.ResultId, ParameterDirection.InputOutput));
+            objList.Add(new DSSQLParam("p_test_id", model.TestId, ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_grade", model.Grade, ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_student_id", model.StudentId, ParameterDirection.Input));
+
+            objList.Add(new DSSQLParam("p_user_id", makeBy, ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
+            objList.Add(new DSSQLParam("p_err_code", string.Empty, ParameterDirection.Output));
+            objList.Add(new DSSQLParam("p_err_msg", string.Empty, ParameterDirection.Output));
+
+
+
+
+            try
+            {
+                objCDataAccess.ExecuteNonQuery(objDbCommand, SP_PREFIX + "pkg_tuc_manage_op.sp_tuc_result", CommandType.StoredProcedure, objList);
+
+                p_out = Convert.ToInt32(objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString());
+                if (p_out == 1)
+                {
+                    rslt.Status = "FAILED";
+                    rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_code")].Value.ToString()
+                        + "~" + objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
+                }
+                else
+                {
+                    rslt.Status = "SUCCESS";
+                    rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = ex.Message;
+            }
+            finally
+            {
+                objDbCommand.Connection.Close();
+                objCDataAccess.Dispose(objDbCommand);
+                objList.Clear();
+            }
+
+            rslt.Result = model;
+            return rslt;
+        }
 
 
 

@@ -5,13 +5,13 @@ create or replace package pkg_tuc_manage_op is
   -- Purpose : 
 
   -- Public type declarations
-  procedure sp_class_subject_map(p_activity   in char,
-                                 p_subject_id in tuc_class_subject_map.subject_id%type,
-                                 p_class_id   in tuc_class_subject_map.class_id%type,
-                                 p_user_id    in TUC_SYS_USER_MAST.maker_id%type,
-                                 p_out        out number,
-                                 p_err_code   out varchar2,
-                                 p_err_msg    out varchar2);
+  /* procedure sp_class_subject_map(p_activity   in char,
+  p_subject_id in tuc_class_subject_map.subject_id%type,
+  p_class_id   in tuc_class_subject_map.class_id%type,
+  p_user_id    in TUC_SYS_USER_MAST.maker_id%type,
+  p_out        out number,
+  p_err_code   out varchar2,
+  p_err_msg    out varchar2);*/
   procedure sp_tuc_class(p_activity   in char,
                          p_class_id   in out tuc_class.class_id%type,
                          p_class_name in tuc_class.class_name%type,
@@ -82,6 +82,31 @@ create or replace package pkg_tuc_manage_op is
                            p_err_code   out nvarchar2,
                            p_err_msg    out nvarchar2,
                            T_CURSOR     out sys_refcursor);
+  procedure sp_test_result_ga(p_test_id  in tuc_test.test_id%type,
+                              p_user_id  in nvarchar2,
+                              p_out      out number,
+                              p_err_code out nvarchar2,
+                              p_err_msg  out nvarchar2,
+                              T_CURSOR   out sys_refcursor);
+                              
+  procedure sp_tuc_result(p_activity   in char,
+                          p_result_id  in out tuc_result.result_id%type,
+                          p_test_id    in tuc_result.test_id%type,
+                          p_grade      in tuc_result.grade%type,
+                          p_student_id in tuc_result.student_id%type,
+                          p_user_id    in tuc_result.maker_id%type,
+                          p_out        out number,
+                          p_err_code   out varchar2,
+                          p_err_msg    out varchar2);   
+                          
+  procedure sp_tuc_result_gk(p_result_id in nvarchar2,
+                             p_user_id   in nvarchar2,
+                             p_out       out number,
+                             p_err_code  out nvarchar2,
+                             p_err_msg   out nvarchar2,
+                             T_CURSOR    out sys_refcursor);                         
+                              
+                              
 
 end pkg_tuc_manage_op;
 /
@@ -89,161 +114,161 @@ create or replace package body pkg_tuc_manage_op is
 
   --mng-1016
 
-  procedure sp_class_subject_map(p_activity   in char,
-                                 p_subject_id in tuc_class_subject_map.subject_id%type,
-                                 p_class_id   in tuc_class_subject_map.class_id%type,
-                                 p_user_id    in TUC_SYS_USER_MAST.maker_id%type,
-                                 p_out        out number,
-                                 p_err_code   out varchar2,
-                                 p_err_msg    out varchar2) as
-  
-    L_USER_ERR                  EXCEPTION;
-    EXCP_UK_CONSTRAINT_VIOLATED EXCEPTION;
-    PRAGMA EXCEPTION_INIT(EXCP_UK_CONSTRAINT_VIOLATED, -00001);
-  
-    EXCP_FK_CONSTRAINT_VIOLATED EXCEPTION;
-    PRAGMA EXCEPTION_INIT(EXCP_FK_CONSTRAINT_VIOLATED, -02291);
-    --v_user_id   TUC_SYS_USER_MAST.id%type;   
-    v_count number(5);
-  
-  begin
-  
-    p_out := 0;
-  
-    IF P_OUT = 0 THEN
-      pkg_tuc_user_mast.IS_NULL('subject ID',
-                                p_subject_id,
-                                'mng-sp_class_subject_map',
-                                P_OUT,
-                                P_ERR_CODE,
-                                P_ERR_MSG);
-    ELSE
-      RETURN;
-    END IF;
-  
-    IF P_OUT = 0 THEN
-      pkg_tuc_user_mast.IS_NULL('CLASS ID',
-                                p_class_id,
-                                'mng-sp_class_subject_map',
-                                P_OUT,
-                                P_ERR_CODE,
-                                P_ERR_MSG);
-    ELSE
-      RETURN;
-    END IF;
-  
-    IF P_OUT = 0 THEN
-      pkg_tuc_user_mast.IS_NULL('p_activity',
-                                p_activity,
-                                'mng-sp_class_subject_map',
-                                P_OUT,
-                                P_ERR_CODE,
-                                P_ERR_MSG);
-    ELSE
-      RETURN;
-    END IF;
-  
-    IF P_OUT = 1 THEN
-      RAISE L_USER_ERR;
-    END IF;
-  
-    IF P_OUT = 0 THEN
-      IF P_ACTIVITY = 'I' THEN
-        -- assign subject to class
-      
-        v_count := 0;
-        select count(1)
-          into v_count
-          from TUC_SYS_USER_MAST t
-         where t.username = p_subject_id
-           and t.status <> 'D';
-      
-        if v_count < 1 then
-          p_out      := 1;
-          p_err_code := 'mng-1001';
-          p_err_msg  := initcap('No active subject found by username : ' ||
-                                p_subject_id);
-          raise L_USER_ERR;
-        end if;
-      
-        v_count := 0;
-        select count(1)
-          into v_count
-          from tuc_class t
-         where t.class_id = p_class_id
-           and t.status <> 'D';
-      
-        if v_count < 1 then
-          p_out      := 1;
-          p_err_code := 'mng-1002';
-          p_err_msg  := initcap('No active class found by class id : ' ||
-                                p_class_id);
-          raise L_USER_ERR;
-        end if;
-      
-        insert into tuc_class_subject_map
-          (class_id,
-           subject_id,
-           maker_id,
-           maker_time,
-           last_update_by,
-           last_update_time)
-        values
-          (p_class_id,
-           p_subject_id,
-           p_user_id,
-           sysdate,
-           p_user_id,
-           sysdate);
-        commit;
-        p_err_msg := initcap('subject assigned successfully!');
-      
-      ELSIF P_ACTIVITY = 'D' THEN
-        -- deasign subject from class
-      
-        delete tuc_class_subject_map
-         where class_id = p_class_id
-           and subject_id = p_subject_id;
-        commit;
-        p_err_msg := initcap('subject deassigned successfully!');
+  /* procedure sp_class_subject_map(p_activity   in char,
+                                   p_subject_id in tuc_class_subject_map.subject_id%type,
+                                   p_class_id   in tuc_class_subject_map.class_id%type,
+                                   p_user_id    in TUC_SYS_USER_MAST.maker_id%type,
+                                   p_out        out number,
+                                   p_err_code   out varchar2,
+                                   p_err_msg    out varchar2) as
+    
+      L_USER_ERR                  EXCEPTION;
+      EXCP_UK_CONSTRAINT_VIOLATED EXCEPTION;
+      PRAGMA EXCEPTION_INIT(EXCP_UK_CONSTRAINT_VIOLATED, -00001);
+    
+      EXCP_FK_CONSTRAINT_VIOLATED EXCEPTION;
+      PRAGMA EXCEPTION_INIT(EXCP_FK_CONSTRAINT_VIOLATED, -02291);
+      --v_user_id   TUC_SYS_USER_MAST.id%type;   
+      v_count number(5);
+    
+    begin
+    
+      p_out := 0;
+    
+      IF P_OUT = 0 THEN
+        pkg_tuc_user_mast.IS_NULL('subject ID',
+                                  p_subject_id,
+                                  'mng-sp_class_subject_map',
+                                  P_OUT,
+                                  P_ERR_CODE,
+                                  P_ERR_MSG);
       ELSE
+        RETURN;
+      END IF;
+    
+      IF P_OUT = 0 THEN
+        pkg_tuc_user_mast.IS_NULL('CLASS ID',
+                                  p_class_id,
+                                  'mng-sp_class_subject_map',
+                                  P_OUT,
+                                  P_ERR_CODE,
+                                  P_ERR_MSG);
+      ELSE
+        RETURN;
+      END IF;
+    
+      IF P_OUT = 0 THEN
+        pkg_tuc_user_mast.IS_NULL('p_activity',
+                                  p_activity,
+                                  'mng-sp_class_subject_map',
+                                  P_OUT,
+                                  P_ERR_CODE,
+                                  P_ERR_MSG);
+      ELSE
+        RETURN;
+      END IF;
+    
+      IF P_OUT = 1 THEN
+        RAISE L_USER_ERR;
+      END IF;
+    
+      IF P_OUT = 0 THEN
+        IF P_ACTIVITY = 'I' THEN
+          -- assign subject to class
+        
+          v_count := 0;
+          select count(1)
+            into v_count
+            from TUC_SYS_USER_MAST t
+           where t.username = p_subject_id
+             and t.status <> 'D';
+        
+          if v_count < 1 then
+            p_out      := 1;
+            p_err_code := 'mng-1001';
+            p_err_msg  := initcap('No active subject found by username : ' ||
+                                  p_subject_id);
+            raise L_USER_ERR;
+          end if;
+        
+          v_count := 0;
+          select count(1)
+            into v_count
+            from tuc_class t
+           where t.class_id = p_class_id
+             and t.status <> 'D';
+        
+          if v_count < 1 then
+            p_out      := 1;
+            p_err_code := 'mng-1002';
+            p_err_msg  := initcap('No active class found by class id : ' ||
+                                  p_class_id);
+            raise L_USER_ERR;
+          end if;
+        
+          insert into tuc_class_subject_map
+            (class_id,
+             subject_id,
+             maker_id,
+             maker_time,
+             last_update_by,
+             last_update_time)
+          values
+            (p_class_id,
+             p_subject_id,
+             p_user_id,
+             sysdate,
+             p_user_id,
+             sysdate);
+          commit;
+          p_err_msg := initcap('subject assigned successfully!');
+        
+        ELSIF P_ACTIVITY = 'D' THEN
+          -- deasign subject from class
+        
+          delete tuc_class_subject_map
+           where class_id = p_class_id
+             and subject_id = p_subject_id;
+          commit;
+          p_err_msg := initcap('subject deassigned successfully!');
+        ELSE
+          begin
+            p_out      := 1;
+            p_err_code := 'mng-1003';
+            p_err_msg  := initcap('Invalid p_activity value.');
+            ROLLBACK;
+          end;
+        END IF;
+      ELSE
+        RAISE L_USER_ERR;
+      END IF;
+    EXCEPTION
+      WHEN L_USER_ERR THEN
+        BEGIN
+          P_OUT := 1;
+          ROLLBACK;
+        END;
+      WHEN EXCP_FK_CONSTRAINT_VIOLATED THEN
+        p_out      := 1;
+        p_err_code := 'mng-1004';
+        p_err_msg  := initcap('subject not found');
+        ROLLBACK;
+      when excp_uk_constraint_violated then
         begin
           p_out      := 1;
-          p_err_code := 'mng-1003';
-          p_err_msg  := initcap('Invalid p_activity value.');
+          p_err_code := 'mng-1005';
+          p_err_msg  := initcap('subject already assignend in given class.');
           ROLLBACK;
         end;
-      END IF;
-    ELSE
-      RAISE L_USER_ERR;
-    END IF;
-  EXCEPTION
-    WHEN L_USER_ERR THEN
-      BEGIN
-        P_OUT := 1;
-        ROLLBACK;
-      END;
-    WHEN EXCP_FK_CONSTRAINT_VIOLATED THEN
-      p_out      := 1;
-      p_err_code := 'mng-1004';
-      p_err_msg  := initcap('subject not found');
-      ROLLBACK;
-    when excp_uk_constraint_violated then
-      begin
+      
+      when others then
         p_out      := 1;
-        p_err_code := 'mng-1005';
-        p_err_msg  := initcap('subject already assignend in given class.');
+        p_err_code := 'mng-1006';
+        p_err_msg  := initcap('unexpected error in sp_class_subject_map ') ||
+                      sqlerrm;
         ROLLBACK;
-      end;
-    
-    when others then
-      p_out      := 1;
-      p_err_code := 'mng-1006';
-      p_err_msg  := initcap('unexpected error in sp_class_subject_map ') ||
-                    sqlerrm;
-      ROLLBACK;
-  end sp_class_subject_map;
-
+    end sp_class_subject_map;
+  */
   procedure sp_tuc_class(p_activity   in char,
                          p_class_id   in out tuc_class.class_id%type,
                          p_class_name in tuc_class.class_name%type,
@@ -591,6 +616,23 @@ create or replace package body pkg_tuc_manage_op is
           into p_subject_id
           from tuc_subject;
       
+        begin
+          select id
+            into v_teacher_id
+            from tuc_sys_user_mast u
+           where upper(u.username) = upper(p_teacher_id)
+             and u.role_id = 2
+             and status <> 'D';
+        exception
+          when others then
+            p_out      := 1;
+            p_err_code := 'mng-1033';
+            p_err_msg  := initcap('No active teacher found by username : ' ||
+                                  p_teacher_id);
+            ROLLBACK;
+            raise l_user_err;
+        end;
+      
         insert into tuc_subject
           (subject_id,
            subject_name,
@@ -713,7 +755,7 @@ create or replace package body pkg_tuc_manage_op is
       
       ELSIF P_ACTIVITY = 'D' THEN
         -- deasign teacher from subject 
-        delete tuc_class_subject_map where subject_id = p_subject_id;
+        --delete tuc_class_subject_map where subject_id = p_subject_id;
         delete tuc_subject where subject_id = p_subject_id;
         commit;
         p_err_msg := initcap('subject deleted successfully!');
@@ -901,6 +943,36 @@ create or replace package body pkg_tuc_manage_op is
          where s.status <> 'D'
            and class_id = p_class_id
          order by subject_id;
+    ELSIF p_in = 3 then
+      open T_CURSOR for
+        select subject_id,
+               subject_name,
+               CASE
+                 WHEN status = 'A' THEN
+                  'Archived'
+                 WHEN status = 'D' THEN
+                  'Deleted'
+                 WHEN status = 'R' THEN
+                  'Active'
+                 ELSE
+                  status
+               END as status,
+               teacher_id,
+               (select username
+                  from tuc_sys_user_mast
+                 where id = s.teacher_id) as teacher_username,
+               (select first_name || ' ' || last_name
+                  from tuc_sys_user_mast
+                 where id = s.teacher_id) as teacher_full_name,
+               class_id,
+               (select class_name from tuc_class where class_id = s.class_id) as class_name,
+               maker_id,
+               maker_time,
+               last_update_by,
+               last_update_time
+          from tuc_subject s
+         where s.status = 'R'
+         order by subject_id;
     end if;
     p_err_msg := 'Data found successfully.';
   exception
@@ -956,15 +1028,17 @@ create or replace package body pkg_tuc_manage_op is
   
     p_out := 0;
   
-    IF P_OUT = 0 THEN
-      pkg_tuc_user_mast.IS_NULL('test ID',
-                                p_test_id,
-                                'mng-sp_tuc_test',
-                                P_OUT,
-                                P_ERR_CODE,
-                                P_ERR_MSG);
-    ELSE
-      RETURN;
+    IF p_activity <> 'I' THEN
+      IF P_OUT = 0 THEN
+        pkg_tuc_user_mast.IS_NULL('test ID',
+                                  p_test_id,
+                                  'mng-sp_tuc_test',
+                                  P_OUT,
+                                  P_ERR_CODE,
+                                  P_ERR_MSG);
+      ELSE
+        RETURN;
+      END IF;
     END IF;
   
     IF P_OUT = 0 THEN
@@ -1109,7 +1183,6 @@ create or replace package body pkg_tuc_manage_op is
       
         update tuc_test s
            set s.status         = 'D',
-               s.subject_id     = p_subject_id,
                last_update_by   = p_user_id,
                last_update_time = sysdate
          where test_id = p_test_id;
@@ -1298,6 +1371,389 @@ create or replace package body pkg_tuc_manage_op is
       p_err_msg  := sqlerrm;
       rollback;
   end sp_tuc_test_ga;
+
+  procedure sp_test_result_ga(p_test_id  in tuc_test.test_id%type,
+                              p_user_id  in nvarchar2,
+                              p_out      out number,
+                              p_err_code out nvarchar2,
+                              p_err_msg  out nvarchar2,
+                              T_CURSOR   out sys_refcursor) is
+    /*****************************************************************************************************
+    NAME         : sp_test_result_ga
+    PURPOSE      : To to get list of test by subject id
+    MODULE       : tuc test
+    CREATED BY   : MOHAMMAD TANVIR ISLAM
+    Matriculation: #676614
+    EMAIL        : imoh@hrz.tu-chemnitz.de
+    CREATED AT   : 28-JUNE-2021
+    
+    REVISIONS:
+    
+    VERSION     DATE        AUTHOR                      DESCRIPTION
+    ---------   ----------  -----------------           ------------------------------------
+    1.0         28-06-2021  MOHAMMAD  TANVIR ISLAM           1. INITIATE SP
+    *****************************************************************************************************/
+  
+  begin
+    P_OUT := 0;
+  
+    IF P_OUT = 0 THEN
+      pkg_tuc_user_mast.IS_NULL('p_test_id',
+                                p_test_id,
+                                'mng- sp_test_result_ga',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
+    ELSE
+      RETURN;
+    END IF;
+  
+    IF P_OUT = 0 THEN
+      pkg_tuc_user_mast.IS_NULL('p_user_id',
+                                p_user_id,
+                                'mng- sp_test_result_ga',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
+    ELSE
+      RETURN;
+    END IF;
+  
+    IF P_OUT <> 0 THEN
+      RETURN;
+    END IF;
+    if P_OUT = 0 then
+      open T_CURSOR for
+        select result_id,
+               test_id,
+               grade,
+               case
+                 when r.status = 'A' then
+                  'ARCHIVED'
+                 WHEN R.STATUS = 'R' THEN
+                  'ACTIVE'
+                 WHEN R.STATUS = 'D' THEN
+                  'DELETED'
+                 ELSE
+                  R.STATUS
+               END AS status,
+               student_id,
+               usr.username,
+               usr.first_name,
+               usr.last_name
+          from tuc_result r
+          left join tuc_sys_user_mast usr
+            on r.student_id = usr.id
+         where r.status <> 'D'
+           and usr.status <> 'D';
+      p_err_msg := 'Data found successfully.';
+    end if;
+  exception
+    when others then
+      p_out      := 1;
+      p_err_code := sqlcode;
+      p_err_msg  := sqlerrm;
+      rollback;
+  end sp_test_result_ga;
+
+  procedure sp_tuc_result(p_activity   in char,
+                          p_result_id  in out tuc_result.result_id%type,
+                          p_test_id    in tuc_result.test_id%type,
+                          p_grade      in tuc_result.grade%type,
+                          p_student_id in tuc_result.student_id%type,
+                          p_user_id    in tuc_result.maker_id%type,
+                          p_out        out number,
+                          p_err_code   out varchar2,
+                          p_err_msg    out varchar2) as
+  
+    /*****************************************************************************************************
+    NAME         : sp_tuc_result
+    PURPOSE      : To insert update delete archive a test result
+    MODULE       : tuc test
+    CREATED BY   : MOHAMMAD TANVIR ISLAM
+    Matriculation: #676614
+    EMAIL        : imoh@hrz.tu-chemnitz.de
+    CREATED AT   : 28-JUNE-2021
+    
+    REVISIONS:
+    
+    VERSION     DATE        AUTHOR                      DESCRIPTION
+    ---------   ----------  -----------------           ------------------------------------
+    1.0         28-06-2021  MOHAMMAD  TANVIR ISLAM           1. INITIATE SP
+    *****************************************************************************************************/
+  
+    L_USER_ERR                  EXCEPTION;
+    EXCP_UK_CONSTRAINT_VIOLATED EXCEPTION;
+    PRAGMA EXCEPTION_INIT(EXCP_UK_CONSTRAINT_VIOLATED, -00001);
+  
+    EXCP_FK_CONSTRAINT_VIOLATED EXCEPTION;
+    PRAGMA EXCEPTION_INIT(EXCP_FK_CONSTRAINT_VIOLATED, -02291);
+    --v_user_id    TUC_SYS_USER_MAST.id%type;
+  
+    l_row_count number(8);
+    -- v_count      number(5);
+    V_STATUS     tuc_result.STATUS%TYPE;
+    v_subject_id tuc_sys_user_mast.id%type;
+  
+  begin
+  
+    p_out := 0;
+  
+    IF P_OUT = 0 THEN
+      pkg_tuc_user_mast.IS_NULL('p_activity',
+                                p_activity,
+                                'mng-sp_tuc_result',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
+    ELSE
+      RETURN;
+    END IF;
+  
+    IF p_activity <> 'I' THEN
+      IF P_OUT = 0 THEN
+        pkg_tuc_user_mast.IS_NULL('Result ID',
+                                  p_result_id,
+                                  'mng-sp_tuc_result',
+                                  P_OUT,
+                                  P_ERR_CODE,
+                                  P_ERR_MSG);
+      ELSE
+        RETURN;
+      END IF;
+    END IF;
+  
+    if p_activity = 'I' OR p_activity = 'U' then
+    
+      IF P_OUT = 0 THEN
+        pkg_tuc_user_mast.IS_NULL('Test Id',
+                                  p_test_id,
+                                  'mng-sp_tuc_result',
+                                  P_OUT,
+                                  P_ERR_CODE,
+                                  P_ERR_MSG);
+      ELSE
+        RETURN;
+      END IF;
+    
+      IF P_OUT = 0 THEN
+        pkg_tuc_user_mast.IS_NULL('Grade',
+                                  p_grade,
+                                  'mng-sp_tuc_result',
+                                  P_OUT,
+                                  P_ERR_CODE,
+                                  P_ERR_MSG);
+      ELSE
+        RETURN;
+      END IF;
+    end if;
+  
+    IF P_OUT = 1 THEN
+      RAISE L_USER_ERR;
+    END IF;
+  
+    IF P_OUT = 0 THEN
+    
+      IF P_ACTIVITY = 'I' THEN
+        select nvl(max(result_id), 0) + 1 into p_result_id from tuc_result;
+      
+        insert into tuc_result
+          (result_id,
+           test_id,
+           grade,
+           status,
+           maker_id,
+           maker_time,
+           last_update_by,
+           last_update_time,
+           student_id)
+        values
+          (p_result_id,
+           p_test_id,
+           p_grade,
+           'R',
+           p_user_id,
+           sysdate,
+           p_user_id,
+           sysdate,
+           p_student_id);
+        commit;
+        p_err_msg := initcap('New result added successfully! result Id = ' ||
+                             p_result_id);
+      
+      ELSIF P_ACTIVITY = 'A' THEN
+        -- Archiving Test 
+      
+        update tuc_result
+           set status           = 'A',
+               last_update_by   = p_user_id,
+               last_update_time = sysdate
+         where result_id = p_result_id;
+      
+        commit;
+        p_err_msg := initcap('Result archived successfully!');
+      
+      ELSIF P_ACTIVITY = 'U' THEN
+        -- deasign subject from test  
+      
+        BEGIN
+          SELECT STATUS
+            INTO V_STATUS
+            FROM tuc_result S
+           WHERE S.result_ID = P_result_ID;
+        EXCEPTION
+          WHEN OTHERS THEN
+            p_out      := 1;
+            p_err_code := 'mng-1037';
+            p_err_msg  := initcap('Result NOT FOUND BY Result ID: ' ||
+                                  P_result_ID);
+            ROLLBACK;
+            RAISE L_USER_ERR;
+        END;
+      
+        update tuc_result s
+           set s.grade          = p_grade,
+               last_update_by   = p_user_id,
+               last_update_time = sysdate
+         where result_id = P_result_ID;
+      
+        commit;
+        p_err_msg := initcap('Grade updated successfully!');
+      
+      ELSIF P_ACTIVITY = 'D' THEN
+      
+        update tuc_result s
+           set s.status         = 'D',
+               last_update_by   = p_user_id,
+               last_update_time = sysdate
+         where result_id = P_result_ID;
+        commit;
+        p_err_msg := initcap('Result deleted successfully!');
+      ELSE
+        begin
+          p_out      := 1;
+          p_err_code := 'mng-1038';
+          p_err_msg  := initcap('Invalid p_activity value.');
+          ROLLBACK;
+          RAISE L_USER_ERR;
+        end;
+      
+      end if;
+    
+    ELSE
+      RAISE L_USER_ERR;
+    END IF;
+  EXCEPTION
+    WHEN L_USER_ERR THEN
+      BEGIN
+        P_OUT := 1;
+        ROLLBACK;
+      END;
+    
+    when excp_uk_constraint_violated then
+      begin
+        p_out      := 1;
+        p_err_code := 'mng-1039';
+        p_err_msg  := initcap('Result id already exist.');
+        ROLLBACK;
+      end;
+    
+    when EXCP_FK_CONSTRAINT_VIOLATED then
+      begin
+        p_out      := 1;
+        p_err_code := 'mng-1040';
+        p_err_msg  := initcap('Test ID or Student Id not found.');
+        ROLLBACK;
+      end;
+    
+    when others then
+      p_out      := 1;
+      p_err_code := 'mng-1041';
+      p_err_msg  := initcap('unexpected error in sp_tuc_result ~ ') ||
+                    sqlerrm;
+      ROLLBACK;
+  end sp_tuc_result;
+
+  procedure sp_tuc_result_gk(p_result_id in nvarchar2,
+                             p_user_id   in nvarchar2,
+                             p_out       out number,
+                             p_err_code  out nvarchar2,
+                             p_err_msg   out nvarchar2,
+                             T_CURSOR    out sys_refcursor) is
+  
+    /*****************************************************************************************************
+    NAME         : sp_tuc_result_gk
+    PURPOSE      : To get specific result by result id
+    MODULE       : tuc test
+    CREATED BY   : MOHAMMAD TANVIR ISLAM
+    Matriculation: #676614
+    EMAIL        : imoh@hrz.tu-chemnitz.de
+    CREATED AT   : 28-JUNE-2021
+    
+    REVISIONS:
+    
+    VERSION     DATE        AUTHOR                      DESCRIPTION
+    ---------   ----------  -----------------           ------------------------------------
+    1.0         28-06-2021  MOHAMMAD  TANVIR ISLAM           1. INITIATE SP
+    *****************************************************************************************************/
+  
+  begin
+    P_OUT := 0;
+  
+    IF P_OUT = 0 THEN
+      pkg_tuc_user_mast.IS_NULL('p_user_id',
+                                p_user_id,
+                                'mng- sp_tuc_result_gk',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
+    ELSE
+      RETURN;
+    END IF;
+  
+    IF P_OUT <> 0 THEN
+      RETURN;
+    END IF;
+  
+    open T_CURSOR for
+      select result_id,
+             grade,
+             test_id,
+             CASE
+               WHEN r.status = 'A' THEN
+                'Archived'
+               WHEN r.status = 'D' THEN
+                'Deleted'
+               WHEN r.status = 'R' THEN
+                'Active'
+               ELSE
+                r.status
+             END as status,
+             student_id,
+             usr.username,
+             usr.first_name,
+             usr.last_name
+        from tuc_result r
+        left join tuc_sys_user_mast usr
+          on r.student_id = usr.id
+       where r.status <> 'D'
+         and r.result_id = p_result_id
+         and usr.status <> 'D';
+  
+    p_err_msg := 'Data found successfully.';
+  exception
+    when no_data_found then
+      p_out      := 1;
+      p_err_code := 'mng-1042';
+      p_err_msg  := initcap('No Active result found Found by result ID = ') ||
+                    p_result_id;
+      rollback;
+    when others then
+      p_out      := 1;
+      p_err_code := sqlcode;
+      p_err_msg  := sqlerrm;
+      rollback;
+  end sp_tuc_result_gk;
 
 /*  
   procedure sp_tuc_result   (p_activity       in char,
@@ -1562,78 +2018,7 @@ VERSION     DATE        AUTHOR                      DESCRIPTION
       ROLLBACK;
   end sp_tuc_result;
 
-  procedure sp_tuc_result_gk( p_result_id in nvarchar2,
-                              p_user_id    in nvarchar2,
-                              p_out        out number,
-                              p_err_code   out nvarchar2,
-                              p_err_msg    out nvarchar2,
-                              T_CURSOR     out sys_refcursor) is
-  
-  
-  
-\*****************************************************************************************************
-NAME         : sp_tuc_result_gk
-PURPOSE      : To get specific result by result id
-MODULE       : tuc test
-CREATED BY   : MOHAMMAD TANVIR ISLAM
-Matriculation: #676614
-EMAIL        : imoh@hrz.tu-chemnitz.de
-CREATED AT   : 28-JUNE-2021
-
-REVISIONS:
-
-VERSION     DATE        AUTHOR                      DESCRIPTION
----------   ----------  -----------------           ------------------------------------
-1.0         28-06-2021  MOHAMMAD  TANVIR ISLAM           1. INITIATE SP
-*****************************************************************************************************\
-
-  
-  
-  begin
-    P_OUT := 0;
-  
-    IF P_OUT = 0 THEN
-      pkg_tuc_user_mast.IS_NULL('p_user_id',
-                              p_user_id,
-                              'mng- sp_tuc_result_gk',
-                              P_OUT,
-                              P_ERR_CODE,
-                              P_ERR_MSG);
-    ELSE
-      RETURN;
-    END IF;
-  
-    IF P_OUT <> 0 THEN
-      RETURN;
-    END IF;
-  
-    open T_CURSOR for
-      select result_id,
-             grade,
-             test_id,           
-             status,
-             maker_id,
-             maker_time,
-             last_update_by,
-             last_update_time
-        from tuc_result c
-       where c.status <> 'D'
-         and c.result_id = p_result_id;
-  
-    p_err_msg := 'Data found successfully.';
-  exception
-    when no_data_found then
-      p_out      := 1;
-      p_err_code := 'mng-1040';
-      p_err_msg  := initcap('No Active result found Found by result ID = ') ||
-                    p_result_id;
-      rollback;
-    when others then
-      p_out      := 1;
-      p_err_code := sqlcode;
-      p_err_msg  := sqlerrm;
-      rollback;
-  end sp_tuc_result_gk;
+ 
 
   procedure sp_tuc_result_ga( p_in         in nvarchar2,
                               p_test_id    in number,

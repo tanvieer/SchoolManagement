@@ -225,7 +225,7 @@ namespace SchoolMgmt.Repository
                 UserName = userName.ToLower()
             };
             string p_out = "1";
-            string err_code, err_msg;
+            string err_code;
 
             CDataAccess objCDataAccess = CDataAccess.NewCDataAccess();
             DbCommand objDbCommand = objCDataAccess.GetMyCommand(false, IsolationLevel.ReadCommitted, "application", false);
@@ -293,7 +293,7 @@ namespace SchoolMgmt.Repository
             StatusResult<List<UserMaster>> rslt = new StatusResult<List<UserMaster>>();
             UserMaster user;
             string p_out = "1";
-            string err_code, err_msg;
+            string err_code;
 
             CDataAccess objCDataAccess = CDataAccess.NewCDataAccess();
             DbCommand objDbCommand = objCDataAccess.GetMyCommand(false, IsolationLevel.ReadCommitted, "application", false);

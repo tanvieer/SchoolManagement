@@ -25,6 +25,9 @@ import { NavTopComponent } from './nav/nav-top/nav-top.component';
 import { TestCreateComponent } from './subject/test/test-create/test-create.component';
 import { TestEditComponent } from './subject/test/test-edit/test-edit.component';
 import { TestListComponent } from './subject/test/test-list/test-list.component';
+import { ResultCreateComponent } from './subject/result-create/result-create.component';
+import { ResultEditComponent } from './subject/result-edit/result-edit.component';
+import { ResultListComponent } from './subject/result-list/result-list.component';
 
 const routes : Routes = [
   {path: 'login' , component: LoginComponent}, 
@@ -54,6 +57,10 @@ const routes : Routes = [
   {path: 'test-create', component: TestCreateComponent, canActivate : [AuthGuardGuard]},
   {path: 'test-edit/:id', component: TestEditComponent, canActivate : [AuthGuardGuard]},
   {path: 'test-list', component: TestListComponent, canActivate : [AuthGuardGuard]},
+
+  {path: 'result-create', component: ResultCreateComponent, canActivate : [AuthGuardGuard]},
+  {path: 'result-edit/:id', component: ResultEditComponent, canActivate : [AuthGuardGuard]},
+  {path: 'result-list', component: ResultListComponent, canActivate : [AuthGuardGuard]},
 
   {path: 'logout', component: LogoutComponent},
   {path: 'nav-top', component: NavTopComponent},
@@ -96,6 +103,10 @@ export const routingComponents = [LoginComponent,
                                   TestCreateComponent,
                                   TestEditComponent,
                                   TestListComponent,
+ 
+                                  ResultCreateComponent,
+                                  ResultListComponent,
+                                  ResultEditComponent,
                                  
                                   NavTopComponent,
                                   NavLeftComponent ]
