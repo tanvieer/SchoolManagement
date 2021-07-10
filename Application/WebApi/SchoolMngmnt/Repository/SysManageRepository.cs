@@ -360,7 +360,7 @@ namespace SchoolMgmt.Repository
         }
 
         // to reset password
-        public static StatusResult<string> ResetPassword(string userName, string makeBy)
+        public static StatusResult<string> ResetPassword(string userName, string passWord , string makeBy)
         {
             StatusResult<string> rslt = new StatusResult<string>();
 
@@ -373,7 +373,7 @@ namespace SchoolMgmt.Repository
 
 
             objList.Add(new DSSQLParam("p_username", userName, ParameterDirection.Input));
-            objList.Add(new DSSQLParam("p_password", string.Empty, ParameterDirection.Output));
+            objList.Add(new DSSQLParam("p_password", passWord, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_out_email", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_user_id", makeBy, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
@@ -389,7 +389,7 @@ namespace SchoolMgmt.Repository
                 rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
                 if (rslt.Status == "SUCCESS")
                 { 
-                    rslt.Result = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_role_name")].Value.ToString();
+                    rslt.Result = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out_email")].Value.ToString();
                 }
                     
             }
@@ -409,7 +409,7 @@ namespace SchoolMgmt.Repository
         }
 
         // to change password
-        public static StatusResult<string> ChangePassword(string userName, string oldPassword, string newPassword, string makeBy)
+        public static StatusResult<string> ChangePassword(string userName, string oldPassword, string newPassword)
         {
             StatusResult<string> rslt = new StatusResult<string>();
              
@@ -422,7 +422,7 @@ namespace SchoolMgmt.Repository
             objList.Add(new DSSQLParam("p_username", userName, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_password_old", oldPassword, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_password_new", newPassword, ParameterDirection.Input));
-            objList.Add(new DSSQLParam("p_user_id", makeBy, ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_user_id", userName, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_err_code", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_err_msg", string.Empty, ParameterDirection.Output));
@@ -433,11 +433,7 @@ namespace SchoolMgmt.Repository
 
                 rslt.Status = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString() == "0" ? "SUCCESS" : "FAILED";
                 rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
-                if (rslt.Status == "SUCCESS")
-                {
-                    rslt.Result = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_role_name")].Value.ToString();
-                }
-
+                  
             }
             catch (Exception ex)
             {

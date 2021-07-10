@@ -18,6 +18,7 @@ import { SubjectCreateComponent } from './subject/subject-create/subject-create.
 import { SubjectEditComponent } from './subject/subject-edit/subject-edit.component';
 import { SubjectListComponent } from './subject/subject-list/subject-list.component';
 import { ContactComponent } from './profile/contact/contact.component';
+import { ResetPasswordComponent } from './admin/reset-password/reset-password.component';
 
 const routes : Routes = [
   {path: 'login' , component: LoginComponent}, 
@@ -29,6 +30,8 @@ const routes : Routes = [
   {path: 'create-user', component: CreateUserComponent, canActivate : [AuthGuardGuard]}, 
   {path: 'update-profile', component: UpdateProfileComponent, canActivate : [AuthGuardGuard]},
   {path: 'update-user/:id', component: UpdateUserComponent, canActivate : [AuthGuardGuard]},
+  {path: 'reset-password/:id', component: ResetPasswordComponent, canActivate : [AuthGuardGuard]},
+  
 
 
   {path: 'class-create', component: ClassCreateComponent, canActivate : [AuthGuardGuard]},
@@ -67,6 +70,8 @@ export const routingComponents = [LoginComponent,
                                   ClassListComponent,
                                   ClassCreateComponent,
                                   ClassEditComponent,
+
+                                  ResetPasswordComponent,
 
                                   SubjectCreateComponent,
                                   SubjectEditComponent,

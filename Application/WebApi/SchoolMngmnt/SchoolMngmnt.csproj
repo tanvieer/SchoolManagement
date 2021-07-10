@@ -302,6 +302,7 @@
     <Compile Include="Models\DbModel\UserRole.cs" />
     <Compile Include="Models\SysModel\JwtPacket.cs" />
     <Compile Include="Models\SysModel\StatusResult.cs" />
+    <Compile Include="Models\ViewModel\ChangePasswordViewModel.cs" />
     <Compile Include="Models\ViewModel\LoginViewModel.cs" />
     <Compile Include="Models\ViewModel\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

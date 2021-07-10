@@ -2,6 +2,13 @@ export class Login {
     Username! : string;
     Password! : string;
 }
+
+export class ChangePassword {
+  Username! : string;
+  OldPassword! : string;
+  NewPassword! : string;
+}
+
  
 export class JwtToken {
     Token!: string; 

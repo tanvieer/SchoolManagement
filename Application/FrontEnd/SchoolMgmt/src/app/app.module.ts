@@ -22,7 +22,7 @@ import { NavRightComponent } from './nav/nav-right/nav-right.component';
     NavTopComponent,
     NavLeftComponent,
     NavBottomComponent,
-    NavRightComponent
+    NavRightComponent 
   ],
   imports: [
     BrowserModule,

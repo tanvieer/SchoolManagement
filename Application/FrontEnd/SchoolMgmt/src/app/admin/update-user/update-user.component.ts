@@ -160,12 +160,12 @@ export class UpdateUserComponent implements OnInit {
         // this._statusResultO as statusResultO;
         // console.log(res.Message);
          if (res.Status == "SUCCESS"){
-          this.toastr.success(res.Message, 'User Update Success');
-          this.getUserInfo(this.arouter.snapshot.params.id);
+          this.toastr.success(res.Message, 'User Update');
+          //this.getUserInfo(this.arouter.snapshot.params.id);
           this.router.navigate(['/user-list']);
          } 
          else {
-           this.toastr.error(res.Message, 'User Update Error'); 
+           this.toastr.error(res.Message, 'User Update'); 
          }
          
        });
