@@ -50,7 +50,8 @@ export class UpdateProfileComponent implements OnInit {
       RoleName: jsonData.RoleName,
       Status: '',
       make_by: '',
-      Maker_Time: ''
+      Maker_Time: '',
+      AverageGrade: '0.0'
     }
    // console.log("After Parsing Data");
    // console.log(this.service.formData);
@@ -134,7 +135,8 @@ export class UpdateProfileComponent implements OnInit {
       RoleName: '',
       Status: '',
       make_by: '',
-      Maker_Time: ''
+      Maker_Time: '',
+      AverageGrade: '0.0'
     }
 
     this.initiateRoles();

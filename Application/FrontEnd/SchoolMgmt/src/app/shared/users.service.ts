@@ -23,7 +23,7 @@ export class UsersService {
     return this.http.post(`${this.config.url}/User/ResetPassword`, _formData, this.config.httpOptions);
   }
 
-  resetChangePassword(_formData: ChangePassword) {   
+  changePassword(_formData: ChangePassword) {   
     return this.http.post(`${this.config.url}/User/ChangePassword`, _formData, this.config.httpOptions);
   }
 

@@ -48,7 +48,7 @@ create or replace package pkg_tuc_user_mast is
                                    p_err_msg      out nvarchar2);
 
   procedure sp_sys_reset_password(p_username  in nvarchar2,
-                                  p_password  in out nvarchar2,
+                                  p_password  in nvarchar2,
                                   p_out_email out nvarchar2,
                                   p_user_id   in nvarchar2,
                                   p_out       out number,
@@ -258,7 +258,7 @@ create or replace package body pkg_tuc_user_mast is
            set first_name       = p_first_name,
                last_name        = p_last_name,
                email            = p_email,
-               role_id          = p_role_id,
+               --role_id          = p_role_id,
                class_id         = p_class_id,
                phone_number     = p_phone_number,
                last_update_by   = p_user_id,
@@ -372,6 +372,20 @@ create or replace package body pkg_tuc_user_mast is
              t.session_exp_time,
              t.session_id,
              t.class_id,
+             
+              --  AVG GRADE CALCULATION START
+             (select nvl(avg(grade),0.0)
+                from TUC_result rslt
+               where rslt.student_id = t.id
+                 and rslt.test_id in
+                     (select tst.test_id
+                        from TUC_TEST tst
+                       where subject_id in
+                             (select sub.subject_id
+                                from tuc_subject sub
+                               where sub.class_id = t.class_id))) avg_grade,
+              -- AVG GRADE CALCULATION END
+             
              t.role_id,
              (select upper(role_name)
                 from tuc_sys_role
@@ -434,26 +448,35 @@ create or replace package body pkg_tuc_user_mast is
   
     open T_CURSOR for
       select t.id,
-             t.username,
-             t.email,
-             t.first_name,
-             t.last_name,
-             t.phone_number,
-             t.last_logged_in,
-             t.session_exp_time,
-             t.session_id,
-             t.role_id,
-             t.class_id,
-             (select upper(role_name)
-                from tuc_sys_role
-               where role_id = t.role_id) as role_name,
-              (select upper(class_name)
-                from tuc_class
-               where class_id = t.class_id) as class_name
-        from tuc_sys_user_mast t
-       where T.STATUS <> 'D' 
-         and (role_id = p_user_type or p_user_type = 0)
-         order by role_id,username;
+       t.username,
+       t.email,
+       t.first_name,
+       t.last_name,
+       t.phone_number,
+       t.last_logged_in,
+       t.session_exp_time,
+       t.session_id,
+       t.role_id,
+       --  AVG GRADE CALCULATION START
+       (select nvl(avg(grade),0.0)
+          from TUC_result rslt
+         where rslt.student_id = t.id
+           and rslt.test_id in
+               (select tst.test_id
+                  from TUC_TEST tst
+                 where subject_id in
+                       (select sub.subject_id
+                          from tuc_subject sub
+                         where sub.class_id = t.class_id))) avg_grade,
+        -- AVG GRADE CALCULATION END
+        t.class_id,
+       (select upper(role_name) from tuc_sys_role where role_id = t.role_id) as role_name,
+       (select upper(class_name) from tuc_class where class_id = t.class_id) as class_name
+  from tuc_sys_user_mast t
+ where T.STATUS <> 'D'
+   and (role_id = p_user_type or p_user_type = 0)
+ order by role_id, username;
+
   
     p_err_msg := 'Data found successfully.';
   exception
@@ -650,7 +673,7 @@ create or replace package body pkg_tuc_user_mast is
            t.last_update_by   = p_user_id
      where t.username = lower(p_username);
   
-    p_err_msg := initcap('Password changed successfully!');
+    p_err_msg := initcap('Password changed successfully! Please login again !');
     commit;
   exception
     when others then
@@ -661,7 +684,7 @@ create or replace package body pkg_tuc_user_mast is
   end sp_sys_change_password;
 
   procedure sp_sys_reset_password(p_username  in nvarchar2,
-                                  p_password  in out nvarchar2,
+                                  p_password  in nvarchar2,
                                   p_out_email out nvarchar2,
                                   p_user_id   in nvarchar2,
                                   p_out       out number,
@@ -676,6 +699,17 @@ create or replace package body pkg_tuc_user_mast is
     IF P_OUT = 0 THEN
       pkg_tuc_user_mast.IS_NULL('p_user_id',
                               p_user_id,
+                              'USR-sp_sys_reset_password',
+                              P_OUT,
+                              P_ERR_CODE,
+                              P_ERR_MSG);
+    ELSE
+      RETURN;
+    END IF;
+    
+     IF P_OUT = 0 THEN
+      pkg_tuc_user_mast.IS_NULL('Password',
+                              p_password,
                               'USR-sp_sys_reset_password',
                               P_OUT,
                               P_ERR_CODE,
@@ -699,9 +733,9 @@ create or replace package body pkg_tuc_user_mast is
       return;
     end if;
     
-    if p_password is null then
+  /*  if p_password is null then
       p_password := dbms_random.string(4, 4);
-    end if;
+    end if;*/
     
     select id, enc_key, email
       into v_user_id, v_enc_key, p_out_email

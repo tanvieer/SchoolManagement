@@ -7,6 +7,7 @@ export class ChangePassword {
   Username! : string;
   OldPassword! : string;
   NewPassword! : string;
+  ConfirmPassword !: string;
 }
 
  

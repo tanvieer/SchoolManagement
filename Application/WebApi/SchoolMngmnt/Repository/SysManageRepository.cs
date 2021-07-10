@@ -193,7 +193,7 @@ namespace SchoolMgmt.Repository
                     {
                         rslt.Result.RoleId = 1;
                     }
-                    else if (rslt.Result.RoleName == "ADMIN")
+                    else if (rslt.Result.RoleName == "TEACHER")
                     {
                         rslt.Result.RoleId = 2;
                     }
@@ -268,6 +268,7 @@ namespace SchoolMgmt.Repository
                         rslt.Result.ClassId     = dr["CLASS_ID"].ToString();
                         rslt.Result.RoleId      = Convert.ToInt32(dr["ROLE_ID"].ToString());
                         rslt.Result.RoleName    = dr["ROLE_NAME"] == null ? "" : dr["ROLE_NAME"].ToString(); 
+                        rslt.Result.AverageGrade = dr["avg_grade"] == null ? 0 : Convert.ToDouble(dr["avg_grade"].ToString());
                     }
                     dr.Close();
                 } 
@@ -329,16 +330,17 @@ namespace SchoolMgmt.Repository
                     while (dr.Read())
                     {
                         user = new UserMaster();  
-                        user.Id          = dr["ID"].ToString();
-                        user.UserName    = dr["USERNAME"].ToString();
-                        user.FirstName   = dr["FIRST_NAME"].ToString(); 
-                        user.LastName    = dr["LAST_NAME"].ToString();
-                        user.PhoneNumber = dr["PHONE_NUMBER"].ToString();
-                        user.Email       = dr["EMAIL"].ToString();
-                        user.RoleId      = Convert.ToInt32(dr["ROLE_ID"].ToString());
-                        user.ClassId     = dr["CLASS_ID"] == null ? "" : dr["CLASS_ID"].ToString();
-                        user.ClassName   = dr["CLASS_NAME"] == null ? "" : dr["CLASS_NAME"].ToString();
-                        user.RoleName    = dr["ROLE_NAME"] == null ? "" : dr["ROLE_NAME"].ToString();
+                        user.Id              = dr["ID"].ToString();
+                        user.UserName        = dr["USERNAME"].ToString();
+                        user.FirstName       = dr["FIRST_NAME"].ToString(); 
+                        user.LastName        = dr["LAST_NAME"].ToString();
+                        user.PhoneNumber     = dr["PHONE_NUMBER"].ToString();
+                        user.Email           = dr["EMAIL"].ToString();
+                        user.RoleId          = Convert.ToInt32(dr["ROLE_ID"].ToString());
+                        user.ClassId         = dr["CLASS_ID"] == null ? "" : dr["CLASS_ID"].ToString();
+                        user.ClassName       = dr["CLASS_NAME"] == null ? "" : dr["CLASS_NAME"].ToString();
+                        user.RoleName        = dr["ROLE_NAME"] == null ? "" : dr["ROLE_NAME"].ToString();
+                        user.AverageGrade    = dr["avg_grade"] == null ? 0 : Convert.ToDouble(dr["avg_grade"].ToString());
 
                         rslt.Result.Add(user);
                     }
@@ -373,7 +375,7 @@ namespace SchoolMgmt.Repository
 
 
             objList.Add(new DSSQLParam("p_username", userName, ParameterDirection.Input));
-            objList.Add(new DSSQLParam("p_password", passWord, ParameterDirection.Output));
+            objList.Add(new DSSQLParam("p_password", passWord, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_out_email", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_user_id", makeBy, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));

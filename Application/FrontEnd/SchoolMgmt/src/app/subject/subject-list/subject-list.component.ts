@@ -20,7 +20,7 @@ export class SubjectListComponent implements OnInit {
               public serviceOthers: OtherService,
               private toastr : ToastrService) {
 
-      this.loadTeachers();
+     // this.loadTeachers();
      }
 
   ngOnInit(): void { 
@@ -45,18 +45,18 @@ export class SubjectListComponent implements OnInit {
 
 
 
-  loadTeachers(){
-    this.serviceUsers.getTeacherList()
-    .subscribe((data: any) => {  
-      if(data.Status == "SUCCESS"){
-        this.parseTeacherData(data.Result);
-      }
-      else {
-        this.toastr.error(data.Message, 'Teacher List');
-      } 
+  // loadTeachers(){
+  //   this.serviceUsers.getTeacherList()
+  //   .subscribe((data: any) => {  
+  //     if(data.Status == "SUCCESS"){
+  //       this.parseTeacherData(data.Result);
+  //     }
+  //     else {
+  //       this.toastr.error(data.Message, 'Teacher List');
+  //     } 
       
-    });
-  }
+  //   });
+  // }
 
   
   parseTeacherData(jsonData: any) {

@@ -19,6 +19,9 @@ import { SubjectEditComponent } from './subject/subject-edit/subject-edit.compon
 import { SubjectListComponent } from './subject/subject-list/subject-list.component';
 import { ContactComponent } from './profile/contact/contact.component';
 import { ResetPasswordComponent } from './admin/reset-password/reset-password.component';
+import { ChangePasswordComponent } from './profile/change-password/change-password.component';
+import { NavLeftComponent } from './nav/nav-left/nav-left.component';
+import { NavTopComponent } from './nav/nav-top/nav-top.component';
 
 const routes : Routes = [
   {path: 'login' , component: LoginComponent}, 
@@ -29,10 +32,11 @@ const routes : Routes = [
   {path: 'user-list', component: UserListComponent, canActivate : [AuthGuardGuard]},  
   {path: 'create-user', component: CreateUserComponent, canActivate : [AuthGuardGuard]}, 
   {path: 'update-profile', component: UpdateProfileComponent, canActivate : [AuthGuardGuard]},
+  {path: 'change-password', component: ChangePasswordComponent, canActivate : [AuthGuardGuard]},
   {path: 'update-user/:id', component: UpdateUserComponent, canActivate : [AuthGuardGuard]},
   {path: 'reset-password/:id', component: ResetPasswordComponent, canActivate : [AuthGuardGuard]},
   
-
+  
 
   {path: 'class-create', component: ClassCreateComponent, canActivate : [AuthGuardGuard]},
   {path: 'class-edit/:id', component: ClassEditComponent, canActivate : [AuthGuardGuard]},
@@ -44,7 +48,9 @@ const routes : Routes = [
   {path: 'subject-edit/:id', component: SubjectEditComponent, canActivate : [AuthGuardGuard]},
   {path: 'subject-list', component: SubjectListComponent, canActivate : [AuthGuardGuard]},
 
-  {path: 'logout', component: LogoutComponent}
+  {path: 'logout', component: LogoutComponent},
+  {path: 'nav-top', component: NavTopComponent},
+  {path: 'nav-left', component: NavLeftComponent}  
 ];
 
 
@@ -72,9 +78,13 @@ export const routingComponents = [LoginComponent,
                                   ClassEditComponent,
 
                                   ResetPasswordComponent,
+                                  ChangePasswordComponent,
 
                                   SubjectCreateComponent,
                                   SubjectEditComponent,
                                   SubjectListComponent,
-                                  ContactComponent    ]
+                                  ContactComponent,
+                                 
+                                  NavTopComponent,
+                                  NavLeftComponent ]
 

@@ -9,6 +9,7 @@
         <th scope="col">Forename</th>
         <th scope="col">Surename</th>
         <th scope="col">Class</th>
+        <th scope="col">Average Grade</th>
         <th scope="col">Action</th>
       </tr>
     </thead>
@@ -19,6 +20,7 @@
         <td>{{item.FirstName}}</td>
         <td>{{item.LastName}}</td>
         <td>{{item.ClassName}}</td>
+        <td>{{item.AverageGrade}}</td>
         <td>
           <button type="button" class="btn btn-sm btn-primary" routerLink="/update-user/{{item.UserName}}">Edit</button>
           &nbsp;

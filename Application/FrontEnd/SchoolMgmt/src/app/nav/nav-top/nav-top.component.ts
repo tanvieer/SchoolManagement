@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-//import { SidebarComponent } from '@syncfusion/ej2-angular-navigations';
+import { Component, OnInit } from '@angular/core'; 
 
 @Component({
   selector: 'app-nav-top',
@@ -9,8 +8,10 @@ import { Component, OnInit } from '@angular/core';
 export class NavTopComponent implements OnInit {
   //@ViewChild('sidebar') sidebar: SidebarComponent;
   public isLoggedIn! : boolean;
+
+ 
   
-  constructor() {
+  constructor( ) {
 
     if(localStorage.getItem('isLoggedIn') == "1" ) {
       this.isLoggedIn = true;  
@@ -18,9 +19,12 @@ export class NavTopComponent implements OnInit {
     else {  
       this.isLoggedIn = false; 
     }
+ 
+
+
    }
 
   ngOnInit(): void {
   }
-
-}
+   
+  }

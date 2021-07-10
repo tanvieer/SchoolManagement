@@ -24,7 +24,7 @@ export class Teacher {
     Email!:string;    
     FirstName!:string;    
     LastName!:string;    
-    PhoneNumber!:string;    
+    PhoneNumber!:string;   
     RoleId!: number;
     ClassId!: number;
     FullName!:string;
@@ -35,6 +35,7 @@ export class Teacher {
     make_by!:string;    
     Maker_Time!: string; 
     ClassName!: string; 
+    AverageGrade!:string; 
 }
 
 

@@ -85,7 +85,8 @@ export class CreateUserComponent implements OnInit {
       RoleName: '',
       Status: '',
       make_by: '',
-      Maker_Time: ''
+      Maker_Time: '',
+      AverageGrade: '0.0'
     }
   }
 

@@ -9,7 +9,8 @@ namespace SchoolMngmnt.Model.SysModel
     {
         public StatusResult()
         {
-            Status = "FAILED";
+            Status  = "FAILED";
+            Message = "This user has no permission for this action.";
         }
         public string Status;
         public string Message;

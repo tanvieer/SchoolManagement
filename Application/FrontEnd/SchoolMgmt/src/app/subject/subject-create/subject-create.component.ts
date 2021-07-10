@@ -95,8 +95,7 @@ export class SubjectCreateComponent implements OnInit {
 
   insertRecord(form: NgForm) {
     this.serviceOthers.addNewSubject(form.value)
-      .subscribe((res: any) => { 
-        console.log('5555555555555555555555555555555');
+      .subscribe((res: any) => {  
         console.log(res);
         if (res.Status == "SUCCESS")
           this.toastr.success(res.Message, 'Create Subject');

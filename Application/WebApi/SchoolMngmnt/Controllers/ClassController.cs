@@ -90,7 +90,7 @@ namespace SchoolMngmnt.Controllers
                 return rslt;
             }
 
-            if (checkSession.Result.RoleId == 1 || checkSession.Result.RoleId == 2) // ADMIN or teacher
+            if (checkSession.Result.RoleId == 1 ) // ADMIN or teacher
             {
                 rslt = SpCall.GetClassInfo(id, checkSession.Result.UserName);
             }
@@ -186,7 +186,7 @@ namespace SchoolMngmnt.Controllers
             }
             else
             {
-                rslt.Message = "This user has no permission to modify class info.";
+                rslt.Message = "This user has no permission to add new class.";
             }
 
             return rslt;

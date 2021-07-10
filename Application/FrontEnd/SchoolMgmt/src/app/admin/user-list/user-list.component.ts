@@ -53,7 +53,7 @@ export class UserListComponent implements OnInit {
         this.parseData(data.Result);
       }
       else {
-        this.toastr.error(data.Message, 'Teacher List');
+        this.toastr.error(data.Message, 'User List');
       }       
     });
 

@@ -224,10 +224,10 @@ namespace SchoolMngmnt.Controllers
             {
                 rslt = SysManageRepository.GetUserList(userType, token);
             }
-            else if (checkSession.Result.RoleId == 2) // Teacher
+            else if (checkSession.Result.RoleId == 2 && userType == 3) // Teacher
             {
-                rslt = SysManageRepository.GetUserList(userType, token);
-            }
+                rslt = SysManageRepository.GetUserList(3, token);
+            }  
              
             return rslt;
              
@@ -304,7 +304,7 @@ namespace SchoolMngmnt.Controllers
                 return rslt;
             }
 
-            if (checkSession.Result.RoleId == 1) // ADMIN or teacher
+            if (checkSession.Result.RoleId == 1) // ADMIN 
             {
                 UserViewModel model = new UserViewModel();
                 model.UserName = userName;

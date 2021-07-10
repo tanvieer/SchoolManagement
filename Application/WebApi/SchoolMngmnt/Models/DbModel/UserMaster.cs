@@ -25,6 +25,7 @@ namespace SchoolMngmnt.Model
         public string FullName { get { return this.FirstName + " " + this.LastName; } }
 
         public string ClassName { get; set; }
+        public double AverageGrade { get; set; }
         public string Session { get; internal set; }
         public DateTime SessionExpireTime { get; internal set; }
         public string RoleName { get; internal set; }

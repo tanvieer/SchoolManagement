@@ -15,11 +15,11 @@ export class PupilsComponent implements OnInit {
   public pageSize: number = 10;
   public page: number = 1;
   public collectionSize: number = 0;
-  public isAdmin : boolean = false;
+  public isAdmin: boolean = false;
 
   constructor(public service: UsersService,
     private toastr: ToastrService) {
-      console.log(localStorage.getItem('RoleName'));
+    //console.log(localStorage.getItem('RoleName'));
     if (localStorage.getItem('RoleName') == "ADMIN") {
       this.isAdmin = true;
     }
@@ -33,7 +33,7 @@ export class PupilsComponent implements OnInit {
           this.parseData(data.Result);
         }
         else {
-          this.toastr.error(data.Message, 'Teacher List');
+          this.toastr.error(data.Message, 'Student List');
         }
 
       });
@@ -56,6 +56,7 @@ export class PupilsComponent implements OnInit {
       data.Id = jsonData[i].Id;
       data.PhoneNumber = jsonData[i].PhoneNumber;
       data.RoleId = jsonData[i].RoleId;
+      data.AverageGrade = jsonData[i].AverageGrade;
       this.studentList.push(data);
     }
     //this.refreshTeachers();

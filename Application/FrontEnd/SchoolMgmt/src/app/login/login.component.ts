@@ -23,10 +23,10 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/user-list']);
       } 
       else if(localStorage.getItem('RoleName') == "TEACHER" ) { 
-        this.router.navigate(['/students']);
+        this.router.navigate(['/pupils']);
       } 
       else if(localStorage.getItem('RoleName') == "STUDENT" ) { 
-        this.router.navigate(['/subjects']);
+        this.router.navigate(['/mySubjects']);
       } 
 
     } 

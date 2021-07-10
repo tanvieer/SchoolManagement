@@ -91,7 +91,7 @@ namespace SchoolMngmnt.Controllers
                 return rslt;
             }
 
-            if (checkSession.Result.RoleId == 1) // ADMIN or teacher
+            if (checkSession.Result.RoleId == 1) // ADMIN 
             {
                 TucSubject model = new TucSubject();
                 model.SubjectId = id;
@@ -230,13 +230,13 @@ namespace SchoolMngmnt.Controllers
                 return rslt;
             }
 
-            if (checkSession.Result.RoleId == 1 || checkSession.Result.RoleId == 2) // ADMIN or teacher
+            if (checkSession.Result.RoleId == 1) // ADMIN or teacher
             {
                 rslt = SpCall.GetSubjectList(checkSession.Result.UserName, classId,2);
             }
             else
             {
-                rslt.Message = "This user has no permission to get class list.";
+                rslt.Message = "This user has no permission to get subject list.";
             }
 
             return rslt;
@@ -280,7 +280,7 @@ namespace SchoolMngmnt.Controllers
             }
             else
             {
-                rslt.Message = "This user has no permission to get class list.";
+                rslt.Message = "This user has no permission to get subject info.";
             }
 
             return rslt;
@@ -319,116 +319,20 @@ namespace SchoolMngmnt.Controllers
                 return rslt;
             }
 
-            if (checkSession.Result.RoleId == 1) // ADMIN or teacher
+            if (checkSession.Result.RoleId == 1 ) // ADMIN or teacher
             {
                 rslt = SpCall.ManageSubject(model, "U", checkSession.Result.UserName);
             }
             else
             {
-                rslt.Message = "This user has no permission to modify class info.";
+                rslt.Message = "This user has no permission to modify subject info.";
             }
 
             return rslt;
         }
 
 
-     
-
-
-
-
-        //   public static StatusResult<TucClassSubjectMap> ClassSubjectMap(TucClassSubjectMap model , string p_activity)
-
-        //[EnableCors(origins: "*", headers: "*", methods: "*")]
-        //[HttpPost]
-        //[Route("api/Subject/ClassSubjectMap")]
-        //public StatusResult<TucClassSubjectMap> ClassSubjectMap([FromBody] TucClassSubjectMap model)
-        //{
-
-        //    StatusResult<TucClassSubjectMap> rslt = new StatusResult<TucClassSubjectMap>();
-        //    var re = Request;
-        //    var headers = re.Headers;
-        //    string token = "";
-
-        //    if (headers.Contains("Authorization"))
-        //    {
-        //        token = headers.GetValues("Authorization").First();
-
-        //    }
-        //    else
-        //    {
-        //        rslt.Status = "FAILED";
-        //        rslt.Message = "User not logged in!!";
-        //        return rslt;
-        //    }
-
-        //    var checkSession = SysManageRepository.CheckSession(token);
-
-        //    if (checkSession.Status == "FAILED")
-        //    {
-        //        rslt.Status = checkSession.Status;
-        //        rslt.Message = checkSession.Message;
-        //        return rslt;
-        //    }
-
-        //    if (checkSession.Result.RoleId == 1) // ADMIN 
-        //    {
-        //        rslt = SpCall.ClassSubjectMap(model, "I", checkSession.Result.UserName);
-        //    }
-        //    else
-        //    {
-        //        rslt.Message = "This user has no permission to class subject mapping.";
-        //    }
-
-        //    return rslt;
-        //}
-
-        //[EnableCors(origins: "*", headers: "*", methods: "*")]
-        //[HttpDelete]
-        //[Route("api/Subject/ClassSubjectMapRemove")]
-        //public StatusResult<TucClassSubjectMap> ClassSubjectMapRemove(string classId,string subjectId)
-        //{
-
-        //    StatusResult<TucClassSubjectMap> rslt = new StatusResult<TucClassSubjectMap>();
-        //    var re = Request;
-        //    var headers = re.Headers;
-        //    string token = "";
-
-        //    if (headers.Contains("Authorization"))
-        //    {
-        //        token = headers.GetValues("Authorization").First();
-
-        //    }
-        //    else
-        //    {
-        //        rslt.Status = "FAILED";
-        //        rslt.Message = "User not logged in!!";
-        //        return rslt;
-        //    }
-
-        //    var checkSession = SysManageRepository.CheckSession(token);
-
-        //    if (checkSession.Status == "FAILED")
-        //    {
-        //        rslt.Status = checkSession.Status;
-        //        rslt.Message = checkSession.Message;
-        //        return rslt;
-        //    }
-
-        //    if (checkSession.Result.RoleId == 1) // ADMIN 
-        //    {
-        //        TucClassSubjectMap model = new TucClassSubjectMap(); 
-        //        model.ClassId = classId;
-        //        model.SubjectId = subjectId;
-        //        rslt = SpCall.ClassSubjectMap(model, "D", checkSession.Result.UserName);
-        //    }
-        //    else
-        //    {
-        //        rslt.Message = "This user has no permission to delete class subject mapping.";
-        //    }
-
-        //    return rslt;
-        //}
+      
 
     }
 }
