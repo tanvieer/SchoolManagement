@@ -1,9 +1,10 @@
 export class TucTest {
-
+    
+    Index! : number;
     TestId! : string;
     TestName! : string;
     SubjectId! : string;
-    TestDate! : Date;
+    TestDate! : any;
     SubjecName! : string;
 }
 

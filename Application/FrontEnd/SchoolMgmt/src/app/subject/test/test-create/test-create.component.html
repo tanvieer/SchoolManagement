@@ -1,0 +1,46 @@
+<div class="card-body">
+    <!-- left column -->
+    <div class="col-md-9">
+      <!-- general form elements -->
+      <div class="card card-primary">
+        <div class="card-header">
+          <h3 class="card-title">Create Class</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form #form="ngForm" (submit)="onSubmit(form)">
+          <div class="card-body"> 
+               
+           
+              <div class="form-group">
+                <label for="exampleInputAssignClass2" >Test Name</label> 
+                <input autocomplete="off" name="TestName"  #TestName="ngModel" [(ngModel)]="service.formData_Test.TestName" type="text" placeholder="Test Name" class="form-control" required>
+              </div> 
+
+              <div class="form-group">
+                <label for="exampleInputAssignClass2" >Test Date</label> 
+                <input autocomplete="off" name="TestDate"  #TestDate="ngModel" [(ngModel)]="service.formData_Test.TestDate" type="date" placeholder="Test Date" class="form-control" required>
+              </div> 
+              
+             
+          <div class="form-group">
+            <label for="exampleSelectBorder">Select Subject</label> 
+
+            <select name="SubjectId" id="SubjectId" class="form-control" [(ngModel)]="service.formData_Test.SubjectId" required>
+              <option *ngFor="let option of subjectList" [value]="option.SubjectId" >{{option.SubjectName}}</option>
+            </select>  
+          </div>
+   
+
+          <div class="card-footer">
+            <button [disabled]="form.invalid" type="submit" class="btn btn-primary">Save</button>
+          </div> 
+          </div>
+
+          <!-- /.card-body -->
+        </form>
+      </div>
+    </div>
+    <!--/.col (right) -->
+  </div>
+ 

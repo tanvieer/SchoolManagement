@@ -3,6 +3,7 @@ using SchoolMngmnt.Model;
 using SchoolMngmnt.Model.SysModel;
 using SchoolMngmnt.Model.ViewModel;
 using SchoolMngmnt.Models.DbModel;
+using SchoolMngmnt.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -15,74 +16,7 @@ namespace SchoolMngmnt.Repository
     {
         private static readonly string SP_PREFIX = ConfigurationManager.AppSettings["SP_PREFIX"].ToString();
 
-
-
-        public static StatusResult<TucClassSubjectMap> ClassSubjectMap(TucClassSubjectMap model , string p_activity , string makeBy)
-        {
-            if (model is null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-            StatusResult<TucClassSubjectMap> rslt = new StatusResult<TucClassSubjectMap>();
-
-            rslt.Result = new TucClassSubjectMap();
-            
-            string p_out = "1";
-            string err_code, err_msg;
-
-            CDataAccess objCDataAccess = CDataAccess.NewCDataAccess();
-            DbCommand objDbCommand = objCDataAccess.GetMyCommand(false, IsolationLevel.ReadCommitted, "application", false);
-
-
-            List<DSSQLParam> objList = new List<DSSQLParam>();
-
-
-            objList.Add(new DSSQLParam("p_activity", p_activity, ParameterDirection.Input));
-            objList.Add(new DSSQLParam("p_subject_id", model.SubjectId, ParameterDirection.Input));
-            objList.Add(new DSSQLParam("p_class_id", model.ClassId, ParameterDirection.Input));
-
-
-            objList.Add(new DSSQLParam("p_user_id", makeBy, ParameterDirection.Input));
-            objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
-            objList.Add(new DSSQLParam("p_err_code", string.Empty, ParameterDirection.Output));
-            objList.Add(new DSSQLParam("p_err_msg", string.Empty, ParameterDirection.Output));
-
-
-            try
-            {
-                using (DbDataReader dr = objCDataAccess.ExecuteReader(objDbCommand, SP_PREFIX + "pkg_tuc_manage_op.sp_class_subject_map", CommandType.StoredProcedure, objList))
-                {
-                    p_out = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString();
-                    err_msg = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
-                    if (p_out == "1")
-                    {
-                        err_code = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_code")].Value.ToString();
-                        rslt.Message = err_code + "~" + err_msg;
-                        rslt.Status = "FAILED";
-                    }
-                    else
-                    {
-                        rslt.Status = "SUCCESS";
-                        rslt.Message = err_msg;
-                    }                     
-                }
-            }
-            catch (Exception ex)
-            {
-                rslt.Status = "FAILED";
-                rslt.Message = ex.Message;
-            }
-            finally
-            {
-                objDbCommand.Connection.Close();
-                objCDataAccess.Dispose(objDbCommand);
-                objList.Clear();
-            }
-            rslt.Result = model;
-            return rslt;
-        }
-
-
+         
 
         public static StatusResult<TucClass> ManageClass(TucClass model, string p_activity , string makeBy)
         {
@@ -501,17 +435,17 @@ namespace SchoolMngmnt.Repository
 
 
 
-        public static StatusResult<TucTest> ManageTest(TucTest model, string p_activity, string makeBy)
+        public static StatusResult<TestViewModel> ManageTest(TestViewModel model, string p_activity, string makeBy)
         {
             if (model is null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
-            StatusResult<TucTest> rslt = new StatusResult<TucTest>();
-            rslt.Result = new TucTest();
+            StatusResult<TestViewModel> rslt = new StatusResult<TestViewModel>();
+            rslt.Result = new TestViewModel();
 
-            string p_out = "1";
-            string err_code, err_msg;
+            int p_out = 1;
+             
 
             CDataAccess objCDataAccess = CDataAccess.NewCDataAccess();
             DbCommand objDbCommand = objCDataAccess.GetMyCommand(false, IsolationLevel.ReadCommitted, "application", false);
@@ -521,7 +455,7 @@ namespace SchoolMngmnt.Repository
              
 
             objList.Add(new DSSQLParam("p_activity", p_activity, ParameterDirection.Input));
-            objList.Add(new DSSQLParam("p_test_id", model.TestId, ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_test_id", model.TestId, ParameterDirection.InputOutput));
             objList.Add(new DSSQLParam("p_test_name", model.TestName, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_subject_id", model.SubjectId, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_test_date", model.TestDate, ParameterDirection.Input));
@@ -531,24 +465,21 @@ namespace SchoolMngmnt.Repository
             objList.Add(new DSSQLParam("p_err_code", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_err_msg", string.Empty, ParameterDirection.Output));
 
-
             try
             {
-                using (DbDataReader dr = objCDataAccess.ExecuteReader(objDbCommand, SP_PREFIX + "pkg_tuc_manage_op.sp_tuc_test", CommandType.StoredProcedure, objList))
+                objCDataAccess.ExecuteNonQuery(objDbCommand, SP_PREFIX + "pkg_tuc_manage_op.sp_tuc_test", CommandType.StoredProcedure, objList);
+
+                p_out = Convert.ToInt32(objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString());
+                if (p_out == 1)
                 {
-                    p_out = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString();
-                    err_msg = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
-                    if (p_out == "1")
-                    {
-                        err_code = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_code")].Value.ToString();
-                        rslt.Message = err_code + "~" + err_msg;
-                        rslt.Status = "FAILED";
-                    }
-                    else
-                    {
-                        rslt.Status = "SUCCESS";
-                        rslt.Message = err_msg;
-                    }
+                    rslt.Status = "FAILED";
+                    rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_code")].Value.ToString()
+                        + "~" + objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
+                }
+                else
+                {
+                    rslt.Status = "SUCCESS";
+                    rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
                 }
             }
             catch (Exception ex)

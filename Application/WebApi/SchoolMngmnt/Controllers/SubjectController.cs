@@ -200,6 +200,51 @@ namespace SchoolMngmnt.Controllers
 
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpGet]
+        [Route("api/Subject/GetSubjectListDDL")]
+        public StatusResult<List<TucSubject>> GetSubjectListDDL()
+        {
+
+            StatusResult<List<TucSubject>> rslt = new StatusResult<List<TucSubject>>();
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("Authorization"))
+            {
+                token = headers.GetValues("Authorization").First();
+
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User not logged in!!";
+                return rslt;
+            }
+
+            var checkSession = SysManageRepository.CheckSession(token);
+
+            if (checkSession.Status == "FAILED")
+            {
+                rslt.Status = checkSession.Status;
+                rslt.Message = checkSession.Message;
+                return rslt;
+            }
+
+            if (checkSession.Result.RoleId == 1 || checkSession.Result.RoleId == 2 || checkSession.Result.RoleId == 3) // ADMIN or teacher
+            {
+                rslt = SpCall.GetSubjectList(checkSession.Result.UserName, null, 3);
+            }
+            else
+            {
+                rslt.Message = "This user has no permission to get class list.";
+            }
+
+            return rslt;
+        }
+
+
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [HttpGet]
         [Route("api/Subject/GetSubjectList")]
         public StatusResult<List<TucSubject>> GetSubjectList(string classId)
         {

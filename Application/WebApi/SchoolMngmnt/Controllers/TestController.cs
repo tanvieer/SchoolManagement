@@ -1,6 +1,7 @@
 ﻿using SchoolMgmt.Repository;
 using SchoolMngmnt.Model.SysModel;
 using SchoolMngmnt.Models.DbModel;
+using SchoolMngmnt.Models.ViewModel;
 using SchoolMngmnt.Repository;
 using System;
 using System.Collections.Generic;
@@ -100,10 +101,10 @@ namespace SchoolMngmnt.Controllers
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPost]
         [Route("api/Test/ModifyTestInfo")]
-        public StatusResult<TucTest> ModifyTestInfo([FromBody] TucTest model)
+        public StatusResult<TestViewModel> ModifyTestInfo([FromBody] TestViewModel model)
         {
 
-            StatusResult<TucTest> rslt = new StatusResult<TucTest>();
+            StatusResult<TestViewModel> rslt = new StatusResult<TestViewModel>();
             var re = Request;
             var headers = re.Headers;
             string token = "";
@@ -145,10 +146,10 @@ namespace SchoolMngmnt.Controllers
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPost]
         [Route("api/Test/AddNewTest")]
-        public StatusResult<TucTest> AddNewTest([FromBody] TucTest model)
+        public StatusResult<TestViewModel> AddNewTest([FromBody] TestViewModel model)
         {
 
-            StatusResult<TucTest> rslt = new StatusResult<TucTest>();
+            StatusResult<TestViewModel> rslt = new StatusResult<TestViewModel>();
             var re = Request;
             var headers = re.Headers;
             string token = "";
@@ -190,10 +191,10 @@ namespace SchoolMngmnt.Controllers
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpDelete]
         [Route("api/Test/DeleteTest")]
-        public StatusResult<TucTest> DeleteTest(string id)
+        public StatusResult<TestViewModel> DeleteTest(string id)
         {
 
-            StatusResult<TucTest> rslt = new StatusResult<TucTest>();
+            StatusResult<TestViewModel> rslt = new StatusResult<TestViewModel>();
             var re = Request;
             var headers = re.Headers;
             string token = "";
@@ -221,7 +222,7 @@ namespace SchoolMngmnt.Controllers
 
             if (checkSession.Result.RoleId == 1 || checkSession.Result.RoleId == 2) // ADMIN or teacher
             {
-                TucTest model = new TucTest();
+                TestViewModel model = new TestViewModel();
                 model.TestId = id;
                 rslt = SpCall.ManageTest(model, "D", checkSession.Result.UserName);
             }

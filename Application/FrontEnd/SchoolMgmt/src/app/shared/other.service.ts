@@ -12,9 +12,10 @@ export class OtherService {
 
   formData_class!: TucClass;  
   formData_Subject!: TucSubject;  
+  formData_Test!: TucTest;
 
   config = new Config();
-  constructor(private http : HttpClient) {  
+  constructor(private http : HttpClient) {   
   }
 
 
@@ -49,6 +50,10 @@ export class OtherService {
 
   getSubjectList(){  
     return this.http.get(`${this.config.url}/Subject/GetSubjectList`,this.config.httpOptions);  
+  }
+
+  getSubjectListDDL(){  
+    return this.http.get(`${this.config.url}/Subject/GetSubjectListDDL`,this.config.httpOptions);  
   }
 
   getSubjectInfo(_id:string){  

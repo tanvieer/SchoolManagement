@@ -10,6 +10,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule, routingComponents } from './app-routing.module';  
 import { NavBottomComponent } from './nav/nav-bottom/nav-bottom.component';
 import { NavRightComponent } from './nav/nav-right/nav-right.component'; 
+import { DatePipe } from '@angular/common';
 
 
 @NgModule({
@@ -27,7 +28,7 @@ import { NavRightComponent } from './nav/nav-right/nav-right.component';
     ToastrModule.forRoot(),
     AppRoutingModule
   ],
-  providers: [UsersService],
+  providers: [UsersService,DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

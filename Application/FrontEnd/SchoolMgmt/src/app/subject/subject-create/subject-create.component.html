@@ -21,11 +21,9 @@
 
             <select name="ClassId" id="classId" class="form-control" [(ngModel)]="serviceOthers.formData_Subject.ClassId" required>
               <option *ngFor="let option of classList" [value]="option.ClassId" >{{option.ClassName}}</option>
-            </select>
-
-
-
+            </select>  
           </div>
+
           <div class="form-group">
             <label for="exampleSelectBorder2">Teacher</label>
             <select name="TeacherUserName" id="TeacherUserName" class="form-control" [(ngModel)]="serviceOthers.formData_Subject.TeacherUserName" required>

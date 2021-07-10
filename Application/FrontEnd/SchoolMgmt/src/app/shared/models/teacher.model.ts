@@ -35,7 +35,7 @@ export class Teacher {
     make_by!:string;    
     Maker_Time!: string; 
     ClassName!: string; 
-    AverageGrade!:string; 
+    AverageGrade!: string; 
 }
 
 

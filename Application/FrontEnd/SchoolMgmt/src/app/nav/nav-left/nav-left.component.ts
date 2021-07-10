@@ -46,6 +46,21 @@ export class NavLeftComponent implements OnInit {
     isMainMenu: true,
     routerLink:'/subject-list',
     routerName:'Subject List'
+  } ,{
+    index : 7,
+    isMainMenu: true,
+    routerLink:'/test-list',
+    routerName:'Test List'
+  } ,{
+    index : 8,
+    isMainMenu: true,
+    routerLink:'/test-edit/1',
+    routerName:'Test Edit'
+  } ,{
+    index : 9,
+    isMainMenu: true,
+    routerLink:'/test-create',
+    routerName:'Test Create'
   } 
  
 ];
