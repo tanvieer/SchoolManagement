@@ -80,3 +80,6 @@ alter table TUC_SYS_USER_MAST
 alter table TUC_SYS_USER_MAST
   add constraint SYS_USER_MASTER_TUC_FK1 foreign key (ROLE_ID)
   references TUC_SYS_ROLE (ROLE_ID);
+alter table TUC_SYS_USER_MAST
+  add constraint SYS_USER_MASTER_TUC_FK2 foreign key (CLASS_ID)
+  references TUC_CLASS (CLASS_ID);

@@ -27,8 +27,10 @@ export class PupilsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log("on init");
     this.service.getStudentList()
       .subscribe((data: any) => {
+        console.log(data);
         if (data.Status == "SUCCESS") {
           this.parseData(data.Result);
         }
@@ -41,6 +43,7 @@ export class PupilsComponent implements OnInit {
 
   parseData(jsonData: any) {
     //considering you get your data in json arrays  
+    console.log(jsonData);
     this.collectionSize = jsonData.length;
     for (let i = 0; i < this.collectionSize; i++) {
       const data = new Teacher();

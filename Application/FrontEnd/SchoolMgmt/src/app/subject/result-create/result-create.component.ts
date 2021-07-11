@@ -64,6 +64,7 @@ export class ResultCreateComponent implements OnInit {
   
   parseData(jsonData: any) {
     //considering you get your data in json arrays  
+    this.studentList = [];
     let collectionSize = jsonData.length;
     for (let i = 0; i < collectionSize; i++) {
       const data = new Teacher();
@@ -165,7 +166,7 @@ export class ResultCreateComponent implements OnInit {
       }  
     });
   }
-  parseClassData(jsonData: any) { 
+  parseClassData(jsonData: any) {  
     let collectionSize = jsonData.length;
     for (let i = 0; i < collectionSize; i++) {
       const data = new TucClass();

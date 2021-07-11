@@ -8,7 +8,8 @@ create table TUC_SUBJECT
   maker_id         VARCHAR2(100) default 'SYSTEM' not null,
   maker_time       DATE default SYSDATE not null,
   last_update_by   VARCHAR2(100) default 'SYSTEM' not null,
-  last_update_time DATE default SYSDATE not null
+  last_update_time DATE default SYSDATE not null,
+  class_id         NUMBER(5) not null
 )
 tablespace USERS
   pctfree 10
@@ -37,5 +38,22 @@ alter table TUC_SUBJECT
     maxextents unlimited
   );
 alter table TUC_SUBJECT
+  add constraint TUC_SUBJECT_UK unique (SUBJECT_NAME)
+  using index 
+  tablespace USERS
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table TUC_SUBJECT
   add constraint TUC_SUBJECT_FK foreign key (TEACHER_ID)
   references TUC_SYS_USER_MAST (ID);
+alter table TUC_SUBJECT
+  add constraint TUC_SUBJECT_FK2 foreign key (CLASS_ID)
+  references TUC_CLASS (CLASS_ID);

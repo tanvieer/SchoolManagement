@@ -3,7 +3,7 @@ create table TUC_TEST
 (
   test_id          NUMBER(5) not null,
   test_name        VARCHAR2(50) not null,
-  subject_id       VARCHAR2(100) not null,
+  subject_id       NUMBER(5) not null,
   test_date        DATE not null,
   status           CHAR(1) default 'R' not null,
   maker_id         VARCHAR2(100) default 'SYSTEM' not null,
@@ -37,3 +37,6 @@ alter table TUC_TEST
     minextents 1
     maxextents unlimited
   );
+alter table TUC_TEST
+  add constraint TUC_TEST_FK1 foreign key (SUBJECT_ID)
+  references TUC_SUBJECT (SUBJECT_ID);

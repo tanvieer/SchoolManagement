@@ -385,7 +385,7 @@ create or replace package body pkg_tuc_user_mast is
              t.class_id,
              
              --  AVG GRADE CALCULATION START
-             (select nvl(avg(grade), 0.0)
+             (select CAST(nvl(avg(grade), 0.0)  AS DECIMAL(8,2))
                 from TUC_result rslt
                where rslt.student_id = t.id
                  and rslt.test_id in
@@ -466,8 +466,8 @@ create or replace package body pkg_tuc_user_mast is
              t.session_exp_time,
              t.session_id,
              t.role_id,
-             --  AVG GRADE CALCULATION START
-             (select nvl(avg(grade), 0.0)
+             --  AVG GRADE CALCULATION START  CAST(AVG(advance_amount) AS DECIMAL(10,2))
+             (select CAST(nvl(avg(grade), 0.0)  AS DECIMAL(8,2))
                 from TUC_result rslt
                where rslt.student_id = t.id
                  and rslt.test_id in
@@ -560,7 +560,7 @@ create or replace package body pkg_tuc_user_mast is
              t.session_id,
              t.role_id,
              --  AVG GRADE CALCULATION START
-             (select nvl(avg(grade), 0.0)
+             (select CAST(nvl(avg(grade), 0.0)  AS DECIMAL(8,2))
                 from TUC_result rslt
                where rslt.student_id = t.id
                  and rslt.test_id in
