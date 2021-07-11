@@ -56,6 +56,10 @@ export class UsersService {
     return this.http.get(`${this.config.url}/User/GetUserList?userType=3`, this.config.httpOptions);
   }
 
+  getStudentListByClssId(_id:string) {
+    return this.http.get(`${this.config.url}/User/GetStudentListByClssId?id=${_id}`, this.config.httpOptions);
+  }
+ 
   getAllUserList() {
     return this.http.get(`${this.config.url}/User/GetUserList?userType=0`, this.config.httpOptions);
   }

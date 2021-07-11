@@ -1,7 +1,9 @@
+
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Config } from '../config';
 import { TucClass } from './models/tuc-class.model'; 
+import { TucResult } from './models/tuc-result.model'; 
 import { TucSubject } from './models/tuc-subject.model';
 import { TucTest } from './models/tuc-test.model';
 
@@ -13,6 +15,7 @@ export class OtherService {
   formData_class!: TucClass;  
   formData_Subject!: TucSubject;  
   formData_Test!: TucTest;
+  formData_Result: TucResult = new TucResult();
 
   config = new Config();
   constructor(private http : HttpClient) {   
@@ -138,10 +141,10 @@ export class OtherService {
 
 
 
-addNewResult(_formData : TucTest){  
+addNewResult(_formData : TucResult){  
   return this.http.post(`${this.config.url}/Result/AddNewResult`,_formData,this.config.httpOptions);   
 }
-editResult(_formData : TucTest){  
+editResult(_formData : TucResult){  
   return this.http.post(`${this.config.url}/Result/EditResult`,_formData,this.config.httpOptions);  
 }
 

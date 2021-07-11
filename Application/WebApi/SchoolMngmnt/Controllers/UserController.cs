@@ -233,6 +233,50 @@ namespace SchoolMngmnt.Controllers
              
         }
 
+
+
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [HttpGet]
+        [Route("api/User/GetStudentListByClssId")]
+        public StatusResult<List<UserMaster>> GetStudentListByClssId(int id)
+        {
+
+            StatusResult<List<UserMaster>> rslt = new StatusResult<List<UserMaster>>();
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("Authorization"))
+            {
+                token = headers.GetValues("Authorization").First();
+
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User not logged in!!";
+                return rslt;
+            }
+
+            var checkSession = SysManageRepository.CheckSession(token);
+
+            if (checkSession.Status == "FAILED")
+            {
+                rslt.Status = checkSession.Status;
+                rslt.Message = checkSession.Message;
+                return rslt;
+            }
+
+            if (checkSession.Result.RoleId == 2 || checkSession.Result.RoleId == 1) // ADMIN or Teacher
+            {
+                rslt = SysManageRepository.GetStudentListByClassId(id, checkSession.Result.UserName);
+            } 
+
+            return rslt;
+
+        }
+
+
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpGet]
         [Route("api/User/Get")]

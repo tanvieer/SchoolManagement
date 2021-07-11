@@ -1,1 +1,60 @@
-<p>result-create works!</p>
+<div class="card-body">
+    <!-- left column -->
+    <div class="col-md-9">
+      <!-- general form elements -->
+      <div class="card card-primary">
+        <div class="card-header">
+          <h3 class="card-title">Add Result</h3>
+        </div>
+        <form #form="ngForm" (submit)="onSubmit(form)">
+          <div class="card-body">
+
+
+            <div class="form-group">
+                <label for="inputSelectSubject">Select Subject</label>
+                <select #mySelect (change)='onSubjectChange(mySelect.value)' name="SubjectId" id="SubjectId" class="form-control" [(ngModel)]="serviceOthers.formData_Result.SubjectId" required>
+                  <option *ngFor="let option of subjectList" [value]="option.SubjectId" >{{option.SubjectName}} </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="inputSelectTest">Select Test</label>
+                <select name="TestId" id="TestId" class="form-control" [(ngModel)]="serviceOthers.formData_Result.TestId" required>
+                  <option *ngFor="let option of testList" [value]="option.TestId" >{{option.TestName}} </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="inputSelectClass">Select Class</label>
+                <select #mySelectClass (change)='onClassChange(mySelectClass.value)' name="ClassId" id="ClassId" class="form-control" [(ngModel)]="serviceOthers.formData_Result.ClassId" required>
+                  <option *ngFor="let option of classList" [value]="option.ClassId" >{{option.ClassName}} </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="inputSelectStudent">Select Student</label>
+                <select name="StudentId" id="StudentId" class="form-control" [(ngModel)]="serviceOthers.formData_Result.StudentId" required>
+                  <option *ngFor="let option of studentList" [value]="option.Id" >{{option.FullName}} </option>
+                </select>
+            </div>
+    
+    
+    
+  
+            <div class="form-group">
+              <label for="inputGrade">Grade</label> 
+              <input autocomplete="off" name="Grade"  #ResultName="ngModel" [(ngModel)]="serviceOthers.formData_Result.Grade" type="number" placeholder="Grade" class="form-control" required>
+            </div>
+  
+   
+            
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+          <!-- /.card-body -->
+        </form>
+      </div>
+    </div>
+  </div>
+  

@@ -5,7 +5,7 @@ create or replace package pkg_tuc_user_mast is
   -- Purpose : 
 
   -- Public type declarations
- 
+
   procedure sp_tuc_sys_user_mast_i(p_activity     in char,
                                    p_username     in tuc_sys_user_mast.username%type,
                                    p_first_name   in tuc_sys_user_mast.first_name%type,
@@ -14,24 +14,31 @@ create or replace package pkg_tuc_user_mast is
                                    p_phone_number in tuc_sys_user_mast.phone_number%type,
                                    p_password     in tuc_sys_user_mast.password%type,
                                    p_role_id      in tuc_sys_user_mast.role_id%type,
-                                   p_class_id      in tuc_sys_user_mast.class_id%type,
+                                   p_class_id     in tuc_sys_user_mast.class_id%type,
                                    p_user_id      in tuc_sys_user_mast.maker_id%type,
                                    p_out          out number,
                                    p_err_code     out varchar2,
                                    p_err_msg      out varchar2);
   procedure sp_tuc_sys_user_mast_gk(p_username in nvarchar2,
-                                      p_user_id  in nvarchar2,
-                                      p_out      out number,
-                                      p_err_code out nvarchar2,
-                                      p_err_msg  out nvarchar2,
-                                      T_CURSOR   out sys_refcursor);
-  
-  procedure sp_tuc_sys_user_mast_ga(  p_user_type in number, 
-                                      p_out       out number,
-                                      p_err_code  out nvarchar2,
-                                      p_err_msg   out nvarchar2,
-                                      T_CURSOR    out sys_refcursor);
-  
+                                    p_user_id  in nvarchar2,
+                                    p_out      out number,
+                                    p_err_code out nvarchar2,
+                                    p_err_msg  out nvarchar2,
+                                    T_CURSOR   out sys_refcursor);
+
+  procedure sp_tuc_sys_user_mast_ga(p_user_type in number,
+                                    p_out       out number,
+                                    p_err_code  out nvarchar2,
+                                    p_err_msg   out nvarchar2,
+                                    T_CURSOR    out sys_refcursor);
+
+  procedure sp_get_std_by_class(p_class_id in tuc_class.class_id%type,
+                                p_user_id  in nvarchar2,
+                                p_out      out number,
+                                p_err_code out nvarchar2,
+                                p_err_msg  out nvarchar2,
+                                T_CURSOR   out sys_refcursor);
+
   procedure sp_sys_verify_user(p_username in nvarchar2,
                                p_password in nvarchar2,
                                p_out      out number,
@@ -92,7 +99,7 @@ create or replace package pkg_tuc_user_mast is
 end pkg_tuc_user_mast;
 /
 create or replace package body pkg_tuc_user_mast is
---usr-1016
+
   v_session_exp_min NUMBER(8) := 5; -- min
   procedure sp_tuc_sys_user_mast_i(p_activity     in char,
                                    p_username     in tuc_sys_user_mast.username%type,
@@ -102,7 +109,7 @@ create or replace package body pkg_tuc_user_mast is
                                    p_phone_number in tuc_sys_user_mast.phone_number%type,
                                    p_password     in tuc_sys_user_mast.password%type,
                                    p_role_id      in tuc_sys_user_mast.role_id%type,
-                                   p_class_id      in tuc_sys_user_mast.class_id%type,
+                                   p_class_id     in tuc_sys_user_mast.class_id%type,
                                    p_user_id      in tuc_sys_user_mast.maker_id%type,
                                    p_out          out number,
                                    p_err_code     out varchar2,
@@ -110,9 +117,9 @@ create or replace package body pkg_tuc_user_mast is
   
     excp_uk_constraint_violated exception;
     pragma exception_init(excp_uk_constraint_violated, -00001);
-    v_user_id tuc_sys_user_mast.id%type;
-    v_enc_key tuc_sys_user_mast.enc_key%type;
-    v_pas_enc tuc_sys_user_mast.password%type;
+    v_user_id   tuc_sys_user_mast.id%type;
+    v_enc_key   tuc_sys_user_mast.enc_key%type;
+    v_pas_enc   tuc_sys_user_mast.password%type;
     l_row_count number(8);
   begin
   
@@ -120,22 +127,22 @@ create or replace package body pkg_tuc_user_mast is
   
     IF P_OUT = 0 THEN
       pkg_tuc_user_mast.IS_NULL('p_user_id',
-                              p_user_id,
-                              'USR-sp_tuc_sys_user_mast',
-                              P_OUT,
-                              P_ERR_CODE,
-                              P_ERR_MSG);
+                                p_user_id,
+                                'USR-sp_tuc_sys_user_mast',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
     ELSE
       RETURN;
     END IF;
   
     IF P_OUT = 0 THEN
       pkg_tuc_user_mast.IS_NULL('USERNAME',
-                              p_username,
-                              'USR-sp_tuc_sys_user_mast',
-                              P_OUT,
-                              P_ERR_CODE,
-                              P_ERR_MSG);
+                                p_username,
+                                'USR-sp_tuc_sys_user_mast',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
     ELSE
       RETURN;
     END IF;
@@ -144,22 +151,22 @@ create or replace package body pkg_tuc_user_mast is
     
       IF P_OUT = 0 THEN
         pkg_tuc_user_mast.IS_NULL('PASSWORD',
-                                p_password,
-                                'USR-sp_tuc_sys_user_mast',
-                                P_OUT,
-                                P_ERR_CODE,
-                                P_ERR_MSG);
+                                  p_password,
+                                  'USR-sp_tuc_sys_user_mast',
+                                  P_OUT,
+                                  P_ERR_CODE,
+                                  P_ERR_MSG);
       ELSE
         RETURN;
       END IF;
     
       IF P_OUT = 0 THEN
         pkg_tuc_user_mast.IS_NULL('ROLE',
-                                p_role_id,
-                                'USR-sp_tuc_sys_user_mast',
-                                P_OUT,
-                                P_ERR_CODE,
-                                P_ERR_MSG);
+                                  p_role_id,
+                                  'USR-sp_tuc_sys_user_mast',
+                                  P_OUT,
+                                  P_ERR_CODE,
+                                  P_ERR_MSG);
       ELSE
         RETURN;
       END IF;
@@ -169,33 +176,33 @@ create or replace package body pkg_tuc_user_mast is
     IF p_activity = 'U' OR p_activity = 'I' THEN
       IF P_OUT = 0 THEN
         pkg_tuc_user_mast.IS_NULL('FIRST NAME',
-                                p_first_name,
-                                'USR-sp_tuc_sys_user_mast',
-                                P_OUT,
-                                P_ERR_CODE,
-                                P_ERR_MSG);
+                                  p_first_name,
+                                  'USR-sp_tuc_sys_user_mast',
+                                  P_OUT,
+                                  P_ERR_CODE,
+                                  P_ERR_MSG);
       ELSE
         RETURN;
       END IF;
     
       IF P_OUT = 0 THEN
         pkg_tuc_user_mast.IS_NULL('LAST NAME',
-                                p_last_name,
-                                'USR-sp_tuc_sys_user_mast',
-                                P_OUT,
-                                P_ERR_CODE,
-                                P_ERR_MSG);
+                                  p_last_name,
+                                  'USR-sp_tuc_sys_user_mast',
+                                  P_OUT,
+                                  P_ERR_CODE,
+                                  P_ERR_MSG);
       ELSE
         RETURN;
       END IF;
     
       IF P_OUT = 0 THEN
         pkg_tuc_user_mast.IS_NULL('EMAIL',
-                                p_email,
-                                'USR-sp_tuc_sys_user_mast',
-                                P_OUT,
-                                P_ERR_CODE,
-                                P_ERR_MSG);
+                                  p_email,
+                                  'USR-sp_tuc_sys_user_mast',
+                                  P_OUT,
+                                  P_ERR_CODE,
+                                  P_ERR_MSG);
       ELSE
         RETURN;
       END IF;
@@ -208,9 +215,9 @@ create or replace package body pkg_tuc_user_mast is
                      dbms_random.string(9, 10);
       
         pkg_tuc_user_mast.sp_pass_encrypt(p_user_id  => v_user_id,
-                                        p_password => p_password,
-                                        p_enc_key  => v_enc_key,
-                                        p_enc_pass => v_pas_enc);
+                                          p_password => p_password,
+                                          p_enc_key  => v_enc_key,
+                                          p_enc_pass => v_pas_enc);
       
         insert into tuc_sys_user_mast
           (id,
@@ -255,26 +262,28 @@ create or replace package body pkg_tuc_user_mast is
       ELSIF P_ACTIVITY = 'U' THEN
       
         update tuc_sys_user_mast
-           set first_name       = p_first_name,
-               last_name        = p_last_name,
-               email            = p_email,
+           set first_name = p_first_name,
+               last_name  = p_last_name,
+               email      = p_email,
                --role_id          = p_role_id,
                class_id         = p_class_id,
                phone_number     = p_phone_number,
                last_update_by   = p_user_id,
                last_update_time = sysdate
-         where username = p_username and status <> 'D';
-         
-         l_row_count := sql%rowcount;
-         
-         if l_row_count < 1 then 
-              p_out      := 1;
-              p_err_code := 'usr-1001';
-              p_err_msg  := initcap('No Active User Found by username = ') || p_username;
-              rollback; 
-             return;
-         end if;
-         
+         where username = p_username
+           and status <> 'D';
+      
+        l_row_count := sql%rowcount;
+      
+        if l_row_count < 1 then
+          p_out      := 1;
+          p_err_code := 'usr-1001';
+          p_err_msg  := initcap('No Active User Found by username = ') ||
+                        p_username;
+          rollback;
+          return;
+        end if;
+      
         commit;
         p_err_msg := initcap('User updated successfully!');
       
@@ -284,14 +293,16 @@ create or replace package body pkg_tuc_user_mast is
            set status           = 'D',
                last_update_by   = p_user_id,
                last_update_time = sysdate
-         where username = p_username and status <> 'D';
-          if l_row_count < 1 then 
-                p_out      := 1;
-                p_err_code := 'usr-1002';
-                p_err_msg  := initcap('No Active User Found by username = ') || p_username;
-                rollback; 
-               return;
-           end if;  
+         where username = p_username
+           and status <> 'D';
+        if l_row_count < 1 then
+          p_out      := 1;
+          p_err_code := 'usr-1002';
+          p_err_msg  := initcap('No Active User Found by username = ') ||
+                        p_username;
+          rollback;
+          return;
+        end if;
         commit;
         p_err_msg := initcap('User deleted successfully!');
       
@@ -325,11 +336,11 @@ create or replace package body pkg_tuc_user_mast is
   end sp_tuc_sys_user_mast_i;
 
   procedure sp_tuc_sys_user_mast_gk(p_username in nvarchar2,
-                                      p_user_id  in nvarchar2,
-                                      p_out      out number,
-                                      p_err_code out nvarchar2,
-                                      p_err_msg  out nvarchar2,
-                                      T_CURSOR   out sys_refcursor) is
+                                    p_user_id  in nvarchar2,
+                                    p_out      out number,
+                                    p_err_code out nvarchar2,
+                                    p_err_msg  out nvarchar2,
+                                    T_CURSOR   out sys_refcursor) is
     --v_count number(8);
   
   begin
@@ -337,22 +348,22 @@ create or replace package body pkg_tuc_user_mast is
   
     IF P_OUT = 0 THEN
       pkg_tuc_user_mast.IS_NULL('p_user_id',
-                              p_user_id,
-                              'USR-sp_tuc_sys_user_mast_gk',
-                              P_OUT,
-                              P_ERR_CODE,
-                              P_ERR_MSG);
+                                p_user_id,
+                                'USR-sp_tuc_sys_user_mast_gk',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
     ELSE
       RETURN;
     END IF;
   
     IF P_OUT = 0 THEN
       pkg_tuc_user_mast.IS_NULL('USERNAME',
-                              p_username,
-                              'USR-sp_tuc_sys_user_mast_gk',
-                              P_OUT,
-                              P_ERR_CODE,
-                              P_ERR_MSG);
+                                p_username,
+                                'USR-sp_tuc_sys_user_mast_gk',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
     ELSE
       RETURN;
     END IF;
@@ -373,8 +384,8 @@ create or replace package body pkg_tuc_user_mast is
              t.session_id,
              t.class_id,
              
-              --  AVG GRADE CALCULATION START
-             (select nvl(avg(grade),0.0)
+             --  AVG GRADE CALCULATION START
+             (select nvl(avg(grade), 0.0)
                 from TUC_result rslt
                where rslt.student_id = t.id
                  and rslt.test_id in
@@ -384,7 +395,7 @@ create or replace package body pkg_tuc_user_mast is
                              (select sub.subject_id
                                 from tuc_subject sub
                                where sub.class_id = t.class_id))) avg_grade,
-              -- AVG GRADE CALCULATION END
+             -- AVG GRADE CALCULATION END
              
              t.role_id,
              (select upper(role_name)
@@ -394,14 +405,16 @@ create or replace package body pkg_tuc_user_mast is
                 from tuc_class
                where class_id = t.class_id) as class_name
         from tuc_sys_user_mast t
-       where upper(t.username) = upper(p_username) and t.status <> 'D';
+       where upper(t.username) = upper(p_username)
+         and t.status <> 'D';
   
     p_err_msg := 'Data found successfully.';
   exception
     when no_data_found then
       p_out      := 1;
       p_err_code := 'usr-1006';
-      p_err_msg  := initcap('No Active User Found by username = ') || p_username;
+      p_err_msg  := initcap('No Active User Found by username = ') ||
+                    p_username;
       rollback;
     when others then
       p_out      := 1;
@@ -410,30 +423,26 @@ create or replace package body pkg_tuc_user_mast is
       rollback;
   end sp_tuc_sys_user_mast_gk;
 
-  procedure sp_tuc_sys_user_mast_ga(  p_user_type in number, 
-                                      p_out       out number,
-                                      p_err_code  out nvarchar2,
-                                      p_err_msg   out nvarchar2,
-                                      T_CURSOR    out sys_refcursor) is
+  procedure sp_tuc_sys_user_mast_ga(p_user_type in number,
+                                    p_out       out number,
+                                    p_err_code  out nvarchar2,
+                                    p_err_msg   out nvarchar2,
+                                    T_CURSOR    out sys_refcursor) is
     --v_count number(8);
   
   begin
     P_OUT := 0;
   
- 
-  
     IF P_OUT = 0 THEN
       pkg_tuc_user_mast.IS_NULL('USER TYPE',
-                              p_user_type,
-                              'USR-sp_tuc_sys_user_mast_ga',
-                              P_OUT,
-                              P_ERR_CODE,
-                              P_ERR_MSG);
+                                p_user_type,
+                                'USR-sp_tuc_sys_user_mast_ga',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
     ELSE
       RETURN;
     END IF;
-  
-  
   
     IF P_USER_TYPE NOT IN (0, 1, 2, 3) THEN
       p_out      := 1;
@@ -448,49 +457,141 @@ create or replace package body pkg_tuc_user_mast is
   
     open T_CURSOR for
       select t.id,
-       t.username,
-       t.email,
-       t.first_name,
-       t.last_name,
-       t.phone_number,
-       t.last_logged_in,
-       t.session_exp_time,
-       t.session_id,
-       t.role_id,
-       --  AVG GRADE CALCULATION START
-       (select nvl(avg(grade),0.0)
-          from TUC_result rslt
-         where rslt.student_id = t.id
-           and rslt.test_id in
-               (select tst.test_id
-                  from TUC_TEST tst
-                 where subject_id in
-                       (select sub.subject_id
-                          from tuc_subject sub
-                         where sub.class_id = t.class_id))) avg_grade,
-        -- AVG GRADE CALCULATION END
-        t.class_id,
-       (select upper(role_name) from tuc_sys_role where role_id = t.role_id) as role_name,
-       (select upper(class_name) from tuc_class where class_id = t.class_id) as class_name
-  from tuc_sys_user_mast t
- where T.STATUS <> 'D'
-   and (role_id = p_user_type or p_user_type = 0)
- order by role_id, username;
-
+             t.username,
+             t.email,
+             t.first_name,
+             t.last_name,
+             t.phone_number,
+             t.last_logged_in,
+             t.session_exp_time,
+             t.session_id,
+             t.role_id,
+             --  AVG GRADE CALCULATION START
+             (select nvl(avg(grade), 0.0)
+                from TUC_result rslt
+               where rslt.student_id = t.id
+                 and rslt.test_id in
+                     (select tst.test_id
+                        from TUC_TEST tst
+                       where subject_id in
+                             (select sub.subject_id
+                                from tuc_subject sub
+                               where sub.class_id = t.class_id))) avg_grade,
+             -- AVG GRADE CALCULATION END
+             t.class_id,
+             (select upper(role_name)
+                from tuc_sys_role
+               where role_id = t.role_id) as role_name,
+             (select upper(class_name)
+                from tuc_class
+               where class_id = t.class_id) as class_name
+        from tuc_sys_user_mast t
+       where T.STATUS <> 'D'
+         and (role_id = p_user_type or p_user_type = 0)
+       order by role_id, username;
   
     p_err_msg := 'Data found successfully.';
   exception
-  /*  when no_data_found then 
-        p_out      := 1;
-        p_err_code := 'usr-1008';
-        p_err_msg  := initcap('No Active User Found by username = ') || p_username;
-        rollback; */ 
+    /*  when no_data_found then 
+    p_out      := 1;
+    p_err_code := 'usr-1008';
+    p_err_msg  := initcap('No Active User Found by username = ') || p_username;
+    rollback; */
     when others then
       p_out      := 1;
       p_err_code := sqlcode;
       p_err_msg  := sqlerrm;
       rollback;
   end sp_tuc_sys_user_mast_ga;
+
+  procedure sp_get_std_by_class(p_class_id in tuc_class.class_id%type,
+                                p_user_id  in nvarchar2,
+                                p_out      out number,
+                                p_err_code out nvarchar2,
+                                p_err_msg  out nvarchar2,
+                                T_CURSOR   out sys_refcursor) is
+  begin
+    P_OUT := 0;
+  
+    IF P_OUT = 0 THEN
+      pkg_tuc_user_mast.IS_NULL('Class',
+                                p_class_id,
+                                'USR-sp_get_std_by_class',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
+    ELSE
+      RETURN;
+    END IF;
+    
+    IF P_OUT = 0 THEN
+      pkg_tuc_user_mast.IS_NULL('p_user_id',
+                                p_user_id,
+                                'USR-sp_get_std_by_class',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
+    ELSE
+      RETURN;
+    END IF;
+  
+    if p_class_id = 0 then
+      p_out      := 1;
+      p_err_code := 'usr-1018';
+      p_err_msg  := 'Please select a class!';
+      rollback;
+      return;
+    
+    end if;
+  
+    IF P_OUT <> 0 THEN
+      RETURN;
+    END IF;
+  
+    open T_CURSOR for
+      select t.id,
+             t.username,
+             t.email,
+             t.first_name,
+             t.last_name,
+             t.phone_number,
+             t.last_logged_in,
+             t.session_exp_time,
+             t.session_id,
+             t.role_id,
+             --  AVG GRADE CALCULATION START
+             (select nvl(avg(grade), 0.0)
+                from TUC_result rslt
+               where rslt.student_id = t.id
+                 and rslt.test_id in
+                     (select tst.test_id
+                        from TUC_TEST tst
+                       where subject_id in
+                             (select sub.subject_id
+                                from tuc_subject sub
+                               where sub.class_id = t.class_id))) avg_grade,
+             -- AVG GRADE CALCULATION END
+             t.class_id,
+             (select upper(role_name)
+                from tuc_sys_role
+               where role_id = t.role_id) as role_name,
+             (select upper(class_name)
+                from tuc_class
+               where class_id = t.class_id) as class_name
+        from tuc_sys_user_mast t
+       where T.STATUS <> 'D'
+         and role_id = 3
+         and t.class_id = p_class_id
+       order by username;
+  
+    p_err_msg := 'Data found successfully.';
+  exception
+    when others then
+      p_out      := 1;
+      p_err_code := sqlcode;
+      p_err_msg  := sqlerrm;
+      rollback;
+  end sp_get_std_by_class;
 
   procedure sp_sys_verify_user(p_username in nvarchar2,
                                p_password in nvarchar2,
@@ -512,7 +613,8 @@ create or replace package body pkg_tuc_user_mast is
       select t.enc_key, t.password, id
         into v_enc_key, v_password_db, v_user_id
         from tuc_sys_user_mast t
-       where lower(t.username) = lower(p_username) and status <> 'D';
+       where lower(t.username) = lower(p_username)
+         and status <> 'D';
     
       dbms_output.put_line('v_enc_key = ' || v_enc_key);
       dbms_output.put_line('v_password = ' || v_password_db);
@@ -528,9 +630,9 @@ create or replace package body pkg_tuc_user_mast is
     end;
   
     pkg_tuc_user_mast.sp_pass_encrypt(p_user_id  => v_user_id,
-                                    p_password => p_password,
-                                    p_enc_key  => v_enc_key,
-                                    p_enc_pass => v_pas_enc);
+                                      p_password => p_password,
+                                      p_enc_key  => v_enc_key,
+                                      p_enc_pass => v_pas_enc);
   
     if v_pas_enc = v_password_db then
       v_session_id     := SYS_GUID();
@@ -541,7 +643,8 @@ create or replace package body pkg_tuc_user_mast is
          set t.session_id       = v_session_id,
              t.last_logged_in   = sysdate,
              t.session_exp_time = v_sessin_expired
-       where upper(t.username) = upper(p_username)  and status <> 'D';
+       where upper(t.username) = upper(p_username)
+         and status <> 'D';
       commit;
     
       p_err_msg := 'Successfully logged in!';
@@ -567,16 +670,18 @@ create or replace package body pkg_tuc_user_mast is
                t.session_exp_time,
                (select role_name from tuc_sys_role where role_id = t.role_id) as role_name
           from tuc_sys_user_mast t
-         where upper(t.username) = upper(p_username) and status <> 'D';
+         where upper(t.username) = upper(p_username)
+           and status <> 'D';
     end if;
   
   exception
     when no_data_found then
       p_out      := 1;
-      p_err_code := 'usr-1011';
-      p_err_msg  := initcap('No Active User Found by username = ') || p_username;
+      p_err_code := 'usr-1017';
+      p_err_msg  := initcap('No Active User Found by username = ') ||
+                    p_username;
       rollback;
-      
+    
     when others then
       p_out      := 1;
       p_err_code := sqlcode;
@@ -600,44 +705,44 @@ create or replace package body pkg_tuc_user_mast is
   
     IF P_OUT = 0 THEN
       pkg_tuc_user_mast.IS_NULL('p_user_id',
-                              p_user_id,
-                              'USR-sp_sys_change_password',
-                              P_OUT,
-                              P_ERR_CODE,
-                              P_ERR_MSG);
+                                p_user_id,
+                                'USR-sp_sys_change_password',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
     ELSE
       RETURN;
     END IF;
   
     IF P_OUT = 0 THEN
       pkg_tuc_user_mast.IS_NULL('USERNAME',
-                              p_username,
-                              'USR-sp_sys_change_password',
-                              P_OUT,
-                              P_ERR_CODE,
-                              P_ERR_MSG);
+                                p_username,
+                                'USR-sp_sys_change_password',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
     ELSE
       RETURN;
     END IF;
   
     IF P_OUT = 0 THEN
       pkg_tuc_user_mast.IS_NULL('OLD PASSWORD',
-                              p_password_old,
-                              'USR-sp_sys_change_password',
-                              P_OUT,
-                              P_ERR_CODE,
-                              P_ERR_MSG);
+                                p_password_old,
+                                'USR-sp_sys_change_password',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
     ELSE
       RETURN;
     END IF;
   
     IF P_OUT = 0 THEN
       pkg_tuc_user_mast.IS_NULL('NEW PASSWORD',
-                              p_password_new,
-                              'USR-sp_sys_change_password',
-                              P_OUT,
-                              P_ERR_CODE,
-                              P_ERR_MSG);
+                                p_password_new,
+                                'USR-sp_sys_change_password',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
     ELSE
       RETURN;
     END IF;
@@ -647,11 +752,11 @@ create or replace package body pkg_tuc_user_mast is
     END IF;
   
     pkg_tuc_user_mast.sp_sys_verify_user(p_username => p_username,
-                                       p_password => p_password_old,
-                                       p_out      => p_out,
-                                       p_err_code => p_err_code,
-                                       p_err_msg  => p_err_msg,
-                                       t_cursor   => V_CURSOR);
+                                         p_password => p_password_old,
+                                         p_out      => p_out,
+                                         p_err_code => p_err_code,
+                                         p_err_msg  => p_err_msg,
+                                         t_cursor   => V_CURSOR);
   
     if p_out = 1 then
       return;
@@ -663,9 +768,9 @@ create or replace package body pkg_tuc_user_mast is
      where username = lower(p_username);
   
     pkg_tuc_user_mast.sp_pass_encrypt(p_user_id  => v_user_id,
-                                    p_password => p_password_new,
-                                    p_enc_key  => v_enc_key,
-                                    p_enc_pass => v_pas_enc);
+                                      p_password => p_password_new,
+                                      p_enc_key  => v_enc_key,
+                                      p_enc_pass => v_pas_enc);
   
     update tuc_sys_user_mast t
        set t.password         = v_pas_enc,
@@ -698,33 +803,33 @@ create or replace package body pkg_tuc_user_mast is
   
     IF P_OUT = 0 THEN
       pkg_tuc_user_mast.IS_NULL('p_user_id',
-                              p_user_id,
-                              'USR-sp_sys_reset_password',
-                              P_OUT,
-                              P_ERR_CODE,
-                              P_ERR_MSG);
+                                p_user_id,
+                                'USR-sp_sys_reset_password',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
     ELSE
       RETURN;
     END IF;
-    
-     IF P_OUT = 0 THEN
+  
+    IF P_OUT = 0 THEN
       pkg_tuc_user_mast.IS_NULL('Password',
-                              p_password,
-                              'USR-sp_sys_reset_password',
-                              P_OUT,
-                              P_ERR_CODE,
-                              P_ERR_MSG);
+                                p_password,
+                                'USR-sp_sys_reset_password',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
     ELSE
       RETURN;
     END IF;
   
     IF P_OUT = 0 THEN
       pkg_tuc_user_mast.IS_NULL('USERNAME',
-                              p_username,
-                              'USR-sp_sys_reset_password',
-                              P_OUT,
-                              P_ERR_CODE,
-                              P_ERR_MSG);
+                                p_username,
+                                'USR-sp_sys_reset_password',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
     ELSE
       RETURN;
     END IF;
@@ -732,20 +837,20 @@ create or replace package body pkg_tuc_user_mast is
     if P_OUT <> 0 then
       return;
     end if;
-    
-  /*  if p_password is null then
+  
+    /*  if p_password is null then
       p_password := dbms_random.string(4, 4);
     end if;*/
-    
+  
     select id, enc_key, email
       into v_user_id, v_enc_key, p_out_email
       from tuc_sys_user_mast
      where username = lower(p_username);
   
     pkg_tuc_user_mast.sp_pass_encrypt(p_user_id  => v_user_id,
-                                    p_password => p_password,
-                                    p_enc_key  => v_enc_key,
-                                    p_enc_pass => v_pas_enc);
+                                      p_password => p_password,
+                                      p_enc_key  => v_enc_key,
+                                      p_enc_pass => v_pas_enc);
   
     update tuc_sys_user_mast t
        set t.password         = v_pas_enc,
@@ -838,13 +943,13 @@ create or replace package body pkg_tuc_user_mast is
         return;
     end;
   
-/*    if v_session_expired < v_current_time then
+    /*    if v_session_expired < v_current_time then
       p_out      := 1;
       p_err_code := 'usr-1014';
       p_err_msg  := initcap('session is expired!');
       return;
     end if;
-  
+    
     update tuc_sys_user_mast t
        set t.session_exp_time = to_CHAR(sysdate +
                                         (.000694 * v_session_exp_min),
@@ -962,11 +1067,11 @@ create or replace package body pkg_tuc_user_mast is
   
     IF P_OUT = 0 THEN
       pkg_tuc_user_mast.IS_NULL('p_user_id',
-                              p_user_id,
-                              'USR-sp_tuc_sys_role_ga',
-                              P_OUT,
-                              P_ERR_CODE,
-                              P_ERR_MSG);
+                                p_user_id,
+                                'USR-sp_tuc_sys_role_ga',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
     ELSE
       RETURN;
     END IF;
@@ -979,7 +1084,7 @@ create or replace package body pkg_tuc_user_mast is
       select t.role_id, t.role_name, t.role_description
         from tuc_sys_role t
        where t.status = 'R'
-        order by role_id;
+       order by role_id;
   
     p_err_msg := 'Data found successfully.';
   exception
