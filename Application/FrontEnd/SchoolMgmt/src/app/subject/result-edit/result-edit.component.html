@@ -1,1 +1,41 @@
-<p>result-edit works!</p>
+<div class="card-body">
+    <!-- left column -->
+    <div class="col-md-9">
+      <!-- general form elements -->
+      <div class="card card-primary">
+        <div class="card-header">
+          <h3 class="card-title">Update Result</h3>
+        </div>
+        <form #form="ngForm" (submit)="onSubmit(form)">
+          <div class="card-body">
+ 
+            
+            <div class="form-group">
+                <label for="inputGrade">Test Name</label> 
+                <input readonly autocomplete="off" name="TestName"  #TestName="ngModel" [(ngModel)]="serviceOthers.formData_Result.TestName" type="text" placeholder="Test Name" class="form-control" required>
+            </div>
+      
+           
+            <div class="form-group">
+                <label for="inputGrade">Student Name</label> 
+                <input readonly autocomplete="off" name="StudentName"  #StudentName="ngModel" [(ngModel)]="serviceOthers.formData_Result.FullName" type="text" placeholder="Student Name" class="form-control" required>
+            </div>
+     
+  
+            <div class="form-group">
+              <label for="inputGrade">Grade</label> 
+              <input autocomplete="off" name="Grade"  #ResultName="ngModel" [(ngModel)]="serviceOthers.formData_Result.Grade" type="number" placeholder="Grade" class="form-control" required>
+            </div>
+  
+   
+            
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+          <!-- /.card-body -->
+        </form>
+      </div>
+    </div>
+  </div>
+  

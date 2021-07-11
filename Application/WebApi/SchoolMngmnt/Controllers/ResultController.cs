@@ -106,6 +106,54 @@ namespace SchoolMngmnt.Controllers
 
 
 
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [HttpGet]
+        [Route("api/Result/GetResultInfo")]
+        public StatusResult<ResultViewModel> GetResultInfo(string id)
+        {
+
+            StatusResult<ResultViewModel> rslt = new StatusResult<ResultViewModel>();
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("Authorization"))
+            {
+                token = headers.GetValues("Authorization").First();
+
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User not logged in!!";
+                return rslt;
+            }
+
+            var checkSession = SysManageRepository.CheckSession(token);
+
+            if (checkSession.Status == "FAILED")
+            {
+                rslt.Status = checkSession.Status;
+                rslt.Message = checkSession.Message;
+                return rslt;
+            }
+
+            if (checkSession.Result.RoleId == 2) // ADMIN or teacher
+            {
+                ResultViewModel model = new ResultViewModel();
+                model.ResultId = id;
+                rslt = SpCall.GetResultInfo(id, checkSession.Result.UserName);
+            }
+            else
+            {
+                rslt.Message = "This user has no permission to view result.";
+            }
+
+            return rslt;
+        }
+
+
+
 
 
         [EnableCors(origins: "*", headers: "*", methods: "*")]

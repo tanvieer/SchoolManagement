@@ -204,8 +204,7 @@ export class ResultCreateComponent implements OnInit {
        });
    }
  
-
-  
+ 
   resetForm(form?: NgForm) {
 
     if (form != null)
@@ -215,6 +214,7 @@ export class ResultCreateComponent implements OnInit {
       Index : 1,
       ResultId : '',
       TestId: '',
+      TestName: '',
       Grade: 0,
       Status: 'ACTIVE',
       StudentId: '',

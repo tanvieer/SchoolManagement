@@ -147,6 +147,9 @@ addNewResult(_formData : TucResult){
 editResult(_formData : TucResult){  
   return this.http.post(`${this.config.url}/Result/EditResult`,_formData,this.config.httpOptions);  
 }
+getResultInfo(_id:string){  
+  return this.http.get(`${this.config.url}/Result/GetResultInfo?id=${_id}`,this.config.httpOptions);  
+}
 
 archiveResult(_id:string){  
   return this.http.delete(`${this.config.url}/Result/ArchiveResult?id=${_id}`,this.config.httpOptions);  

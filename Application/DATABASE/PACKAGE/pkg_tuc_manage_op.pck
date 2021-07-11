@@ -1464,6 +1464,7 @@ create or replace package body pkg_tuc_manage_op is
       open T_CURSOR for
         select result_id,
                test_id,
+               (select test_name from tuc_test where test_id = r.test_id) as test_name,
                grade,
                case
                  when r.status = 'A' then
@@ -1559,11 +1560,27 @@ create or replace package body pkg_tuc_manage_op is
       ELSE
         RETURN;
       END IF;
+       
+      
     END IF;
-  
-    if p_activity = 'I' OR p_activity = 'U' then
     
-      IF P_OUT = 0 THEN
+    if p_activity = 'U'
+      then 
+         IF P_OUT = 0 THEN
+        pkg_tuc_user_mast.IS_NULL('Grade',
+                                  p_grade,
+                                  'mng-sp_tuc_result',
+                                  P_OUT,
+                                  P_ERR_CODE,
+                                  P_ERR_MSG);
+      ELSE
+        RETURN;
+      END IF; 
+    end if;
+  
+    if p_activity = 'I' then
+     
+       IF P_OUT = 0 THEN
         pkg_tuc_user_mast.IS_NULL('Test Id',
                                   p_test_id,
                                   'mng-sp_tuc_result',
@@ -1574,16 +1591,7 @@ create or replace package body pkg_tuc_manage_op is
         RETURN;
       END IF;
     
-      IF P_OUT = 0 THEN
-        pkg_tuc_user_mast.IS_NULL('Grade',
-                                  p_grade,
-                                  'mng-sp_tuc_result',
-                                  P_OUT,
-                                  P_ERR_CODE,
-                                  P_ERR_MSG);
-      ELSE
-        RETURN;
-      END IF;
+     
     end if;
   
     IF P_OUT = 1 THEN
@@ -1757,6 +1765,7 @@ create or replace package body pkg_tuc_manage_op is
       select result_id,
              grade,
              test_id,
+             (select test_name from tuc_test where test_id = r.test_id) as test_name,
              CASE
                WHEN r.status = 'A' THEN
                 'Archived'

@@ -16,5 +16,7 @@ namespace SchoolMngmnt.Models.ViewModel
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string FullName { get { return this.FirstName + " " + this.LastName; } }
+
+        public string TestName { get;  set; }
     }
 }

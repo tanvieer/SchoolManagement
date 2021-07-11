@@ -697,6 +697,7 @@ namespace SchoolMngmnt.Repository
 
                         model.ResultId = dr["result_id"].ToString();
                         model.TestId = dr["test_id"].ToString();
+                        model.TestName = dr["test_name"].ToString();
                         model.Grade = dr["grade"] == null ? 0 : Convert.ToDouble(dr["grade"].ToString());
                         model.Status = dr["status"].ToString();
                         model.StudentId = dr["student_id"].ToString();
@@ -769,6 +770,7 @@ namespace SchoolMngmnt.Repository
                     {
                         rslt.Result.ResultId = dr["result_id"].ToString();
                         rslt.Result.TestId = dr["test_id"].ToString();
+                        rslt.Result.TestName = dr["test_name"].ToString();
                         rslt.Result.Grade = dr["grade"] == null ? 0 : Convert.ToDouble(dr["grade"].ToString());
                         rslt.Result.Status = dr["status"].ToString();
                         rslt.Result.StudentId = dr["student_id"].ToString();
