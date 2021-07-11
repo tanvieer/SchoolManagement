@@ -6,6 +6,7 @@ export class TucTest {
     SubjectId! : string;
     TestDate! : any;
     SubjecName! : string;
+    Status!: string;
 }
 
 

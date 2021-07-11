@@ -64,7 +64,8 @@ export class TestCreateComponent implements OnInit {
       TestName: '',
       SubjectId: '',
       TestDate: this.datepipe.transform(new Date(), 'mm-dd-yyyy'),
-      SubjecName: ''
+      SubjecName: '',
+      Status: 'R'
     }
   }
 

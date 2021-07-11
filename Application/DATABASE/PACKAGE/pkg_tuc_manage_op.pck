@@ -88,7 +88,7 @@ create or replace package pkg_tuc_manage_op is
                               p_err_code out nvarchar2,
                               p_err_msg  out nvarchar2,
                               T_CURSOR   out sys_refcursor);
-                              
+
   procedure sp_tuc_result(p_activity   in char,
                           p_result_id  in out tuc_result.result_id%type,
                           p_test_id    in tuc_result.test_id%type,
@@ -97,16 +97,14 @@ create or replace package pkg_tuc_manage_op is
                           p_user_id    in tuc_result.maker_id%type,
                           p_out        out number,
                           p_err_code   out varchar2,
-                          p_err_msg    out varchar2);   
-                          
+                          p_err_msg    out varchar2);
+
   procedure sp_tuc_result_gk(p_result_id in nvarchar2,
                              p_user_id   in nvarchar2,
                              p_out       out number,
                              p_err_code  out nvarchar2,
                              p_err_msg   out nvarchar2,
-                             T_CURSOR    out sys_refcursor);                         
-                              
-                              
+                             T_CURSOR    out sys_refcursor);
 
 end pkg_tuc_manage_op;
 /
@@ -366,10 +364,15 @@ create or replace package body pkg_tuc_manage_op is
       ELSIF P_ACTIVITY = 'D' THEN
         -- deasign STUDENTS from class    
         update tuc_sys_user_mast u
-           set u.class_id = null
-         where class_id = p_class_id;
+           set u.class_id = 0
+         where class_id = p_class_id
+           AND STATUS = 'R';
       
-        delete tuc_class where class_id = p_class_id;
+        update tuc_class u
+           set u.STATUS = 'D'
+         where u.class_id = p_class_id
+           AND u.STATUS = 'R';
+      
         commit;
         p_err_msg := initcap('Class deleted successfully!');
       ELSE
@@ -664,7 +667,8 @@ create or replace package body pkg_tuc_manage_op is
            set status           = 'A',
                last_update_by   = p_user_id,
                last_update_time = sysdate
-         where subject_id = p_subject_id;
+         where subject_id = p_subject_id
+           AND STATUS = 'R';
       
         commit;
         p_err_msg := initcap('subject archived successfully!');
@@ -754,9 +758,12 @@ create or replace package body pkg_tuc_manage_op is
         p_err_msg := initcap('subject updated successfully!');
       
       ELSIF P_ACTIVITY = 'D' THEN
-        -- deasign teacher from subject 
-        --delete tuc_class_subject_map where subject_id = p_subject_id;
-        delete tuc_subject where subject_id = p_subject_id;
+        update tuc_subject s
+           set s.STATUS           = 'D',
+               s.last_update_by   = p_user_id,
+               s.last_update_time = sysdate
+         where s.subject_id = p_subject_id
+           AND s.STATUS = 'R';
         commit;
         p_err_msg := initcap('subject deleted successfully!');
       
@@ -1083,36 +1090,37 @@ create or replace package body pkg_tuc_manage_op is
   
     IF P_OUT = 0 THEN
     
-      begin
-        select subject_id
-          into v_subject_id
-          from tuc_subject u
-         where u.subject_id = p_subject_id
-           and status <> 'D';
-      
-        select count(1)
-          into l_row_count
-          from tuc_test
-         where test_id = p_test_id
-           and status in ('A', 'D');
-      
-        if l_row_count > 0 then
-          p_out      := 1;
-          p_err_code := 'mng-1024';
-          p_err_msg  := initcap('this test is already archived or deleted.');
-          raise l_user_err;
-        end if;
-      
-      exception
-        when others then
-          p_out      := 1;
-          p_err_code := 'mng-1041';
-          p_err_msg  := initcap('No active subject found by p_subject_id : ' ||
-                                p_subject_id);
-          raise l_user_err;
-      end;
-    
       IF P_ACTIVITY = 'I' THEN
+      
+        begin
+          select subject_id
+            into v_subject_id
+            from tuc_subject u
+           where u.subject_id = p_subject_id
+             and status <> 'D';
+        
+          select count(1)
+            into l_row_count
+            from tuc_test
+           where test_id = p_test_id
+             and status in ('A', 'D');
+        
+          if l_row_count > 0 then
+            p_out      := 1;
+            p_err_code := 'mng-1024';
+            p_err_msg  := initcap('this test is already archived or deleted.');
+            raise l_user_err;
+          end if;
+        
+        exception
+          when others then
+            p_out      := 1;
+            p_err_code := 'mng-1043';
+            p_err_msg  := initcap('No active subject found by p_subject_id : ' ||
+                                  p_subject_id);
+            raise l_user_err;
+        end;
+      
         select nvl(max(test_id), 0) + 1 into p_test_id from tuc_test;
         insert into tuc_test
           (test_id,
@@ -1146,35 +1154,49 @@ create or replace package body pkg_tuc_manage_op is
            set status           = 'A',
                last_update_by   = p_user_id,
                last_update_time = sysdate
-         where test_id = p_test_id;
+         where test_id = p_test_id
+           AND STATUS = 'R';
       
         commit;
         p_err_msg := initcap('test archived successfully!');
       
       ELSIF P_ACTIVITY = 'U' THEN
-        -- deasign subject from test  
-      
-        BEGIN
-          SELECT STATUS
-            INTO V_STATUS
-            FROM tuc_test S
-           WHERE S.test_ID = P_test_ID;
-        EXCEPTION
-          WHEN OTHERS THEN
+        begin
+          select subject_id
+            into v_subject_id
+            from tuc_subject u
+           where u.subject_id = p_subject_id
+             and status <> 'D';
+        
+          select count(1)
+            into l_row_count
+            from tuc_test
+           where test_id = p_test_id
+             and status in ('A', 'D');
+        
+          if l_row_count > 0 then
             p_out      := 1;
-            p_err_code := 'mng-1018';
-            p_err_msg  := initcap('test NOT FOUND BY test ID: ' ||
-                                  P_test_ID);
-            ROLLBACK;
-            RAISE L_USER_ERR;
-        END;
+            p_err_code := 'mng-1024';
+            p_err_msg  := initcap('this test is already archived or deleted.');
+            raise l_user_err;
+          end if;
+        
+        exception
+          when others then
+            p_out      := 1;
+            p_err_code := 'mng-1043';
+            p_err_msg  := initcap('No active subject found by p_subject_id : ' ||
+                                  p_subject_id);
+            raise l_user_err;
+        end;
       
         update tuc_test s
            set s.test_name      = p_test_name,
                s.subject_id     = p_subject_id,
                last_update_by   = p_user_id,
                last_update_time = sysdate
-         where test_id = p_test_id;
+         where test_id = p_test_id
+           and status = 'R';
       
         commit;
         p_err_msg := initcap('test updated successfully!');
@@ -1185,7 +1207,8 @@ create or replace package body pkg_tuc_manage_op is
            set s.status         = 'D',
                last_update_by   = p_user_id,
                last_update_time = sysdate
-         where test_id = p_test_id;
+         where test_id = p_test_id
+           AND STATUS = 'R';
         commit;
         p_err_msg := initcap('test deleted successfully!');
       ELSE
@@ -1281,11 +1304,18 @@ create or replace package body pkg_tuc_manage_op is
              (select subject_name
                 from tuc_subject
                where subject_id = c.subject_id) as subject_name,
-             status,
-             maker_id,
-             maker_time,
-             last_update_by,
-             last_update_time
+             test_id,
+             CASE
+               WHEN c.status = 'A' THEN
+                'Archived'
+               WHEN c.status = 'D' THEN
+                'Deleted'
+               WHEN c.status = 'R' THEN
+                'Active'
+               ELSE
+                c.status
+             END as status,
+             to_char(c.test_date, 'DD-MON-YYYY') as test_date
         from tuc_test c
        where c.status <> 'D'
          and c.test_id = p_test_id;
@@ -1349,15 +1379,21 @@ create or replace package body pkg_tuc_manage_op is
       open T_CURSOR for
         select test_id,
                test_name,
-               status,
+               CASE
+                 WHEN s.status = 'A' THEN
+                  'Archived'
+                 WHEN s.status = 'D' THEN
+                  'Deleted'
+                 WHEN s.status = 'R' THEN
+                  'Active'
+                 ELSE
+                  s.status
+               END as status,
                subject_id,
                (select t.subject_name
                   from tuc_subject t
                  where t.subject_id = s.subject_id) as subject_name,
-               maker_id,
-               maker_time,
-               last_update_by,
-               last_update_time
+               to_char(s.test_date, 'DD-MON-YYYY') as test_date
           from tuc_test s
          where s.status <> 'D'
            and (s.subject_id = p_subject_id or p_subject_id is null)

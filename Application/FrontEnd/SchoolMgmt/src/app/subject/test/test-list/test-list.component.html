@@ -1,1 +1,54 @@
-<p>test-list works!</p>
+<div class="card-body">
+
+  <div class="form-group">
+    <label for="exampleSelectBorder">Subject</label>
+
+  <select name="SubjectId" id="SubjectId" class="form-control" #SubjectId (change)='loadTestData(SubjectId.value)'  required>
+          <option *ngFor="let option of subjectList" [value]="option.SubjectId" >{{option.SubjectName}}  [{{option.Status}}]</option>
+        </select>   
+    <!-- <select class="form-control" #mySelect (change)='loadTestData(mySelect.value)'>
+      <option class='option' *ngFor='let option of subjectList' [value]="option.SubjectId">{{option.SubjectName}}
+      </option>
+    </select> -->
+
+  </div>
+ 
+   
+<div class="card-body"> 
+    <table class="table table-striped"> 
+        <caption>Subject List</caption>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Test ID</th>
+        <th scope="col">Test Name</th> 
+        <th scope="col">Test Date</th>
+        <th scope="col">Subject Name</th>
+        <th scope="col">Status</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of testList">
+        <th scope="row">{{ item.Index }}</th>
+        <td>{{item.TestId}}</td>
+        <td>{{item.TestName}}</td> 
+        <td>{{item.TestDate}}</td>
+        <td>{{item.SubjecName}}</td>
+        <td>{{item.Status}}</td>
+        <td>
+          <button [disabled]="item.Status!='Active'" type="button" class="btn btn-sm btn-primary" routerLink="/test-edit/{{item.TestId}}">Edit</button>
+          &nbsp;
+          <button [disabled]="item.Status!='Active'"  (click)="onArchive(item.TestId)"  type="button" class="btn btn-sm btn-warning">Archive</button>
+          &nbsp;
+          <button [disabled]="item.Status!='Active'"  (click)="onDelete(item.TestId)"  type="button" class="btn btn-sm btn-danger">Delete</button>
+        </td>
+      </tr>
+
+  </table> 
+
+
+</div>
+
+
+</div>

@@ -11,5 +11,6 @@ namespace SchoolMngmnt.Models.ViewModel
         public string TestName { get; set; }
         public string TestDate { get; set; }
         public string SubjectId { get; set; }
+        public string Status { get; set; }
     }
 }

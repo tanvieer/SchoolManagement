@@ -545,21 +545,9 @@ namespace SchoolMngmnt.Repository
                         rslt.Result.TestName = dr["test_name"].ToString();
                         rslt.Result.SubjectId = dr["subject_id"].ToString();
                         rslt.Result.SubjecName = dr["subject_name"].ToString();
-
-                        string status = dr["status"].ToString();
-
-                        if (status == "A")
-                        {
-                            rslt.Result.Status = "ARCHIVED";
-                        }
-                        else if (status == "R")
-                        {
-                            rslt.Result.Status = "ACTIVE";
-                        }
-                        else
-                        {
-                            rslt.Result.Status = "DELETED";
-                        }
+                        rslt.Result.Status = dr["status"].ToString();
+                        rslt.Result.TestDateStr = dr["test_date"].ToString();
+                         
 
                     }
                     dr.Close();
@@ -633,20 +621,11 @@ namespace SchoolMngmnt.Repository
                         model.TestName = dr["test_name"].ToString();
                         model.SubjectId = dr["subject_id"].ToString();
                         model.SubjecName = dr["subject_name"].ToString();
+                        model.TestDateStr = dr["test_date"].ToString();
 
-                        string status = dr["status"].ToString();
+                        model.Status = dr["status"].ToString();
 
-                        if (status == "A")
-                        {
-                            model.Status = "ARCHIVED";
-                        }
-                        else if (status == "R")
-                        {
-                            model.Status = "ACTIVE";
-                        }else
-                        {
-                            model.Status = "DELETED";
-                        }
+                       
 
                         rslt.Result.Add(model);
                     }
@@ -723,7 +702,8 @@ namespace SchoolMngmnt.Repository
                         model.StudentId = dr["student_id"].ToString();
                         model.Username = dr["username"].ToString();
                         model.FirstName = dr["first_name"].ToString();
-                        model.LastName = dr["last_name"].ToString();     
+                        model.LastName = dr["last_name"].ToString();
+                        model.Status = dr["status"].ToString();
 
                         rslt.Result.Add(model);
                     }

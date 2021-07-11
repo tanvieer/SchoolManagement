@@ -234,5 +234,52 @@ namespace SchoolMngmnt.Controllers
             return rslt;
         }
 
+
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [HttpDelete]
+        [Route("api/Test/ArchiveTest")]
+        public StatusResult<TestViewModel> ArchiveTest(string id)
+        {
+
+            StatusResult<TestViewModel> rslt = new StatusResult<TestViewModel>();
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("Authorization"))
+            {
+                token = headers.GetValues("Authorization").First();
+
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User not logged in!!";
+                return rslt;
+            }
+
+            var checkSession = SysManageRepository.CheckSession(token);
+
+            if (checkSession.Status == "FAILED")
+            {
+                rslt.Status = checkSession.Status;
+                rslt.Message = checkSession.Message;
+                return rslt;
+            }
+
+            if (checkSession.Result.RoleId == 1 || checkSession.Result.RoleId == 2) // ADMIN or teacher
+            {
+                TestViewModel model = new TestViewModel();
+                model.TestId = id;
+                rslt = SpCall.ManageTest(model, "A", checkSession.Result.UserName);
+            }
+            else
+            {
+                rslt.Message = "This user has no permission to archive Test.";
+            }
+
+            return rslt;
+        }
+
     }
 }
