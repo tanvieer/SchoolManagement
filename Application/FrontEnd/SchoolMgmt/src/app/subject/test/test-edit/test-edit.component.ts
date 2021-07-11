@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { TucSubject } from 'src/app/shared/models/tuc-subject.model';
 import { TucTest } from 'src/app/shared/models/tuc-test.model';
@@ -21,6 +21,7 @@ export class TestEditComponent implements OnInit {
   constructor(public service: OtherService, 
     public datepipe: DatePipe,
     private arouter: ActivatedRoute,
+    private router: Router,
     private toastr: ToastrService) {
       
   }
@@ -33,13 +34,15 @@ export class TestEditComponent implements OnInit {
     }
 
     getTestInfo(_testID: string) {
+      console.log("Before getTestInfo");
       this.service.getTestInfo(_testID)
         .subscribe((res: any) => { 
           if (res.Status == "FAILED") {
-            this.toastr.error(res.Message, 'Class Edit');
+            this.toastr.error(res.Message, 'Test Edit');
             this.resetForm();
           }
           else { 
+            console.log("Before getTestInfo 2");
             this.parseTestData(res.Result); 
           } 
         });
@@ -47,15 +50,17 @@ export class TestEditComponent implements OnInit {
 
     parseTestData(jsonData: any) {
 
+     
+
       this.service.formData_Test = { 
         Index: 1, 
         SubjectId: jsonData.SubjectId,
         TestId: jsonData.TestId ,
         TestName: jsonData.TestName ,
-        TestDate: jsonData.TestDateStr ,
+        TestDate:  this.datepipe.transform(new Date(jsonData.TestDateStr), 'yyyy-MM-dd') ,
         SubjecName: jsonData.SubjecName ,
         Status: jsonData.Status  
-      }    
+      }     
     }
   
 
@@ -97,13 +102,13 @@ export class TestEditComponent implements OnInit {
     if (form != null)
       form.resetForm();
 
-    //let latest_date =this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    let latest_date =this.datepipe.transform(new Date(), 'yyyy-MM-dd'); 
     this.service.formData_Test = {
       Index: 0,
       TestId: '',
       TestName: '',
       SubjectId: '',
-      TestDate: this.datepipe.transform(new Date(), 'mm-dd-yyyy'),
+      TestDate: latest_date,
       SubjecName: '',
       Status: 'R'
     }
@@ -114,20 +119,23 @@ export class TestEditComponent implements OnInit {
   }
   insertRecord(form: NgForm) {
 
-    this.testObject = form.value;
+    this.testObject = form.value; 
 
     this.testObject.TestDate = this.datepipe.transform(this.testObject.TestDate, 'ddMMMyy');
     this.testObject.TestId =  this.testID;
-    
-    console.log(this.testObject);
+     
    
     this.service.modifyTest(this.testObject)
        .subscribe((res: any) => {
          console.log(res);
-         if (res.Status == "SUCCESS")
-           this.toastr.success(res.Message, 'Create Test');
-         else this.toastr.error(res.Message, 'Create Test'); 
+         if (res.Status == "SUCCESS"){
+          this.toastr.success(res.Message, 'Edit Test');
+          this.router.navigate(['/test-list']);
+         } 
+         else this.toastr.error(res.Message, 'Edit Test'); 
        });
   }
+
+  
 
 }

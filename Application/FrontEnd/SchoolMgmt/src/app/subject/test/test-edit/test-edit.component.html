@@ -16,12 +16,12 @@
                 <label for="exampleInputAssignClass2" >Test Name</label> 
                 <input autocomplete="off" name="TestName"  #TestName="ngModel" [(ngModel)]="service.formData_Test.TestName" type="text" placeholder="Test Name" class="form-control" required>
               </div> 
+ 
 
-              <div class="form-group">
+            <div class="form-group">
                 <label for="exampleInputAssignClass2" >Test Date</label> 
                 <input name="TestDate"  #TestDate="ngModel" [(ngModel)]="service.formData_Test.TestDate" type="date" placeholder="Test Date" class="form-control" required>
               </div> 
-              
              
           <div class="form-group">
             <label for="exampleSelectBorder">Select Subject</label> 
@@ -30,8 +30,7 @@
               <option *ngFor="let option of subjectList" [value]="option.SubjectId" >{{option.SubjectName}}</option>
             </select>  
           </div>
-   
-
+    
           <div class="card-footer">
             <button [disabled]="form.invalid" type="submit" class="btn btn-primary">Save</button>
           </div> 
