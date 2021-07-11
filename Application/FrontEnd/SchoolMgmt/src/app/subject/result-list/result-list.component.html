@@ -1,1 +1,60 @@
-<p>result-list works!</p>
+<div class="card-body">
+
+  <div class="form-group">
+    <label for="exampleSelectBorder">Select Subject</label>
+
+    <select name="SubjectId" id="SubjectId" class="form-control" #SubjectId (change)='loadTestData(SubjectId.value)'
+      required>
+      <option *ngFor="let option of subjectList" [value]="option.SubjectId">{{option.SubjectName}}</option>
+    </select>
+
+
+    <label for="exampleSelectBorder">Select Test</label>
+
+    <select name="TestId" id="TestId" class="form-control" #TestId (change)='loadResultData(TestId.value)'
+      required>
+      <option *ngFor="let option of testList" [value]="option.TestId">{{option.TestName}}</option>
+    </select>
+
+  </div>
+
+
+  <div class="card-body">
+    <table class="table table-striped">
+      <caption>Result List</caption>
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Result ID</th>
+          <th scope="col">Test Name</th>
+          <th scope="col">Student Name</th> 
+          <th scope="col">Grade</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of resultList">
+          <th scope="row">{{ item.Index }}</th>
+          <td>{{item.ResultId}}</td>
+          <td>{{item.TestName}}</td>
+          <td>{{item.FullName}}</td>
+          <td>{{item.Grade}}</td> 
+          <td>
+            <button [disabled]="item.Status!='ACTIVE'" type="button" class="btn btn-sm btn-primary"
+              routerLink="/result-edit/{{item.ResultId}}">Edit</button>
+            &nbsp;
+            <button [disabled]="item.Status!='ACTIVE'" (click)="onArchive(item.ResultId)" type="button"
+              class="btn btn-sm btn-warning">Archive</button>
+            &nbsp;
+            <button [disabled]="item.Status!='ACTIVE'" (click)="onDelete(item.ResultId)" type="button"
+              class="btn btn-sm btn-danger">Delete</button>
+          </td>
+        </tr>
+
+    </table>
+
+
+  </div>
+
+
+</div>

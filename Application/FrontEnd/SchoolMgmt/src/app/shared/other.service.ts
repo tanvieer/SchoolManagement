@@ -151,6 +151,13 @@ getResultInfo(_id:string){
   return this.http.get(`${this.config.url}/Result/GetResultInfo?id=${_id}`,this.config.httpOptions);  
 }
 
+getResultListByTestId(_id:string){  
+  return this.http.get(`${this.config.url}/Result/GetResultListByTestId?id=${_id}`,this.config.httpOptions);  
+}
+
+
+
+
 archiveResult(_id:string){  
   return this.http.delete(`${this.config.url}/Result/ArchiveResult?id=${_id}`,this.config.httpOptions);  
 }

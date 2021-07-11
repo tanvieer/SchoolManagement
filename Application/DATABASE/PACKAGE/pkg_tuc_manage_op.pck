@@ -1468,11 +1468,11 @@ create or replace package body pkg_tuc_manage_op is
                grade,
                case
                  when r.status = 'A' then
-                  'ARCHIVED'
+                  'Archived'
                  WHEN R.STATUS = 'R' THEN
-                  'ACTIVE'
+                  'Active'
                  WHEN R.STATUS = 'D' THEN
-                  'DELETED'
+                  'Deleted'
                  ELSE
                   R.STATUS
                END AS status,
@@ -1484,6 +1484,7 @@ create or replace package body pkg_tuc_manage_op is
           left join tuc_sys_user_mast usr
             on r.student_id = usr.id
          where r.status <> 'D'
+           and r.test_id = p_test_id
            and usr.status <> 'D';
       p_err_msg := 'Data found successfully.';
     end if;
