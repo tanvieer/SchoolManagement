@@ -42,7 +42,7 @@ export class TestListComponent implements OnInit {
 
   loadSubjectData() {
     this.subjectList = [];
-    this.serviceOthers.getSubjectList()
+    this.serviceOthers.getSubjectListDDL()
       .subscribe((data: any) => {
         if (data.Status == "SUCCESS") {
           this.parseSubjectData(data.Result);

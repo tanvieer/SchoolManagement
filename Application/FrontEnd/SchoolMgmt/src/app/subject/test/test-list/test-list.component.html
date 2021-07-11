@@ -4,7 +4,7 @@
     <label for="exampleSelectBorder">Subject</label>
 
   <select name="SubjectId" id="SubjectId" class="form-control" #SubjectId (change)='loadTestData(SubjectId.value)'  required>
-          <option *ngFor="let option of subjectList" [value]="option.SubjectId" >{{option.SubjectName}}  [{{option.Status}}]</option>
+          <option *ngFor="let option of subjectList" [value]="option.SubjectId" >{{option.SubjectName}}</option>
         </select>   
     <!-- <select class="form-control" #mySelect (change)='loadTestData(mySelect.value)'>
       <option class='option' *ngFor='let option of subjectList' [value]="option.SubjectId">{{option.SubjectName}}
@@ -16,7 +16,7 @@
    
 <div class="card-body"> 
     <table class="table table-striped"> 
-        <caption>Subject List</caption>
+        <caption>Test List</caption>
     <thead class="thead-dark">
       <tr>
         <th scope="col">#</th>

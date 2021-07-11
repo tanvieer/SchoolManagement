@@ -1115,7 +1115,7 @@ create or replace package body pkg_tuc_manage_op is
         exception
           when others then
             p_out      := 1;
-            p_err_code := 'mng-1043';
+            p_err_code := 'mng-1044';
             p_err_msg  := initcap('No active subject found by p_subject_id : ' ||
                                   p_subject_id);
             raise l_user_err;
@@ -1178,7 +1178,8 @@ create or replace package body pkg_tuc_manage_op is
             p_out      := 1;
             p_err_code := 'mng-1024';
             p_err_msg  := initcap('this test is already archived or deleted.');
-            raise l_user_err;
+            rollback;
+            return;
           end if;
         
         exception
@@ -1193,6 +1194,7 @@ create or replace package body pkg_tuc_manage_op is
         update tuc_test s
            set s.test_name      = p_test_name,
                s.subject_id     = p_subject_id,
+               s.test_date      = p_test_date,
                last_update_by   = p_user_id,
                last_update_time = sysdate
          where test_id = p_test_id
