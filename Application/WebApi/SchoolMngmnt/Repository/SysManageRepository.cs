@@ -3,6 +3,7 @@ using Leadsoft.DAL;
 using SchoolMngmnt.Model;
 using SchoolMngmnt.Model.SysModel;
 using SchoolMngmnt.Model.ViewModel;
+using SchoolMngmnt.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -437,6 +438,80 @@ namespace SchoolMgmt.Repository
             }
             return rslt;
         }
+
+
+
+
+        // to get GetRouterLinks
+        public static StatusResult<List<RouterLinkViewModel>> GetRouterLinks(string makeBy)
+        {
+            StatusResult<List<RouterLinkViewModel>> rslt = new StatusResult<List<RouterLinkViewModel>>();
+            RouterLinkViewModel model;
+            string p_out = "1";
+            string err_code;
+
+            CDataAccess objCDataAccess = CDataAccess.NewCDataAccess();
+            DbCommand objDbCommand = objCDataAccess.GetMyCommand(false, IsolationLevel.ReadCommitted, "application", false);
+
+
+            List<DSSQLParam> objList = new List<DSSQLParam>();
+
+             
+            objList.Add(new DSSQLParam("p_user_id", makeBy, ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
+            objList.Add(new DSSQLParam("p_err_code", string.Empty, ParameterDirection.Output));
+            objList.Add(new DSSQLParam("p_err_msg", string.Empty, ParameterDirection.Output));
+
+
+
+            try
+            {
+                using (DbDataReader dr = objCDataAccess.ExecuteReader(objDbCommand, SP_PREFIX + "pkg_tuc_user_mast.sp_tuc_menu_ga", CommandType.StoredProcedure, objList))
+                {
+                    p_out = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString();
+                    if (p_out == "1")
+                    {
+                        err_code = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_code")].Value.ToString();
+                        rslt.Status = "FAILED";
+                        rslt.Message = err_code + "~" + objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
+                        return rslt;
+                    }
+                    else
+                    {
+                        rslt.Status = "SUCCESS";
+                        rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
+                    }
+
+                    rslt.Result = new List<RouterLinkViewModel>();
+                    while (dr.Read())
+                    {
+                        model = new RouterLinkViewModel();
+                        model.Id            = Convert.ToInt32(dr["ID"].ToString());
+                        model.RouterLink    = dr["router_link"].ToString();
+                        model.RouterName    = dr["router_name"].ToString();
+                        model.RoleId        = Convert.ToInt32(dr["role_id"].ToString());
+                        model.IsSubMenu     = Convert.ToInt32(dr["is_sub_menu"].ToString());
+                        model.ModuleName    = dr["module_name"].ToString();
+                         
+                        rslt.Result.Add(model);
+                    }
+                    dr.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = ex.Message;
+            }
+            finally
+            {
+                objDbCommand.Connection.Close();
+                objCDataAccess.Dispose(objDbCommand);
+                objList.Clear();
+            }
+            return rslt;
+        }
+
 
 
 

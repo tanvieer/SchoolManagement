@@ -44,13 +44,13 @@
 
 
         <li class="nav-item" *ngFor="let option of routerList">
-          <a routerLink="{{option.routerLink}}" class="nav-link">
+          <a routerLink="{{option.RouterLink}}" class="nav-link">
             <!-- <i class="nav-icon fas fa-ellipsis-h"></i> -->
 
-            <i *ngIf="option.isMainMenu" class="nav-icon fas fa-ellipsis-h"></i>
-            <i *ngIf="!option.isMainMenu" class="fa fa-ellipsis-h"></i>
+            <i *ngIf="option.IsSubMenu == 0" class="nav-icon fas fa-ellipsis-h"></i>
+            <i *ngIf="option.IsSubMenu == 1" class="fa fa-ellipsis-h"></i>
 
-            <p>{{option.routerName}}</p>
+            <p>{{option.RouterName}}</p>
           </a>
         </li>
 

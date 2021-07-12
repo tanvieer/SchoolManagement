@@ -237,6 +237,49 @@ namespace SchoolMngmnt.Controllers
 
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpGet]
+        [Route("api/User/GetRouterLinks")]
+        public StatusResult<List<RouterLinkViewModel>> GetRouterLinks()
+        {
+
+            StatusResult<List<RouterLinkViewModel>> rslt = new StatusResult<List<RouterLinkViewModel>>();
+            var re = Request;
+            var headers = re.Headers;
+            string token = ""; 
+
+            if (headers.Contains("Authorization"))
+            {
+                token = headers.GetValues("Authorization").First();
+               
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User not logged in!!";
+                return rslt;
+            }
+
+            var checkSession = SysManageRepository.CheckSession(token);
+
+            if (checkSession.Status == "FAILED")
+            {
+                rslt.Status = checkSession.Status;
+                rslt.Message = checkSession.Message;
+                return rslt;
+            }
+
+            rslt = SysManageRepository.GetRouterLinks(checkSession.Result.UserName);
+
+            return rslt;
+             
+        }
+
+
+
+
+
+
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [HttpGet]
         [Route("api/User/GetStudentListByClssId")]
         public StatusResult<List<UserMaster>> GetStudentListByClssId(int id)
         {

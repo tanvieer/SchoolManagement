@@ -95,6 +95,11 @@ create or replace package pkg_tuc_user_mast is
                                p_err_code out nvarchar2,
                                p_err_msg  out nvarchar2,
                                T_CURSOR   out sys_refcursor);
+   procedure sp_tuc_menu_ga(p_user_id  in nvarchar2,
+                           p_out      out number,
+                           p_err_code out nvarchar2,
+                           p_err_msg  out nvarchar2,
+                           T_CURSOR   out sys_refcursor);
 
 end pkg_tuc_user_mast;
 /
@@ -385,7 +390,7 @@ create or replace package body pkg_tuc_user_mast is
              t.class_id,
              
              --  AVG GRADE CALCULATION START
-             (select CAST(nvl(avg(grade), 0.0)  AS DECIMAL(8,2))
+             (select CAST(nvl(avg(grade), 0.0) AS DECIMAL(8, 2))
                 from TUC_result rslt
                where rslt.student_id = t.id
                  and rslt.test_id in
@@ -467,7 +472,7 @@ create or replace package body pkg_tuc_user_mast is
              t.session_id,
              t.role_id,
              --  AVG GRADE CALCULATION START  CAST(AVG(advance_amount) AS DECIMAL(10,2))
-             (select CAST(nvl(avg(grade), 0.0)  AS DECIMAL(8,2))
+             (select CAST(nvl(avg(grade), 0.0) AS DECIMAL(8, 2))
                 from TUC_result rslt
                where rslt.student_id = t.id
                  and rslt.test_id in
@@ -523,7 +528,7 @@ create or replace package body pkg_tuc_user_mast is
     ELSE
       RETURN;
     END IF;
-    
+  
     IF P_OUT = 0 THEN
       pkg_tuc_user_mast.IS_NULL('p_user_id',
                                 p_user_id,
@@ -560,7 +565,7 @@ create or replace package body pkg_tuc_user_mast is
              t.session_id,
              t.role_id,
              --  AVG GRADE CALCULATION START
-             (select CAST(nvl(avg(grade), 0.0)  AS DECIMAL(8,2))
+             (select CAST(nvl(avg(grade), 0.0) AS DECIMAL(8, 2))
                 from TUC_result rslt
                where rslt.student_id = t.id
                  and rslt.test_id in
@@ -1094,6 +1099,59 @@ create or replace package body pkg_tuc_user_mast is
       p_err_msg  := sqlerrm;
       rollback;
   end sp_tuc_sys_role_ga;
+
+  /*==============================================================================*/
+
+  procedure sp_tuc_menu_ga(p_user_id  in nvarchar2,
+                           p_out      out number,
+                           p_err_code out nvarchar2,
+                           p_err_msg  out nvarchar2,
+                           T_CURSOR   out sys_refcursor) is
+    v_role_id number(2);
+  
+  begin
+    P_OUT := 0;
+  
+    IF P_OUT = 0 THEN
+      pkg_tuc_user_mast.IS_NULL('p_user_id',
+                                p_user_id,
+                                'USR-sp_tuc_menu_ga',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
+    ELSE
+      RETURN;
+    END IF;
+  
+    IF P_OUT <> 0 THEN
+      RETURN;
+    END IF;
+  
+    select role_id
+      into v_role_id
+      from tuc_sys_user_mast u
+     where u.username = p_user_id;
+  
+    open T_CURSOR for
+      select t.id,
+             t.router_link,
+             t.router_name,
+             t.role_id,
+             t.is_sub_menu,
+             t.module_name
+        from tuc_menu t
+       where t.status = 'R'
+         and t.role_id = v_role_id
+    order by t.id;
+  
+    p_err_msg := 'Data found successfully.';
+  exception
+    when others then
+      p_out      := 1;
+      p_err_code := sqlcode;
+      p_err_msg  := sqlerrm;
+      rollback;
+  end sp_tuc_menu_ga;
 
 end pkg_tuc_user_mast;
 /

@@ -1,6 +1,9 @@
 export class Menu {
     index!: number;
-    isMainMenu!: boolean;
-    routerLink!: string;
-    routerName!: string;
+    Id!: number;
+    RouterLink!: string;
+    RouterName!: string; 
+    IsSubMenu!: number;
+    RoleId!: number;
+    ModuleName!: string;  
 }

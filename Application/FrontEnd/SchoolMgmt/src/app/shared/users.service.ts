@@ -18,6 +18,11 @@ export class UsersService {
   constructor(private http: HttpClient) {
 
   }
+
+  getRouterLinks() {
+    return this.http.get(`${this.config.url}/User/GetRouterLinks`, this.config.httpOptions);
+  }
+
   
   resetPasswordByAdmin(_formData: Login) {   
     return this.http.post(`${this.config.url}/User/ResetPassword`, _formData, this.config.httpOptions);
@@ -67,7 +72,7 @@ export class UsersService {
   getUserInfo(_userName: string) {
     return this.http.get(`${this.config.url}/User/Get?id=${_userName}`, this.config.httpOptions);
   }
-
+ 
   deleteUser(_id: string) {
     return this.http.delete(`${this.config.url}/User/DeleteUser?userName=${_id}`, this.config.httpOptions);
   }

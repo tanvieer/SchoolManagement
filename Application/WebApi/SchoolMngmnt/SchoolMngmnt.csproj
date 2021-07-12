@@ -306,6 +306,7 @@
     <Compile Include="Models\ViewModel\ChangePasswordViewModel.cs" />
     <Compile Include="Models\ViewModel\LoginViewModel.cs" />
     <Compile Include="Models\ViewModel\ResultViewModel.cs" />
+    <Compile Include="Models\ViewModel\RouterLinkViewModel.cs" />
     <Compile Include="Models\ViewModel\TestViewModel.cs" />
     <Compile Include="Models\ViewModel\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
