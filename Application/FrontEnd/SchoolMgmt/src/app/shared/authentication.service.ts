@@ -29,16 +29,16 @@ export class AuthenticationService {
     this.getCurrentUser();
 
     if (this._currentUser.isLoggedIn == "1") {
-      if (this._currentUser.RoleName == "ADMIN") {
-        this._returnUrl = "/user-list";
-      }
-      else if (this._currentUser.RoleName == "TEACHER") {
-        this._returnUrl = "/pupils";
-      }
-      else {
-        this._returnUrl = "/mySubjects";
-      }
-
+      // if (this._currentUser.RoleName == "ADMIN") {
+      //   this._returnUrl = "/user-list";
+      // }
+      // else if (this._currentUser.RoleName == "TEACHER") {
+      //   this._returnUrl = "/pupils";
+      // }
+      // else {
+      //   this._returnUrl = "/mySubjects";
+      // }
+      this._returnUrl = "/contact";
     }
     else {
       this._returnUrl = "/";

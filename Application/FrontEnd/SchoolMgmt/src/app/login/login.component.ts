@@ -19,16 +19,17 @@ export class LoginComponent implements OnInit {
     this.resetForm();
     if(localStorage.getItem('isLoggedIn') == "1" ) {
 
-      if(localStorage.getItem('RoleName') == "ADMIN" ) { 
-        this.router.navigate(['/user-list']);
-      } 
-      else if(localStorage.getItem('RoleName') == "TEACHER" ) { 
-        this.router.navigate(['/pupils']);
-      } 
-      else if(localStorage.getItem('RoleName') == "STUDENT" ) { 
-        this.router.navigate(['/mySubjects']);
-      } 
+      this.router.navigate(['/contact']);
 
+      // if(localStorage.getItem('RoleName') == "ADMIN" ) { 
+      //   this.router.navigate(['/user-list']);
+      // } 
+      // else if(localStorage.getItem('RoleName') == "TEACHER" ) { 
+      //   this.router.navigate(['/pupils']);
+      // } 
+      // else if(localStorage.getItem('RoleName') == "STUDENT" ) { 
+      //   this.router.navigate(['/mySubjects']);
+      // }  
     } 
   }
 
