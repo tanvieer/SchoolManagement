@@ -24,7 +24,7 @@
           &nbsp;
           <button *ngIf="isAdmin" type="button" class="btn btn-sm btn-warning" routerLink="/reset-password/{{item.UserName}}">Reset Password</button>
           &nbsp;
-          <button type="button" class="btn btn-sm btn-danger">Delete</button>
+          <button type="button" (click)="deleteUser(item.UserName)" class="btn btn-sm btn-danger">Delete</button>
         </td>
       </tr>
 

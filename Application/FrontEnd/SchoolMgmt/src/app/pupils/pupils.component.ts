@@ -26,23 +26,13 @@ export class PupilsComponent implements OnInit {
     else this.isAdmin = false;
   }
 
-  ngOnInit(): void {
-    console.log("on init");
-    this.service.getStudentList()
-      .subscribe((data: any) => {
-        console.log(data);
-        if (data.Status == "SUCCESS") {
-          this.parseData(data.Result);
-        }
-        else {
-          this.toastr.error(data.Message, 'Student List');
-        }
-
-      });
+  ngOnInit(): void { 
+    this.refreshStudents();
   }
 
   parseData(jsonData: any) {
     //considering you get your data in json arrays  
+    this.studentList = [];
     console.log(jsonData);
     this.collectionSize = jsonData.length;
     for (let i = 0; i < this.collectionSize; i++) {
@@ -61,15 +51,43 @@ export class PupilsComponent implements OnInit {
       data.RoleId = jsonData[i].RoleId;
       data.AverageGrade = jsonData[i].AverageGrade;
       this.studentList.push(data);
+    } 
+  }
+
+
+  refreshStudents() {
+    this.service.getStudentList()
+      .subscribe((data: any) => {
+        console.log(data);
+        if (data.Status == "SUCCESS") {
+          this.parseData(data.Result);
+        }
+        else {
+          this.toastr.error(data.Message, 'Student List');
+        }
+
+      });
+  }
+
+
+  deleteUser(userName : string){
+    if (this.isAdmin == false) {
+      return;
     }
-    //this.refreshTeachers();
-  }
 
+    if(confirm("Are you sure to delete  '"+userName + "' !")) { 
 
-  refreshTeachers() {
-    this.students = this.studentList
-      .map((data, i) => ({ id: i + 1, ...data }))
-      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
-  }
+      this.service.deleteUser(userName)
+      .subscribe((data: any) => {  
+        if(data.Status == "SUCCESS"){
+          this.toastr.success(data.Message, 'Delete Student');
+          this.refreshStudents();
+        }
+        else {
+          this.toastr.error(data.Message, 'Delete Student');
+        } ;
+      });
+    }
+ }
 
 }

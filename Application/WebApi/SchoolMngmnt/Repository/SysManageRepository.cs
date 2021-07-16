@@ -291,7 +291,7 @@ namespace SchoolMgmt.Repository
         }
        
         // to get user list by role
-        public static StatusResult<List<UserMaster>> GetUserList(int userType, string p_session)
+        public static StatusResult<List<UserMaster>> GetUserList(int userType, string p_session, string makeBy)
         {
             StatusResult<List<UserMaster>> rslt = new StatusResult<List<UserMaster>>();
             UserMaster user;
@@ -306,6 +306,7 @@ namespace SchoolMgmt.Repository
 
 
             objList.Add(new DSSQLParam("p_user_type", userType.ToString(), ParameterDirection.Input)); 
+            objList.Add(new DSSQLParam("p_user_id", makeBy, ParameterDirection.Input)); 
             objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_err_code", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_err_msg", string.Empty, ParameterDirection.Output));

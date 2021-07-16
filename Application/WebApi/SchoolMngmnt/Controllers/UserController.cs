@@ -222,11 +222,11 @@ namespace SchoolMngmnt.Controllers
 
             if (checkSession.Result.RoleId == 1) // ADMIN
             {
-                rslt = SysManageRepository.GetUserList(userType, token);
+                rslt = SysManageRepository.GetUserList(userType, token, checkSession.Result.Id);
             }
             else if (checkSession.Result.RoleId == 2 && userType == 3) // Teacher
             {
-                rslt = SysManageRepository.GetUserList(3, token);
+                rslt = SysManageRepository.GetUserList(3, token,checkSession.Result.Id);
             }  
              
             return rslt;

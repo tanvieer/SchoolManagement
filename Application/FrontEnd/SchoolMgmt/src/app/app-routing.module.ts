@@ -1,3 +1,4 @@
+import { ATGuardGuard } from './atguard.guard';
 import { UserListComponent } from './admin/user-list/user-list.component';
 import { AuthGuardGuard } from './auth-guard.guard';
 import { UpdateUserComponent } from './admin/update-user/update-user.component';
@@ -30,42 +31,45 @@ import { ResultEditComponent } from './subject/result-edit/result-edit.component
 import { ResultListComponent } from './subject/result-list/result-list.component';
 import { SubjectResultSComponent } from './student/subject-result-s/subject-result-s.component';
 import { TestSListComponent } from './student/test-s-list/test-s-list.component';
+import { StudentGuardGuard } from './student-guard.guard';
+import { TeacherGuardGuard } from './teacher-guard.guard';
+import { AdminGuardGuard } from './admin-guard.guard';
 
 const routes : Routes = [
   {path: 'login' , component: LoginComponent}, 
   {path: '' , component: LoginComponent}, 
-  {path: 'teachers', component: TeachersComponent , canActivate : [AuthGuardGuard]},
-  {path: 'pupils', component: PupilsComponent , canActivate : [AuthGuardGuard]},
-  {path: 'teacher-list', component: TeacherListComponent, canActivate : [AuthGuardGuard]},
-  {path: 'user-list', component: UserListComponent, canActivate : [AuthGuardGuard]},  
-  {path: 'create-user', component: CreateUserComponent, canActivate : [AuthGuardGuard]}, 
+  {path: 'teachers', component: TeachersComponent , canActivate : [AdminGuardGuard]},
+  {path: 'pupils', component: PupilsComponent , canActivate : [ATGuardGuard]},
+  {path: 'teacher-list', component: TeacherListComponent, canActivate : [AdminGuardGuard]},
+  {path: 'user-list', component: UserListComponent, canActivate : [AdminGuardGuard]},  
+  {path: 'create-user', component: CreateUserComponent, canActivate : [AdminGuardGuard]}, 
   {path: 'update-profile', component: UpdateProfileComponent, canActivate : [AuthGuardGuard]},
   {path: 'change-password', component: ChangePasswordComponent, canActivate : [AuthGuardGuard]},
-  {path: 'update-user/:id', component: UpdateUserComponent, canActivate : [AuthGuardGuard]},
-  {path: 'reset-password/:id', component: ResetPasswordComponent, canActivate : [AuthGuardGuard]},
+  {path: 'update-user/:id', component: UpdateUserComponent, canActivate : [AdminGuardGuard]},
+  {path: 'reset-password/:id', component: ResetPasswordComponent, canActivate : [AdminGuardGuard]},
   
   
 
-  {path: 'class-create', component: ClassCreateComponent, canActivate : [AuthGuardGuard]},
-  {path: 'class-edit/:id', component: ClassEditComponent, canActivate : [AuthGuardGuard]},
-  {path: 'class-list', component: ClassListComponent, canActivate : [AuthGuardGuard]},
+  {path: 'class-create', component: ClassCreateComponent, canActivate : [AdminGuardGuard]},
+  {path: 'class-edit/:id', component: ClassEditComponent, canActivate : [AdminGuardGuard]},
+  {path: 'class-list', component: ClassListComponent, canActivate : [AdminGuardGuard]},
 
   {path: 'contact', component: ContactComponent, canActivate : [AuthGuardGuard]},
 
-  {path: 'subject-create', component: SubjectCreateComponent, canActivate : [AuthGuardGuard]},
-  {path: 'subject-edit/:id', component: SubjectEditComponent, canActivate : [AuthGuardGuard]},
-  {path: 'subject-list', component: SubjectListComponent, canActivate : [AuthGuardGuard]},
+  {path: 'subject-create', component: SubjectCreateComponent, canActivate : [AdminGuardGuard]},
+  {path: 'subject-edit/:id', component: SubjectEditComponent, canActivate : [AdminGuardGuard]},
+  {path: 'subject-list', component: SubjectListComponent, canActivate : [AdminGuardGuard]},
 
-  {path: 'test-create', component: TestCreateComponent, canActivate : [AuthGuardGuard]},
-  {path: 'test-edit/:id', component: TestEditComponent, canActivate : [AuthGuardGuard]},
-  {path: 'test-list', component: TestListComponent, canActivate : [AuthGuardGuard]},
+  {path: 'test-create', component: TestCreateComponent, canActivate : [TeacherGuardGuard]},
+  {path: 'test-edit/:id', component: TestEditComponent, canActivate : [TeacherGuardGuard]},
+  {path: 'test-list', component: TestListComponent, canActivate : [TeacherGuardGuard]},
 
-  {path: 'result-create', component: ResultCreateComponent, canActivate : [AuthGuardGuard]},
-  {path: 'result-edit/:id', component: ResultEditComponent, canActivate : [AuthGuardGuard]},
-  {path: 'result-list', component: ResultListComponent, canActivate : [AuthGuardGuard]},
+  {path: 'result-create', component: ResultCreateComponent, canActivate : [TeacherGuardGuard]},
+  {path: 'result-edit/:id', component: ResultEditComponent, canActivate : [TeacherGuardGuard]},
+  {path: 'result-list', component: ResultListComponent, canActivate : [TeacherGuardGuard]},
 
-  {path: 'subject-list-s', component: SubjectResultSComponent, canActivate : [AuthGuardGuard]},
-  {path: 'test-list-s/:id', component: TestSListComponent, canActivate : [AuthGuardGuard]},
+  {path: 'subject-list-s', component: SubjectResultSComponent, canActivate : [StudentGuardGuard]},
+  {path: 'test-list-s/:id', component: TestSListComponent, canActivate : [StudentGuardGuard]},
 
   {path: 'logout', component: LogoutComponent},
   {path: 'nav-top', component: NavTopComponent},

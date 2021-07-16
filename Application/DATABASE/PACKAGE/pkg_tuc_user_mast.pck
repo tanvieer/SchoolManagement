@@ -27,6 +27,7 @@ create or replace package pkg_tuc_user_mast is
                                     T_CURSOR   out sys_refcursor);
 
   procedure sp_tuc_sys_user_mast_ga(p_user_type in number,
+                                    p_user_id   in nvarchar2,
                                     p_out       out number,
                                     p_err_code  out nvarchar2,
                                     p_err_msg   out nvarchar2,
@@ -430,6 +431,7 @@ create or replace package body pkg_tuc_user_mast is
   end sp_tuc_sys_user_mast_gk;
 
   procedure sp_tuc_sys_user_mast_ga(p_user_type in number,
+                                    p_user_id   in nvarchar2,
                                     p_out       out number,
                                     p_err_code  out nvarchar2,
                                     p_err_msg   out nvarchar2,
@@ -494,6 +496,7 @@ create or replace package body pkg_tuc_user_mast is
         from tuc_sys_user_mast t
        where T.STATUS <> 'D'
          and (role_id = p_user_type or p_user_type = 0)
+         and t.id <> p_user_id
        order by role_id, username;
   
     p_err_msg := 'Data found successfully.';

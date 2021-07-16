@@ -24,6 +24,7 @@ export class UserListComponent implements OnInit {
 
   parseData(jsonData: any) {
     //considering you get your data in json arrays  
+    this.userList = [];
     this.collectionSize = jsonData.length;
     for (let i = 0; i < this.collectionSize; i++) {
       const data = new Teacher();
@@ -40,8 +41,7 @@ export class UserListComponent implements OnInit {
       data.PhoneNumber = jsonData[i].PhoneNumber; 
       data.RoleId = jsonData[i].RoleId;  
       this.userList.push(data);
-    } 
-    //this.refreshTeachers();
+    }  
   }
 
 
@@ -56,6 +56,8 @@ export class UserListComponent implements OnInit {
         this.toastr.error(data.Message, 'User List');
       }       
     });
+
+    console.log("Refresh user");
 
     // this.users = this.userList
     //   .map((data, i) => ({id: i + 1, ...data}))

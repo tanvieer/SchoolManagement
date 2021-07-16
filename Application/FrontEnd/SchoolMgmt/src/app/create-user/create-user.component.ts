@@ -101,9 +101,9 @@ export class CreateUserComponent implements OnInit {
         // this._statusResultO as statusResultO;
         // console.log(res.Message);
         if (res.Status == "SUCCESS")
-          this.toastr.success(res.Message, 'Teacher Register');
-        else this.toastr.error(res.Message, 'Teacher Register');
-        this.resetForm();
+          this.toastr.success(res.Message, 'Create User');
+        else this.toastr.error(res.Message, 'Create User');
+       // this.resetForm();
       });
   }
 

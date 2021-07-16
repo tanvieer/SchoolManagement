@@ -28,20 +28,12 @@ export class TeacherListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.service.getTeacherList()
-      .subscribe((data: any) => {
-        if (data.Status == "SUCCESS") {
-          this.parseData(data.Result);
-        }
-        else {
-          this.toastr.error(data.Message, 'Teacher List');
-        }
-
-      });
+    this.refreshTeachers();
   }
 
   parseData(jsonData: any) {
     //considering you get your data in json arrays  
+    this.teacherList = [];
     this.collectionSize = jsonData.length;
     for (let i = 0; i < this.collectionSize; i++) {
       const data = new Teacher();
@@ -64,9 +56,34 @@ export class TeacherListComponent implements OnInit {
 
 
   refreshTeachers() {
-    this.teachers = this.teacherList
-      .map((data, i) => ({ id: i + 1, ...data }))
-      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
+    this.service.getTeacherList()
+      .subscribe((data: any) => {
+        if (data.Status == "SUCCESS") {
+          this.parseData(data.Result);
+        }
+        else {
+          this.toastr.error(data.Message, 'Teacher List');
+        }
+
+      });
   }
+
+
+  deleteUser(userName : string){
+    if(confirm("Are you sure to delete  '"+userName + "' !")) {
+      console.log("Implement delete functionality here");
+
+      this.service.deleteUser(userName)
+      .subscribe((data: any) => {  
+        if(data.Status == "SUCCESS"){
+          this.toastr.success(data.Message, 'Delete Teacher');
+          this.refreshTeachers();
+        }
+        else {
+          this.toastr.error(data.Message, 'Delete Teacher');
+        } ;
+      });
+    }
+ }
 
 }
