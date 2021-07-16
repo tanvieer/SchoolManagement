@@ -48,8 +48,10 @@ export class SubjectResultSComponent implements OnInit {
       data.SubjectName = jsonData[i].SubjectName; 
       data.Username = jsonData[i].Username; 
       data.AverageGrade  = jsonData[i].AverageGrade;  
+      data.TestCount = jsonData[i].TestCount; 
       this.subjectList.push(data);
     } 
+    console.log(this.subjectList );
   }
   
 

@@ -991,6 +991,8 @@ namespace SchoolMngmnt.Repository
                         model.AverageGrade = dr["avg_grade"] == null ? 0 : Convert.ToDouble(dr["avg_grade"].ToString());
                         model.FullName = dr["full_name"].ToString(); 
                         model.Username = dr["username"].ToString(); 
+                        model.TestCount = dr["test_count"] == null ? 0 : Convert.ToInt32(dr["test_count"].ToString());
+
 
                         rslt.Result.Add(model);
                     }

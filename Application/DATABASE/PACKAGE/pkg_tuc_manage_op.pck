@@ -1872,9 +1872,9 @@ create or replace package body pkg_tuc_manage_op is
              (u.first_name || ' ' || u.last_name) as full_name ,
              s.subject_name,
              s.subject_id,
-             (select nvl(avg(r.grade), 0)
+             (select round(nvl(avg(r.grade), 0),2)
                 from TUC_RESULT r
-               where r.test_id in
+               where r.student_id = u.id and  r.test_id in
                      (select test_id
                         from tuc_test t
                        where t.subject_id = s.subject_id)) as avg_grade

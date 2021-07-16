@@ -6,6 +6,7 @@ export class SSubject {
     SubjectName!: string;
     SubjectId!: string;
     AverageGrade!: string; 
+    TestCount: number = 0;
 }
 
  

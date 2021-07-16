@@ -16,7 +16,7 @@
         <td>{{item.SubjectName}}</td>
         <td>{{item.AverageGrade}}</td> 
         <td>
-          <button type="button" class="btn btn-sm btn-primary" routerLink="/test-list-s/{{item.SubjectId}}">View Test Details</button>
+          <button [disabled]="item.TestCount<1" type="button" class="btn btn-sm btn-primary" routerLink="/test-list-s/{{item.SubjectId}}">View Test Details</button>
            
         </td>
       </tr>

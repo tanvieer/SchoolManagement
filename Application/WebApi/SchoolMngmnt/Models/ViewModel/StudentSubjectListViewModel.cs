@@ -13,6 +13,7 @@ namespace SchoolMngmnt.Models.ViewModel
         public string SubjectName { get; set; }
         public string SubjectId { get; set; }
         public double AverageGrade { get; set; } 
+        public int TestCount { get; set; } 
     }
 
 

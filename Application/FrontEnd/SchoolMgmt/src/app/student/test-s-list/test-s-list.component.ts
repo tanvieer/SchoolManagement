@@ -53,7 +53,7 @@ export class TestSListComponent implements OnInit {
       data.SubjectName = jsonData[i].SubjectName; 
       data.TestId = jsonData[i].TestId; 
       data.TestName = jsonData[i].TestName; 
-      data.Grade = jsonData[i].Grade;  
+      data.Grade = jsonData[i].Grade;   
       this.testList.push(data);
     } 
   }
