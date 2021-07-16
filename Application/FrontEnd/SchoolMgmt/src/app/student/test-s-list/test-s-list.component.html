@@ -1,1 +1,25 @@
-<p>test-s-list works!</p>
+ 
+<div class="card-body"> 
+    <table class="table table-striped"> 
+        <caption>Test Grade List</caption>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th> 
+        <th scope="col">Test Name</th>  
+        <th scope="col">Subject Name</th>
+        <th scope="col">Grade</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of testList">
+        <th scope="row">{{ item.index }}</th> 
+        <td>{{item.TestName}}</td>
+        <td>{{item.SubjectName}}</td> 
+        <td>{{item.Grade}} </td>
+      </tr>
+
+  </table> 
+
+  <button type="button" class="btn btn-sm btn-primary" routerLink="/subject-list-s">Back</button>
+           
+</div>
