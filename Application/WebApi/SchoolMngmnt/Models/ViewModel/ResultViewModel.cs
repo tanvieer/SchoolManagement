@@ -20,5 +20,6 @@ namespace SchoolMngmnt.Models.ViewModel
         public string TestName { get;  set; }
 
         public string ErrMsg { get; set; }
+        public int HasErr { get; set; }
     }
 }

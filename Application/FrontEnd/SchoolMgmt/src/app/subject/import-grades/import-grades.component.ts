@@ -37,13 +37,30 @@ export class ImportGradesComponent implements OnInit {
     }
   }
 
+
+  
+  
+  showErrorMsg(jsonData: any) {
+    //considering you get your data in json arrays   
+    let collectionSize = jsonData.length;  
+    for (let i = 0; i < collectionSize; i++) {
+       
+      if (jsonData[i].HasErr == "1"){
+        this.toastr.error(jsonData[i].ErrMsg, 'Grade Upload');
+      }else{
+        this.toastr.success(jsonData[i].ErrMsg, 'Grade Upload');
+      } 
+    }
+  }
+
+
   submit() {
     const formData = new FormData();
     formData.append('file', this.myForm.get('fileSource')?.value); 
     this.service.postFile(formData).subscribe((data: any) => {   
       console.log(data.Result); 
       if (data.Status == "SUCCESS") { 
-        this.toastr.success(data.Message, 'Grade Upload');
+        this.showErrorMsg(data.Result);
       }
       else {
         this.toastr.error(data.Message, 'Grade Upload');

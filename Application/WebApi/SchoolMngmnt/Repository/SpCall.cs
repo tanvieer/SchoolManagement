@@ -899,7 +899,7 @@ namespace SchoolMngmnt.Repository
 
             try
             {
-
+                rslt.Status = "SUCCESS";
 
                 foreach (ResultViewModel item in itemList)
                 {
@@ -929,20 +929,21 @@ namespace SchoolMngmnt.Repository
                             p_out = Convert.ToInt32(objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString());
                             if (p_out == 1)
                             {
-                                rslt.Status = "FAILED";
+                               
                                 rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_code")].Value.ToString()
                                     + "~" + objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
                                 model.ErrMsg = rslt.Message;
-
+                                model.HasErr = 1;
                                 model.ResultId = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_result_id")] == null? null : objDbCommand.Parameters[CParameter.GetOutputParameterName("p_result_id")].Value.ToString();
                             }
                             else
                             {
                                 model.ResultId = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_result_id")].Value.ToString();
-                                rslt.Status = "SUCCESS";
+                                
                                 rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
 
                                 model.ErrMsg = rslt.Message;
+                                model.HasErr = 0;
                             }
 
                             rslt.Result.Add(model);
