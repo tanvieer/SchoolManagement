@@ -18,7 +18,8 @@ import { DatePipe } from '@angular/common';
     AppComponent,
     routingComponents,
     NavBottomComponent,
-    NavRightComponent
+    NavRightComponent 
+     
   ],
   imports: [
     BrowserModule,

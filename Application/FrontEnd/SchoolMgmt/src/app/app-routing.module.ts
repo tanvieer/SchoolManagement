@@ -28,6 +28,8 @@ import { TestListComponent } from './subject/test/test-list/test-list.component'
 import { ResultCreateComponent } from './subject/result-create/result-create.component';
 import { ResultEditComponent } from './subject/result-edit/result-edit.component';
 import { ResultListComponent } from './subject/result-list/result-list.component';
+import { SubjectResultSComponent } from './student/subject-result-s/subject-result-s.component';
+import { TestSListComponent } from './student/test-s-list/test-s-list.component';
 
 const routes : Routes = [
   {path: 'login' , component: LoginComponent}, 
@@ -61,6 +63,9 @@ const routes : Routes = [
   {path: 'result-create', component: ResultCreateComponent, canActivate : [AuthGuardGuard]},
   {path: 'result-edit/:id', component: ResultEditComponent, canActivate : [AuthGuardGuard]},
   {path: 'result-list', component: ResultListComponent, canActivate : [AuthGuardGuard]},
+
+  {path: 'subject-list-s', component: SubjectResultSComponent, canActivate : [AuthGuardGuard]},
+  {path: 'test-list-s/:id', component: TestSListComponent, canActivate : [AuthGuardGuard]},
 
   {path: 'logout', component: LogoutComponent},
   {path: 'nav-top', component: NavTopComponent},
@@ -108,6 +113,11 @@ export const routingComponents = [LoginComponent,
                                   ResultListComponent,
                                   ResultEditComponent,
                                  
+                                  
+                                  SubjectResultSComponent,
+                                  TestSListComponent,
+
+
                                   NavTopComponent,
                                   NavLeftComponent ]
 

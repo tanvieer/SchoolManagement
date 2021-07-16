@@ -169,6 +169,7 @@ namespace SchoolMgmt.Repository
             objList.Add(new DSSQLParam("p_session_id", sessionId, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_username", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_role_name", string.Empty, ParameterDirection.Output));
+            objList.Add(new DSSQLParam("id", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_err_code", string.Empty, ParameterDirection.Output));
             objList.Add(new DSSQLParam("p_err_msg", string.Empty, ParameterDirection.Output));
@@ -189,6 +190,7 @@ namespace SchoolMgmt.Repository
                 {
                     rslt.Result.UserName = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_username")] == null ? "" : objDbCommand.Parameters[CParameter.GetOutputParameterName("p_username")].Value.ToString();
                     rslt.Result.RoleName = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_role_name")] == null ? "" :  objDbCommand.Parameters[CParameter.GetOutputParameterName("p_role_name")].Value.ToString();
+                    rslt.Result.Id = objDbCommand.Parameters[CParameter.GetOutputParameterName("id")] == null ? "" : objDbCommand.Parameters[CParameter.GetOutputParameterName("id")].Value.ToString();
 
                     if (rslt.Result.RoleName == "ADMIN")
                     {

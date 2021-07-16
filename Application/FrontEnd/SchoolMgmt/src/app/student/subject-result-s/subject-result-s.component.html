@@ -1,0 +1,27 @@
+ 
+<div class="card-body"> 
+    <table class="table table-striped"> 
+        <caption>Subject List</caption>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th> 
+        <th scope="col">Subject Name</th>  
+        <th scope="col">Average Grade</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of subjectList">
+        <th scope="row">{{ item.index }}</th> 
+        <td>{{item.SubjectName}}</td>
+        <td>{{item.AverageGrade}}</td> 
+        <td>
+          <button type="button" class="btn btn-sm btn-primary" routerLink="/test-list-s/{{item.SubjectId}}">View All Tests</button>
+           
+        </td>
+      </tr>
+
+  </table> 
+
+
+</div>

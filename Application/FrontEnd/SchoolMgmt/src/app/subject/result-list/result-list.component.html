@@ -3,7 +3,7 @@
   <div class="form-group">
     <label for="exampleSelectBorder">Select Subject</label>
 
-    <select name="SubjectId" id="SubjectId" class="form-control" #SubjectId (change)='loadTestData(SubjectId.value)'
+    <select name="selectedSubject" id="selectedSubject" class="form-control" #selectedSubject (change)='loadTestData(selectedSubject.value)'
       required>
       <option *ngFor="let option of subjectList" [value]="option.SubjectId">{{option.SubjectName}}</option>
     </select>
@@ -11,7 +11,7 @@
 
     <label for="exampleSelectBorder">Select Test</label>
 
-    <select name="TestId" id="TestId" class="form-control" #TestId (change)='loadResultData(TestId.value)'
+    <select name="selectedTest" id="selectedTest" class="form-control" #selectedTest (change)='loadResultData(selectedTest.value)'
       required>
       <option *ngFor="let option of testList" [value]="option.TestId">{{option.TestName}}</option>
     </select>

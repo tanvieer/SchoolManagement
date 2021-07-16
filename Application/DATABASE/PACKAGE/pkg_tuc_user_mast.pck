@@ -70,6 +70,7 @@ create or replace package pkg_tuc_user_mast is
   procedure sp_check_session(p_session_id in TUC_SYS_USER_MAST.session_id%type,
                              p_username   out TUC_SYS_USER_MAST.username%type,
                              p_role_name  out tuc_sys_role.role_name%type,
+                             p_id         out tuc_sys_user_mast.id%type,
                              p_out        out number,
                              p_err_code   out nvarchar2,
                              p_err_msg    out nvarchar2);
@@ -904,6 +905,7 @@ create or replace package body pkg_tuc_user_mast is
   procedure sp_check_session(p_session_id in tuc_sys_user_mast.session_id%type,
                              p_username   out tuc_sys_user_mast.username%type,
                              p_role_name  out tuc_sys_role.role_name%type,
+                             p_id         out tuc_sys_user_mast.id%type,
                              p_out        out number,
                              p_err_code   out nvarchar2,
                              p_err_msg    out nvarchar2) is
@@ -934,10 +936,11 @@ create or replace package body pkg_tuc_user_mast is
   
     begin
       select session_id,
+             u.id,
              username,
              (select role_name from tuc_sys_role where role_id = u.role_id) as role_name,
              u.session_exp_time
-        into v_last_session_id, p_username, p_role_name, v_session_expired
+        into v_last_session_id,p_id, p_username, p_role_name, v_session_expired
         from tuc_sys_user_mast u
        where session_id = p_session_id;
     exception

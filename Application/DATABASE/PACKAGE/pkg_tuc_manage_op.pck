@@ -106,6 +106,23 @@ create or replace package pkg_tuc_manage_op is
                              p_err_msg   out nvarchar2,
                              T_CURSOR    out sys_refcursor);
 
+-- role = 3
+  procedure sp_subjects_by_stdnt(p_student_id in nvarchar2,
+                                 p_user_id    in nvarchar2,
+                                 p_out        out number,
+                                 p_err_code   out nvarchar2,
+                                 p_err_msg    out nvarchar2,
+                                 T_CURSOR     out sys_refcursor);
+
+-- role = 3
+  procedure sp_result_by_subject(p_subject_id IN TUC_SUBJECT.SUBJECT_ID%TYPE,
+                               p_student_id in nvarchar2,
+                               p_user_id    in nvarchar2,
+                               p_out        out number,
+                               p_err_code   out nvarchar2,
+                               p_err_msg    out nvarchar2,
+                               T_CURSOR     out sys_refcursor);
+
 end pkg_tuc_manage_op;
 /
 create or replace package body pkg_tuc_manage_op is
@@ -1468,11 +1485,11 @@ create or replace package body pkg_tuc_manage_op is
                grade,
                case
                  when r.status = 'A' then
-                  'Archived'
+                  'ARCHIVED'
                  WHEN R.STATUS = 'R' THEN
-                  'Active'
+                  'ACTIVE'
                  WHEN R.STATUS = 'D' THEN
-                  'Deleted'
+                  'DELETED'
                  ELSE
                   R.STATUS
                END AS status,
@@ -1561,13 +1578,11 @@ create or replace package body pkg_tuc_manage_op is
       ELSE
         RETURN;
       END IF;
-       
-      
-    END IF;
     
-    if p_activity = 'U'
-      then 
-         IF P_OUT = 0 THEN
+    END IF;
+  
+    if p_activity = 'U' then
+      IF P_OUT = 0 THEN
         pkg_tuc_user_mast.IS_NULL('Grade',
                                   p_grade,
                                   'mng-sp_tuc_result',
@@ -1576,12 +1591,12 @@ create or replace package body pkg_tuc_manage_op is
                                   P_ERR_MSG);
       ELSE
         RETURN;
-      END IF; 
+      END IF;
     end if;
   
     if p_activity = 'I' then
-     
-       IF P_OUT = 0 THEN
+    
+      IF P_OUT = 0 THEN
         pkg_tuc_user_mast.IS_NULL('Test Id',
                                   p_test_id,
                                   'mng-sp_tuc_result',
@@ -1592,7 +1607,6 @@ create or replace package body pkg_tuc_manage_op is
         RETURN;
       END IF;
     
-     
     end if;
   
     IF P_OUT = 1 THEN
@@ -1802,6 +1816,155 @@ create or replace package body pkg_tuc_manage_op is
       p_err_msg  := sqlerrm;
       rollback;
   end sp_tuc_result_gk;
+
+  procedure sp_subjects_by_stdnt(p_student_id in nvarchar2,
+                                 p_user_id    in nvarchar2,
+                                 p_out        out number,
+                                 p_err_code   out nvarchar2,
+                                 p_err_msg    out nvarchar2,
+                                 T_CURSOR     out sys_refcursor) is
+    /*****************************************************************************************************
+    NAME         : sp_subjects_by_stdnt
+    PURPOSE      : To to get list of subjects and avg grade by student id
+    MODULE       : tuc test
+    CREATED BY   : MOHAMMAD TANVIR ISLAM
+    Matriculation: #676614
+    EMAIL        : imoh@hrz.tu-chemnitz.de
+    CREATED AT   : 28-JUNE-2021
+    
+    REVISIONS:
+    
+    VERSION     DATE        AUTHOR                      DESCRIPTION
+    ---------   ----------  -----------------           ------------------------------------
+    1.0         28-06-2021  MOHAMMAD  TANVIR ISLAM           1. INITIATE SP
+    *****************************************************************************************************/
+  
+  begin
+    P_OUT := 0;
+    IF P_OUT = 0 THEN
+      pkg_tuc_user_mast.IS_NULL('p_student_id',
+                                p_student_id,
+                                'mng- sp_subjects_by_stdnt',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
+    ELSE
+      RETURN;
+    END IF;
+    IF P_OUT = 0 THEN
+      pkg_tuc_user_mast.IS_NULL('p_user_id',
+                                p_user_id,
+                                'mng- sp_subjects_by_stdnt',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
+    ELSE
+      RETURN;
+    END IF;
+  
+    IF P_OUT <> 0 THEN
+      RETURN;
+    END IF;
+  
+    open T_CURSOR for
+      select u.id,
+             u.username,
+             (u.first_name || ' ' || u.last_name) as full_name ,
+             s.subject_name,
+             s.subject_id,
+             (select nvl(avg(r.grade), 0)
+                from TUC_RESULT r
+               where r.test_id in
+                     (select test_id
+                        from tuc_test t
+                       where t.subject_id = s.subject_id)) as avg_grade
+        from tuc_sys_user_mast u
+        left join tuc_subject s
+          on s.class_id = u.class_id
+       where u.role_id = 3
+         and u.username = p_student_id;
+  
+    p_err_msg := 'Data found successfully.';
+  exception
+    when others then
+      p_out      := 1;
+      p_err_code := sqlcode;
+      p_err_msg  := sqlerrm;
+      rollback;
+  end sp_subjects_by_stdnt;
+
+
+
+  procedure sp_result_by_subject(p_subject_id IN TUC_SUBJECT.SUBJECT_ID%TYPE,
+                               p_student_id in nvarchar2,
+                               p_user_id    in nvarchar2,
+                               p_out        out number,
+                               p_err_code   out nvarchar2,
+                               p_err_msg    out nvarchar2,
+                               T_CURSOR     out sys_refcursor) is
+  /*****************************************************************************************************
+  NAME         : sp_result_by_subject
+  PURPOSE      : To to get list of test and grade by student id and subject id
+  MODULE       : tuc test
+  CREATED BY   : MOHAMMAD TANVIR ISLAM
+  Matriculation: #676614
+  EMAIL        : imoh@hrz.tu-chemnitz.de
+  CREATED AT   : 28-JUNE-2021
+  
+  REVISIONS:
+  
+  VERSION     DATE        AUTHOR                      DESCRIPTION
+  ---------   ----------  -----------------           ------------------------------------
+  1.0         28-06-2021  MOHAMMAD  TANVIR ISLAM           1. INITIATE SP
+  *****************************************************************************************************/
+
+begin
+  P_OUT := 0;
+  IF P_OUT = 0 THEN
+    pkg_tuc_user_mast.IS_NULL('p_student_id',
+                              p_student_id,
+                              'mng- sp_result_by_subject',
+                              P_OUT,
+                              P_ERR_CODE,
+                              P_ERR_MSG);
+  ELSE
+    RETURN;
+  END IF;
+  IF P_OUT = 0 THEN
+    pkg_tuc_user_mast.IS_NULL('p_user_id',
+                              p_user_id,
+                              'mng- sp_result_by_subject',
+                              P_OUT,
+                              P_ERR_CODE,
+                              P_ERR_MSG);
+  ELSE
+    RETURN;
+  END IF;
+
+  IF P_OUT <> 0 THEN
+    RETURN;
+  END IF;
+
+  open T_CURSOR for
+    select t.test_id, t.test_name, s.subject_id, s.subject_name, r.grade
+      from tuc_test t
+      left join tuc_result r
+        on r.test_id = t.test_id
+      left join tuc_subject s
+        on s.subject_id = p_subject_id
+     where t.subject_id = p_subject_id
+       and r.student_id = p_student_id;
+
+  p_err_msg := 'Data found successfully.';
+exception
+  when others then
+    p_out      := 1;
+    p_err_code := sqlcode;
+    p_err_msg  := sqlerrm;
+    rollback;
+end sp_result_by_subject;
+
+
 
 /*  
   procedure sp_tuc_result   (p_activity       in char,

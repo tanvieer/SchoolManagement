@@ -166,6 +166,19 @@ deleteResult(_id:string){
 }
 
 
+//student
+getSubjectsAndGrades(){  
+  return this.http.get(`${this.config.url}/Student/GetSubjectList`,this.config.httpOptions);  
+}
+
+//student
+getTestsOfSubject(_id:string){  
+  return this.http.get(`${this.config.url}/Student/GetTestList?subject_id=${_id}`,this.config.httpOptions);  
+}
+
+
+
+
 
 
 
