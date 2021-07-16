@@ -10,7 +10,7 @@
         <th scope="col">Surename</th>
         <th scope="col">Class</th>
         <th scope="col">Average Grade</th>
-        <th scope="col">Action</th>
+        <th *ngIf="isAdmin" scope="col">Action</th>
       </tr>
     </thead>
     <tbody>
@@ -21,8 +21,8 @@
         <td>{{item.LastName}}</td>
         <td>{{item.ClassName}}</td>
         <td>{{item.AverageGrade}}</td>
-        <td>
-          <button type="button" class="btn btn-sm btn-primary" routerLink="/update-user/{{item.UserName}}">Edit</button>
+        <td *ngIf="isAdmin">
+          <button *ngIf="isAdmin" type="button" class="btn btn-sm btn-primary" routerLink="/update-user/{{item.UserName}}">Edit</button>
           &nbsp;
           <button *ngIf="isAdmin" type="button" class="btn btn-sm btn-warning" routerLink="/reset-password/{{item.UserName}}">Reset Password</button>
           &nbsp;

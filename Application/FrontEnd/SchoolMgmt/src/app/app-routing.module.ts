@@ -36,8 +36,10 @@ import { TeacherGuardGuard } from './teacher-guard.guard';
 import { AdminGuardGuard } from './admin-guard.guard';
 
 const routes : Routes = [
+    
+  {path: 'contact', component: ContactComponent},
   {path: 'login' , component: LoginComponent}, 
-  {path: '' , component: LoginComponent}, 
+
   {path: 'teachers', component: TeachersComponent , canActivate : [AdminGuardGuard]},
   {path: 'pupils', component: PupilsComponent , canActivate : [ATGuardGuard]},
   {path: 'teacher-list', component: TeacherListComponent, canActivate : [AdminGuardGuard]},
@@ -54,7 +56,6 @@ const routes : Routes = [
   {path: 'class-edit/:id', component: ClassEditComponent, canActivate : [AdminGuardGuard]},
   {path: 'class-list', component: ClassListComponent, canActivate : [AdminGuardGuard]},
 
-  {path: 'contact', component: ContactComponent, canActivate : [AuthGuardGuard]},
 
   {path: 'subject-create', component: SubjectCreateComponent, canActivate : [AdminGuardGuard]},
   {path: 'subject-edit/:id', component: SubjectEditComponent, canActivate : [AdminGuardGuard]},
