@@ -1,7 +1,7 @@
 import { UsersService } from './shared/users.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 
 import { AppComponent } from './app.component'; 
@@ -10,15 +10,14 @@ import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule, routingComponents } from './app-routing.module';  
 import { NavBottomComponent } from './nav/nav-bottom/nav-bottom.component';
 import { NavRightComponent } from './nav/nav-right/nav-right.component'; 
-import { DatePipe } from '@angular/common'; 
-
+import { DatePipe } from '@angular/common';  
 
 @NgModule({
   declarations: [
     AppComponent,
     routingComponents,
     NavBottomComponent,
-    NavRightComponent 
+    NavRightComponent  
      
   ],
   imports: [
@@ -27,7 +26,8 @@ import { DatePipe } from '@angular/common';
     HttpClientModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule
   ],
   providers: [UsersService,DatePipe],
   bootstrap: [AppComponent]

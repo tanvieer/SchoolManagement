@@ -34,6 +34,7 @@ import { TestSListComponent } from './student/test-s-list/test-s-list.component'
 import { StudentGuardGuard } from './student-guard.guard';
 import { TeacherGuardGuard } from './teacher-guard.guard';
 import { AdminGuardGuard } from './admin-guard.guard';
+import { ImportGradesComponent } from './subject/import-grades/import-grades.component';
 
 const routes : Routes = [
     
@@ -64,6 +65,8 @@ const routes : Routes = [
   {path: 'test-create', component: TestCreateComponent, canActivate : [TeacherGuardGuard]},
   {path: 'test-edit/:id', component: TestEditComponent, canActivate : [TeacherGuardGuard]},
   {path: 'test-list', component: TestListComponent, canActivate : [TeacherGuardGuard]},
+
+  {path: 'import-grades', component: ImportGradesComponent, canActivate : [AuthGuardGuard]},
 
   {path: 'result-create', component: ResultCreateComponent, canActivate : [TeacherGuardGuard]},
   {path: 'result-edit/:id', component: ResultEditComponent, canActivate : [TeacherGuardGuard]},
@@ -108,8 +111,9 @@ export const routingComponents = [LoginComponent,
                                   SubjectEditComponent,
                                   SubjectListComponent,
                                   ContactComponent,
-
-                                   
+ 
+                                  ImportGradesComponent,
+                                  
                                   TestCreateComponent,
                                   TestEditComponent,
                                   TestListComponent,

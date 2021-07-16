@@ -179,7 +179,14 @@ getTestsOfSubject(_id:string){
 
 
 
+postFile(fileToUpload: FormData) {
+  // const formData: FormData = new FormData();
+  // const tmpUrl=`${this.config.url}/File/Post`; 
+  // return this.http.post(tmpUrl, formData,this.config.httpOptions);
 
+ // return this.http.post(`${this.config.url}/File/Post`,fileToUpload,this.config.httpOptions); 
+ return this.http.post(`${this.config.url}/File/Post`,fileToUpload); 
+}
 
 
 

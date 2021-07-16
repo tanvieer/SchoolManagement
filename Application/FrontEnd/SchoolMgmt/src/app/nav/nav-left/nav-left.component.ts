@@ -118,7 +118,7 @@ export class NavLeftComponent implements OnInit {
 
 
   parseRouterLinks(jsonData: any) {
-    console.log(jsonData);
+   // console.log(jsonData);
     this.routerList = [];
   
     let collectionSize = jsonData.length;

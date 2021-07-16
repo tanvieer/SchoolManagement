@@ -6,7 +6,8 @@ export class Config {
         headers: new HttpHeaders({
            'Content-Type': 'application/json',
            'Authorization': localStorage.getItem('Token') ?? "",
-           'MakeBy': localStorage.getItem('UserName') ?? ""
+           'MakeBy': localStorage.getItem('UserName') ?? "",
+           'Access-Control-Allow-Origin': '*'
         })
     }
 }
