@@ -821,6 +821,7 @@ namespace SchoolMngmnt.Repository
             objList.Add(new DSSQLParam("p_test_id", model.TestId, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_grade", model.Grade, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_student_id", model.StudentId, ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_save_status", "C", ParameterDirection.Input));
 
             objList.Add(new DSSQLParam("p_user_id", makeBy, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
@@ -849,14 +850,25 @@ namespace SchoolMngmnt.Repository
             }
             catch (Exception ex)
             {
+                //if (save_status == "S")
+                //{
+                //    objDbCommand.Transaction.Rollback();
+                //}
                 rslt.Status = "FAILED";
                 rslt.Message = ex.Message;
             }
             finally
             {
+                //if (save_status == "S")
+                //{
+                //    objDbCommand.Transaction.Commit();
+                //}
+
                 objDbCommand.Connection.Close();
                 objCDataAccess.Dispose(objDbCommand);
                 objList.Clear();
+
+               
             }
 
             rslt.Result = model;
@@ -864,7 +876,111 @@ namespace SchoolMngmnt.Repository
         }
 
 
-         
+
+
+
+        public static StatusResult<List<ResultViewModel>> ManageResult(List<ResultViewModel> itemList, string makeBy)
+        {
+            if (itemList is null)
+            {
+                throw new ArgumentNullException(nameof(itemList));
+            }
+            StatusResult<List<ResultViewModel>> rslt = new StatusResult<List<ResultViewModel>>();
+
+            rslt.Result = new List<ResultViewModel>();
+            List<DSSQLParam> objList;
+
+            int p_out = 1;
+
+            CDataAccess objCDataAccess = CDataAccess.NewCDataAccess();
+            DbCommand objDbCommand = objCDataAccess.GetMyCommand(false, IsolationLevel.ReadCommitted, "application", false);
+
+            try
+            {
+
+
+                foreach (ResultViewModel item in itemList)
+                {
+                    try
+                    {
+                        objList = new List<DSSQLParam>();
+                        objList.Clear();
+
+                        objList.Add(new DSSQLParam("p_activity", "I", ParameterDirection.Input));
+                        objList.Add(new DSSQLParam("p_result_id", item.ResultId, ParameterDirection.InputOutput));
+                        objList.Add(new DSSQLParam("p_test_id", item.TestId, ParameterDirection.Input));
+                        objList.Add(new DSSQLParam("p_grade", item.Grade, ParameterDirection.Input));
+                        objList.Add(new DSSQLParam("p_student_id", item.StudentId, ParameterDirection.Input));
+                        objList.Add(new DSSQLParam("p_save_status", "S", ParameterDirection.Input));
+
+                        objList.Add(new DSSQLParam("p_user_id", makeBy, ParameterDirection.Input));
+                        objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
+                        objList.Add(new DSSQLParam("p_err_code", string.Empty, ParameterDirection.Output));
+                        objList.Add(new DSSQLParam("p_err_msg", string.Empty, ParameterDirection.Output)); 
+
+                        try
+                        {
+                            objCDataAccess.ExecuteNonQuery(objDbCommand, SP_PREFIX + "pkg_tuc_manage_op.sp_tuc_result", CommandType.StoredProcedure, objList);
+
+                            p_out = Convert.ToInt32(objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString());
+                            if (p_out == 1)
+                            {
+                                rslt.Status = "FAILED";
+                                rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_code")].Value.ToString()
+                                    + "~" + objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
+                                break;
+                            }
+                            else
+                            {
+                                rslt.Status = "SUCCESS";
+                                rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
+                            }
+                            objList.Clear();
+                        }
+                        catch (Exception ex)
+                        { 
+                            rslt.Status = "FAILED";
+                            rslt.Message = ex.Message;
+                            break;
+                        }
+                         
+
+                    }
+                    catch (Exception ex)
+                    { 
+                        rslt.Status = "FAILED";
+                        rslt.Message = ex.Message;
+                        break;
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            { 
+                rslt.Status = "FAILED";
+                rslt.Message = ex.Message; 
+            }
+            finally
+            {
+
+                if (rslt.Status != "FAILED")
+                {
+                    objDbCommand.Transaction.Commit();
+                }
+                else objDbCommand.Transaction.Rollback();
+                 
+                objDbCommand.Connection.Close();
+                objCDataAccess.Dispose(objDbCommand); 
+
+            }
+
+
+            return rslt;
+        }
+
+
+
+
 
         public static StatusResult<List<StudentTestListViewModel>> GetTestListBySubject(string subject_id,string makeBy)
         {

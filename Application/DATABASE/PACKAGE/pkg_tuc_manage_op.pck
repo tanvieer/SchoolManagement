@@ -94,6 +94,7 @@ create or replace package pkg_tuc_manage_op is
                           p_test_id    in tuc_result.test_id%type,
                           p_grade      in tuc_result.grade%type,
                           p_student_id in tuc_result.student_id%type,
+                          p_save_status in varchar2,
                           p_user_id    in tuc_result.maker_id%type,
                           p_out        out number,
                           p_err_code   out varchar2,
@@ -1518,6 +1519,7 @@ create or replace package body pkg_tuc_manage_op is
                           p_test_id    in tuc_result.test_id%type,
                           p_grade      in tuc_result.grade%type,
                           p_student_id in tuc_result.student_id%type,
+                          p_save_status in varchar2,
                           p_user_id    in tuc_result.maker_id%type,
                           p_out        out number,
                           p_err_code   out varchar2,
@@ -1637,8 +1639,7 @@ create or replace package body pkg_tuc_manage_op is
            sysdate,
            p_user_id,
            sysdate,
-           p_student_id);
-        commit;
+           p_student_id); 
         p_err_msg := initcap('New result added successfully! result Id = ' ||
                              p_result_id);
       
@@ -1650,8 +1651,7 @@ create or replace package body pkg_tuc_manage_op is
                last_update_by   = p_user_id,
                last_update_time = sysdate
          where result_id = p_result_id;
-      
-        commit;
+       
         p_err_msg := initcap('Result archived successfully!');
       
       ELSIF P_ACTIVITY = 'U' THEN
@@ -1677,8 +1677,7 @@ create or replace package body pkg_tuc_manage_op is
                last_update_by   = p_user_id,
                last_update_time = sysdate
          where result_id = P_result_ID;
-      
-        commit;
+       
         p_err_msg := initcap('Grade updated successfully!');
       
       ELSIF P_ACTIVITY = 'D' THEN
@@ -1687,8 +1686,7 @@ create or replace package body pkg_tuc_manage_op is
            set s.status         = 'D',
                last_update_by   = p_user_id,
                last_update_time = sysdate
-         where result_id = P_result_ID;
-        commit;
+         where result_id = P_result_ID; 
         p_err_msg := initcap('Result deleted successfully!');
       ELSE
         begin
@@ -1704,6 +1702,13 @@ create or replace package body pkg_tuc_manage_op is
     ELSE
       RAISE L_USER_ERR;
     END IF;
+    
+    if p_save_status <> 'S' 
+      then
+        commit;
+    end if;
+    
+    
   EXCEPTION
     WHEN L_USER_ERR THEN
       BEGIN
@@ -1877,7 +1882,13 @@ create or replace package body pkg_tuc_manage_op is
                where r.student_id = u.id and  r.test_id in
                      (select test_id
                         from tuc_test t
-                       where t.subject_id = s.subject_id)) as avg_grade
+                       where t.subject_id = s.subject_id)) as avg_grade,
+              (select count(1)
+                from TUC_RESULT r
+               where r.student_id = u.id and  r.test_id in
+                     (select test_id
+                        from tuc_test t
+                       where t.subject_id = s.subject_id)) as test_count
         from tuc_sys_user_mast u
         left join tuc_subject s
           on s.class_id = u.class_id
