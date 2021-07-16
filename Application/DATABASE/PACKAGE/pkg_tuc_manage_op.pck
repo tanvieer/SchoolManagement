@@ -1046,7 +1046,7 @@ create or replace package body pkg_tuc_manage_op is
   
     l_row_count number(8);
     -- v_count      number(5);
-    V_STATUS     tuc_test.STATUS%TYPE;
+    --V_STATUS     tuc_test.STATUS%TYPE;
     v_subject_id tuc_sys_user_mast.id%type;
   
   begin
@@ -1549,14 +1549,15 @@ create or replace package body pkg_tuc_manage_op is
     PRAGMA EXCEPTION_INIT(EXCP_FK_CONSTRAINT_VIOLATED, -02291);
     --v_user_id    TUC_SYS_USER_MAST.id%type;
   
-    l_row_count number(8);
+    --l_row_count number(8);
     -- v_count      number(5);
-    V_STATUS     tuc_result.STATUS%TYPE;
-    v_subject_id tuc_sys_user_mast.id%type;
+    V_STATUS     tuc_result.STATUS%TYPE; 
+    v_std_id     tuc_sys_user_mast.id%type; 
   
   begin
   
     p_out := 0;
+    v_std_id := p_student_id;
   
     IF P_OUT = 0 THEN
       pkg_tuc_user_mast.IS_NULL('p_activity',
@@ -1595,6 +1596,46 @@ create or replace package body pkg_tuc_manage_op is
         RETURN;
       END IF;
     end if;
+  
+  
+  
+  if p_save_status = 'S' then
+    begin
+      select id
+      into v_std_id
+        from tuc_sys_user_mast t
+       where t.username = p_student_id
+         and t.status = 'R'
+         and t.role_id = 3;
+      
+    exception
+      when others then
+        p_out      := 1;
+        p_err_code := 'mng-1050';
+        p_err_msg  := initcap('No student found by student id: ' ||   p_student_id);
+    end;
+    
+    
+    begin
+      select t.result_id
+        into p_result_id
+        from tuc_result t
+       where t.test_id = p_test_id
+         and t.student_id = v_std_id;
+         
+        p_out      := 1;
+        p_err_code := 'mng-1051';
+        p_err_msg  := initcap('Result already exist by result id: '  ||   p_result_id 
+        || ' test id =' || p_test_id
+        || ' student id = ' || p_student_id);
+        return;
+    exception
+      when others then
+        p_result_id := null;
+    end;
+  
+  end if;
+  
   
     if p_activity = 'I' then
     
@@ -1639,7 +1680,7 @@ create or replace package body pkg_tuc_manage_op is
            sysdate,
            p_user_id,
            sysdate,
-           p_student_id); 
+           v_std_id); 
         p_err_msg := initcap('New result added successfully! result Id = ' ||
                              p_result_id);
       
@@ -1703,10 +1744,9 @@ create or replace package body pkg_tuc_manage_op is
       RAISE L_USER_ERR;
     END IF;
     
-    if p_save_status <> 'S' 
-      then
-        commit;
-    end if;
+   
+    commit;
+    
     
     
   EXCEPTION
@@ -1720,7 +1760,7 @@ create or replace package body pkg_tuc_manage_op is
       begin
         p_out      := 1;
         p_err_code := 'mng-1039';
-        p_err_msg  := initcap('Result id already exist.');
+        p_err_msg  := initcap('Result already exist.');
         ROLLBACK;
       end;
     

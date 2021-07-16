@@ -41,7 +41,7 @@ export class ImportGradesComponent implements OnInit {
     const formData = new FormData();
     formData.append('file', this.myForm.get('fileSource')?.value); 
     this.service.postFile(formData).subscribe((data: any) => {   
-      console.log(data); 
+      console.log(data.Result); 
       if (data.Status == "SUCCESS") { 
         this.toastr.success(data.Message, 'Grade Upload');
       }

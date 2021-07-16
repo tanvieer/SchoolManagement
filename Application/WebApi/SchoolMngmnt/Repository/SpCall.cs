@@ -888,6 +888,8 @@ namespace SchoolMngmnt.Repository
             StatusResult<List<ResultViewModel>> rslt = new StatusResult<List<ResultViewModel>>();
 
             rslt.Result = new List<ResultViewModel>();
+            ResultViewModel model;
+
             List<DSSQLParam> objList;
 
             int p_out = 1;
@@ -905,6 +907,8 @@ namespace SchoolMngmnt.Repository
                     {
                         objList = new List<DSSQLParam>();
                         objList.Clear();
+
+                        model = item;
 
                         objList.Add(new DSSQLParam("p_activity", "I", ParameterDirection.Input));
                         objList.Add(new DSSQLParam("p_result_id", item.ResultId, ParameterDirection.InputOutput));
@@ -928,28 +932,35 @@ namespace SchoolMngmnt.Repository
                                 rslt.Status = "FAILED";
                                 rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_code")].Value.ToString()
                                     + "~" + objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
-                                break;
+                                model.ErrMsg = rslt.Message;
+
+                                model.ResultId = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_result_id")] == null? null : objDbCommand.Parameters[CParameter.GetOutputParameterName("p_result_id")].Value.ToString();
                             }
                             else
                             {
+                                model.ResultId = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_result_id")].Value.ToString();
                                 rslt.Status = "SUCCESS";
                                 rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
+
+                                model.ErrMsg = rslt.Message;
                             }
+
+                            rslt.Result.Add(model);
+
                             objList.Clear();
                         }
                         catch (Exception ex)
                         { 
                             rslt.Status = "FAILED";
-                            rslt.Message = ex.Message;
+                            rslt.Message = ex.Message; 
                             break;
-                        }
-                         
+                        } 
 
                     }
                     catch (Exception ex)
                     { 
                         rslt.Status = "FAILED";
-                        rslt.Message = ex.Message;
+                        rslt.Message = ex.Message; 
                         break;
                     }
 
@@ -962,12 +973,7 @@ namespace SchoolMngmnt.Repository
             }
             finally
             {
-
-                if (rslt.Status != "FAILED")
-                {
-                    objDbCommand.Transaction.Commit();
-                }
-                else objDbCommand.Transaction.Rollback();
+                 
                  
                 objDbCommand.Connection.Close();
                 objCDataAccess.Dispose(objDbCommand); 

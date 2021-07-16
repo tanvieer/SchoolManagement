@@ -378,6 +378,9 @@ namespace SchoolMngmnt.Controllers
                 }
             }
             rslt.Status = "SUCCESS";
+
+            rslt = SpCall.ManageResult(rslt.Result, "t");
+
             return rslt;
         }
 
