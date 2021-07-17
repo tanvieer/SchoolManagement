@@ -279,7 +279,9 @@ namespace SchoolMngmnt.Repository
         }
 
          
-        public static StatusResult<List<TucClass>> GetClassList(string makeBy)
+       
+
+        public static StatusResult<List<TucClass>> GetClassList(string makeBy, string subjectId, int p_activity)
         {
             StatusResult<List<TucClass>> rslt = new StatusResult<List<TucClass>>();
             TucClass model;
@@ -294,7 +296,8 @@ namespace SchoolMngmnt.Repository
             List<DSSQLParam> objList = new List<DSSQLParam>();
 
 
-            objList.Add(new DSSQLParam("p_in", "1", ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_in", p_activity, ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_subject_id", subjectId, ParameterDirection.Input));
 
             objList.Add(new DSSQLParam("p_user_id", makeBy, ParameterDirection.Input));
             objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
@@ -326,7 +329,7 @@ namespace SchoolMngmnt.Repository
                     {
                         model = new TucClass();
                         model.ClassId = dr["class_id"].ToString();
-                        model.ClassName = dr["class_name"].ToString(); 
+                        model.ClassName = dr["class_name"].ToString();
 
                         rslt.Result.Add(model);
                     }

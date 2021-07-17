@@ -31,13 +31,13 @@ export class ResultCreateComponent implements OnInit {
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    this.loadSubjectData();
-    this.loadClass();
+    this.loadSubjectData(); 
   }
 
   onSubjectChange(_id: string) {
     this.selectedSubject = _id;
     this.loadTestData(this.selectedSubject);
+    this.loadClass(this.selectedSubject);
   }
   onTestChange(_id: string) {
     this.selectedTest = _id;
@@ -114,7 +114,7 @@ export class ResultCreateComponent implements OnInit {
       });
   }
 
- 
+ //getClassListBySubject
 
   parseTestData(jsonData: any) {
     console.log(jsonData);
@@ -154,9 +154,9 @@ export class ResultCreateComponent implements OnInit {
     }
   }
 
-  loadClass() {
+  loadClass(subjectId : string) {
     this.classList = [];
-    this.serviceOthers.getClassList()
+    this.serviceOthers.getClassListBySubject(subjectId)
     .subscribe((data: any) => {  
       if(data.Status == "SUCCESS"){
         this.parseClassData(data.Result);

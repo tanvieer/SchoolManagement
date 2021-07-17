@@ -45,21 +45,31 @@ export class CreateUserComponent implements OnInit {
   }
 
   initiateClass() {
-    this._class = new TucClass();
-    this._class.ClassId = '1';
-    this._class.ClassName = "Class 1";
-    this.classList.push(this._class);
-
-    this._class = new TucClass();
-    this._class.ClassId = '2';
-    this._class.ClassName = "Class 2";
-    this.classList.push(this._class);
-
-    this._class = new TucClass();
-    this._class.ClassId = '3';
-    this._class.ClassName = "Class 3";
-    this.classList.push(this._class);
+    this.classList = []; 
+    this.service.getClassList()
+    .subscribe((data: any) => {  
+      if(data.Status == "SUCCESS"){
+        this.parseClassData(data.Result);
+      }
+      else {
+        this.toastr.error(data.Message, 'Class List');
+      }  
+    });
   }
+
+  parseClassData(jsonData: any) {
+    //considering you get your data in json arrays  
+    let collectionSize = jsonData.length;
+    for (let i = 0; i < collectionSize; i++) {
+      const data = new TucClass();
+      data.Index = i+1; 
+      data.ClassId  = jsonData[i].ClassId; 
+      data.ClassName = jsonData[i].ClassName;       
+      this.classList.push(data);
+    } 
+    //this.refreshTeachers();
+  }
+   
 
 
   resetForm(form?: NgForm) {
@@ -77,7 +87,7 @@ export class CreateUserComponent implements OnInit {
       LastName: '',
       PhoneNumber: '',
       RoleId: 2,
-      ClassId: 1,
+      ClassId: 0,
       ClassName: '',
       FullName: '',
       Session: '',

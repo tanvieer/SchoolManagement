@@ -27,6 +27,7 @@ create or replace package pkg_tuc_manage_op is
                             T_CURSOR   out sys_refcursor);
 
   procedure sp_tuc_class_ga(p_in       in nvarchar2,
+                            p_subject_id in nvarchar2,
                             p_user_id  in nvarchar2,
                             p_out      out number,
                             p_err_code out nvarchar2,
@@ -479,6 +480,7 @@ create or replace package body pkg_tuc_manage_op is
   end sp_tuc_class_gk;
 
   procedure sp_tuc_class_ga(p_in       in nvarchar2,
+                            p_subject_id in nvarchar2,
                             p_user_id  in nvarchar2,
                             p_out      out number,
                             p_err_code out nvarchar2,
@@ -516,6 +518,20 @@ create or replace package body pkg_tuc_manage_op is
           from tuc_class c
          where c.status <> 'D'
            and class_id <> 0
+         order by class_id;
+     elsif p_in = 2 then
+      open T_CURSOR for
+        select class_id,
+               class_name,
+               status,
+               maker_id,
+               maker_time,
+               last_update_by,
+               last_update_time
+          from tuc_class c
+         where c.status <> 'D'
+           and class_id <> 0 
+           and class_id in (select class_id from tuc_subject where subject_id = p_subject_id)
          order by class_id;
     end if;
   
@@ -889,6 +905,9 @@ create or replace package body pkg_tuc_manage_op is
                               p_err_msg  out nvarchar2,
                               T_CURSOR   out sys_refcursor) is
     --v_count number(8);
+    
+    v_role_id            tuc_sys_user_mast.role_id%type;
+    v_teacher_id         tuc_sys_user_mast.id%type;
   
   begin
     P_OUT := 0;
@@ -903,6 +922,12 @@ create or replace package body pkg_tuc_manage_op is
     ELSE
       RETURN;
     END IF;
+    
+    select id, role_id
+      into v_teacher_id, v_role_id
+      from tuc_sys_user_mast t
+     where t.username = p_user_id;
+    
   
     IF P_OUT <> 0 THEN
       RETURN;
@@ -935,7 +960,8 @@ create or replace package body pkg_tuc_manage_op is
                last_update_by,
                last_update_time
           from tuc_subject s
-         where s.status <> 'D'
+         where s.status <> 'D' 
+           and (s.teacher_id = v_teacher_id or v_role_id = 1)
          order by subject_id;
     elsif p_in = 2 then
       open T_CURSOR for
@@ -997,6 +1023,7 @@ create or replace package body pkg_tuc_manage_op is
                last_update_time
           from tuc_subject s
          where s.status = 'R'
+           and (s.teacher_id = v_teacher_id or v_role_id = 1)
          order by subject_id;
     end if;
     p_err_msg := 'Data found successfully.';

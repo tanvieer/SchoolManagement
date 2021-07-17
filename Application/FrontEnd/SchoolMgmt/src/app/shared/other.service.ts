@@ -26,6 +26,10 @@ export class OtherService {
     return this.http.get(`${this.config.url}/Class/GetClassList`,this.config.httpOptions);  
   }
 
+  getClassListBySubject(_id:string){  
+    return this.http.get(`${this.config.url}/Class/GetClassListBySubject?subjectId=${_id}`,this.config.httpOptions);  
+  }
+
   getClassInfo(_id:number){  
     return this.http.get(`${this.config.url}/Class/GetClassInfo?id=${_id}`,this.config.httpOptions);  
   }

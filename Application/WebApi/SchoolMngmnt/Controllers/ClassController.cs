@@ -47,7 +47,7 @@ namespace SchoolMngmnt.Controllers
 
             if (checkSession.Result.RoleId == 1 || checkSession.Result.RoleId == 2) // ADMIN or teacher
             {
-                rslt = SpCall.GetClassList(checkSession.Result.UserName);
+                rslt = SpCall.GetClassList(checkSession.Result.UserName,null,1);
             }
             else  
             {
@@ -56,6 +56,53 @@ namespace SchoolMngmnt.Controllers
 
             return rslt;
         }
+
+
+
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [HttpGet]
+        [Route("api/Class/GetClassListBySubject")]
+        public StatusResult<List<TucClass>> GetClassListBySubject(string subjectId)
+        {
+
+            StatusResult<List<TucClass>> rslt = new StatusResult<List<TucClass>>();
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("Authorization"))
+            {
+                token = headers.GetValues("Authorization").First();
+
+            }
+            else
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = "User not logged in!!";
+                return rslt;
+            }
+
+            var checkSession = SysManageRepository.CheckSession(token);
+
+            if (checkSession.Status == "FAILED")
+            {
+                rslt.Status = checkSession.Status;
+                rslt.Message = checkSession.Message;
+                return rslt;
+            }
+
+            if (checkSession.Result.RoleId == 1 || checkSession.Result.RoleId == 2) // ADMIN or teacher
+            {
+                rslt = SpCall.GetClassList(checkSession.Result.UserName, subjectId, 2);
+            }
+            else
+            {
+                rslt.Message = "This user has no permission to get class list.";
+            }
+
+            return rslt;
+        }
+
 
 
         [EnableCors(origins: "*", headers: "*", methods: "*")]

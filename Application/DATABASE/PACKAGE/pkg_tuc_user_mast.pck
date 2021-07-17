@@ -216,6 +216,15 @@ create or replace package body pkg_tuc_user_mast is
     END IF;
     IF P_OUT = 0 THEN
       IF P_ACTIVITY = 'I' THEN
+        
+        if p_role_id = 3 and (p_class_id = 0 or p_class_id is null)
+          then
+           p_out      := 1;
+           p_err_code := 'usr-1025';
+           p_err_msg  := initcap('Class is required for student creation.');
+           ROLLBACK;
+          return;
+        end if;
       
         v_user_id := sys_guid();
         v_enc_key := to_char(sysdate, 'ddmmyyhhmiss') ||
