@@ -134,6 +134,15 @@
         </a>
       </li> -->
 
+      <li *ngIf="isLoggedIn" class="nav-item d-none d-sm-inline-block">
+        <a routerLink="/update-profile" class="nav-link">Edit Profile</a>
+      </li>
+
+<li *ngIf="isLoggedIn" class="nav-item d-none d-sm-inline-block">
+        <a routerLink="/change-password" class="nav-link">Change Password</a>
+      </li>
+
+
 
       <li *ngIf="isLoggedIn" class="nav-item d-none d-sm-inline-block">
         <a routerLink="/logout" class="nav-link">Log Out</a>

@@ -27,6 +27,9 @@ export class ChangePasswordComponent implements OnInit {
   onSubmit(form: NgForm) {
     //console.log(form.value);
     //console.log("===========Before Submit=======");
+
+    form.value.Username = this.userName;
+
     this.service.changePassword(form.value).subscribe((res: any) => {
       // this._statusResultO as statusResultO;
       // console.log(res.Message);
