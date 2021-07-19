@@ -102,6 +102,11 @@ create or replace package pkg_tuc_user_mast is
                            p_err_code out nvarchar2,
                            p_err_msg  out nvarchar2,
                            T_CURSOR   out sys_refcursor);
+ procedure sp_check_active (  p_in in number,
+                             p_value   in varchar2, 
+                             p_out        out number,
+                             p_err_code   out nvarchar2,
+                             p_err_msg    out nvarchar2);
 
 end pkg_tuc_user_mast;
 /
@@ -962,19 +967,7 @@ create or replace package body pkg_tuc_user_mast is
         p_err_msg  := initcap('session does not exist!');
         return;
     end;
-  
-    /*    if v_session_expired < v_current_time then
-      p_out      := 1;
-      p_err_code := 'usr-1014';
-      p_err_msg  := initcap('session is expired!');
-      return;
-    end if;
-    
-    update tuc_sys_user_mast t
-       set t.session_exp_time = to_CHAR(sysdate +
-                                        (.000694 * v_session_exp_min),
-                                        'DD-MON-YYYY HH:MI:SS PM')
-     where username = p_username;*/
+   
   
   exception
     when no_data_found then
@@ -1167,6 +1160,63 @@ create or replace package body pkg_tuc_user_mast is
       p_err_msg  := sqlerrm;
       rollback;
   end sp_tuc_menu_ga;
+
+
+
+
+
+procedure sp_check_active (  p_in in number,
+                             p_value   in varchar2, 
+                             p_out        out number,
+                             p_err_code   out nvarchar2,
+                             p_err_msg    out nvarchar2) is
+    /******************************************************************************
+       name:       sp_check_active
+       purpose:    to check object is active or not
+    
+       revisions:
+       ver        date        author           description
+       ---------  ----------  ---------------  ------------------------------------
+     1.0        13-june-2021  mohammad tanvir islam     1. created this package.
+    ******************************************************************************/
+   v_count number(8);
+  
+  begin
+    p_out          := 0; 
+    
+    if p_in =1 -- tuc_sys_users
+      then
+        select count(1) into v_count
+        from tuc_sys_user_mast u
+        where u.username = p_value and u.status = 'R';
+        if v_count <1 then
+          p_out     := 1;
+          p_err_code := 'chk-1001';
+          p_err_msg := 'No active user found by username = ' || p_value;
+          return;
+        end if;
+     elsif p_in =2 -- tuc_test
+      then
+        select count(1) into v_count
+        from tuc_test t
+        where t.test_id = p_value and t.status = 'R';
+        if v_count <1 then
+          p_out     := 1;
+          p_err_code := 'chk-1002';
+          p_err_msg := 'No active test found by test id = ' || p_value;
+          return;
+        end if;
+     end if;
+   
+  
+  exception 
+    when others then
+      p_out      := 1;
+      p_err_code := 'chk-1000';
+      p_err_msg  := sqlerrm;
+  end sp_check_active;
+
+
 
 end pkg_tuc_user_mast;
 /

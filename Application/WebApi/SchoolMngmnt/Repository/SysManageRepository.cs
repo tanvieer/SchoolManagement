@@ -609,5 +609,54 @@ namespace SchoolMgmt.Repository
             return rslt;
         }
 
+
+
+        /*sp_check_active*/
+
+
+        // to reset password
+        public static StatusResult<string> CheckIsActive(string p_value, int p_in) //p_in 1 = user check// 
+        {
+            StatusResult<string> rslt = new StatusResult<string>();
+
+
+            CDataAccess objCDataAccess = CDataAccess.NewCDataAccess();
+            DbCommand objDbCommand = objCDataAccess.GetMyCommand(false, IsolationLevel.ReadCommitted, "application", false);
+
+
+            List<DSSQLParam> objList = new List<DSSQLParam>();
+
+
+            objList.Add(new DSSQLParam("p_in", p_in, ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_value", p_value, ParameterDirection.Input)); 
+            objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
+            objList.Add(new DSSQLParam("p_err_code", string.Empty, ParameterDirection.Output));
+            objList.Add(new DSSQLParam("p_err_msg", string.Empty, ParameterDirection.Output));
+
+
+            try
+            {
+                objCDataAccess.ExecuteNonQuery(objDbCommand, SP_PREFIX + "pkg_tuc_user_mast.sp_check_active", CommandType.StoredProcedure, objList);
+
+                rslt.Status = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString() == "0" ? "SUCCESS" : "FAILED";
+                rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
+                rslt.Result = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_code")].Value.ToString();
+            }
+            catch (Exception ex)
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = ex.Message;
+            }
+            finally
+            {
+                objDbCommand.Connection.Close();
+                objCDataAccess.Dispose(objDbCommand);
+                objList.Clear();
+            }
+
+            return rslt;
+        }
+
+
     }
 }

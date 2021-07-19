@@ -315,6 +315,7 @@ namespace SchoolMngmnt.Controllers
             rslt.Result = new List<ResultViewModel>();
             var httpRequest = HttpContext.Current.Request;
             var file = httpRequest.Files["File"];
+            StatusResult<string> tmp;
 
 
             DataTable csvDataTable = new DataTable();
@@ -356,6 +357,26 @@ namespace SchoolMngmnt.Controllers
                             fieldData[i] = null;
                         }
                     }
+
+
+                    tmp = SysManageRepository.CheckIsActive(fieldData[2], 1);
+
+                    if (tmp.Status == "FAILED")
+                    {
+                        rslt.Status = tmp.Status;
+                        rslt.Message = tmp.Message;
+                        return rslt;
+                    }
+
+                    tmp = SysManageRepository.CheckIsActive(fieldData[0], 2);
+
+                    if (tmp.Status == "FAILED")
+                    {
+                        rslt.Status = tmp.Status;
+                        rslt.Message = tmp.Message;
+                        return rslt;
+                    }
+
                     model = new ResultViewModel();
 
                     model.TestId = fieldData[0];
