@@ -66,7 +66,7 @@ const routes : Routes = [
   {path: 'test-edit/:id', component: TestEditComponent, canActivate : [TeacherGuardGuard]},
   {path: 'test-list', component: TestListComponent, canActivate : [TeacherGuardGuard]},
 
-  {path: 'import-grades', component: ImportGradesComponent, canActivate : [AuthGuardGuard]},
+  {path: 'import-grades', component: ImportGradesComponent, canActivate : [TeacherGuardGuard]},
 
   {path: 'result-create', component: ResultCreateComponent, canActivate : [TeacherGuardGuard]},
   {path: 'result-edit/:id', component: ResultEditComponent, canActivate : [TeacherGuardGuard]},
