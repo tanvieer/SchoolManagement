@@ -1,6 +1,7 @@
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Config } from '../config';
 import { TucClass } from './models/tuc-class.model'; 
 import { TucResult } from './models/tuc-result.model'; 
@@ -189,10 +190,20 @@ postFile(fileToUpload: FormData) {
   // return this.http.post(tmpUrl, formData,this.config.httpOptions);
 
  // return this.http.post(`${this.config.url}/File/Post`,fileToUpload,this.config.httpOptions); 
- return this.http.post(`${this.config.url}/File/Post`,fileToUpload); 
+ return this.http.post(`${this.config.url}/File/Post?token=${localStorage.getItem('Token')}`,fileToUpload); 
 }
 
 
+downloadFile(testId: string): Observable<Blob>  {
+  // const formData: FormData = new FormData();
+  // const tmpUrl=`${this.config.url}/File/Post`; 
+  // return this.http.post(tmpUrl, formData,this.config.httpOptions);
+
+ // return this.http.post(`${this.config.url}/File/Post`,fileToUpload,this.config.httpOptions); 
+// return this.http.get(`${this.config.url}/File/Get?id=${testId}`,this.config.httpOptions); 
+ return this.http.get(`${this.config.url}/File/Get?id=${testId}`, { responseType: 'blob' });
+
+}
 
 
 

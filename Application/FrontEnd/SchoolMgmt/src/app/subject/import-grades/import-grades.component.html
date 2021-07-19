@@ -1,17 +1,35 @@
  <div class="card-body">
    <form [formGroup]="myForm" (ngSubmit)="submit()">
 
-     <div class="form-group">
+    <!--<div class="form-group">
        <label for="name">Name</label>
        <input formControlName="name" id="name" type="text" class="form-control">
        <div *ngIf="f.name.touched && f.name.invalid" class="alert alert-danger">
          <div *ngIf="f.name.errors?.required">Name is required.</div>
          <div *ngIf="f.name.errors?.minlength">Name should be 3 character.</div>
        </div>
-     </div>
+     </div>-->
+
+  <div class="form-group">
+      <label for="inputSelectSubject">Select Subject</label>
+      <select #mySelect (change)='onSubjectChange(mySelect.value)' name="SubjectId" id="SubjectId" class="form-control"  required>
+        <option *ngFor="let option of subjectList" [value]="option.SubjectId" >{{option.SubjectName}} </option>
+      </select>
+  </div>
+
+  <div class="form-group">
+      <label for="inputSelectTest">Select Test</label>
+      <select #mySelect2 (change)='onTestChange(mySelect2.value)'  name="TestId" id="TestId" class="form-control"  required>
+        <option *ngFor="let option of testList" [value]="option.TestId" >{{option.TestName}} </option>
+      </select>
+  </div>
+
+
+  <button (click)="downloadFile()"  class="btn btn-primary" type="button">Download Template</button>
+
 
      <div class="form-group">
-       <label for="file">File</label>
+       <label for="file">Upload File</label>
        <input formControlName="file" id="file" type="file" class="form-control" (change)="onFileChange($event)">
        <div *ngIf="f.file.touched && f.file.invalid" class="alert alert-danger">
          <div *ngIf="f.file.errors?.required">File is required.</div>

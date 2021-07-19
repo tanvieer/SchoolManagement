@@ -442,6 +442,81 @@ namespace SchoolMgmt.Repository
             return rslt;
         }
 
+        // to get user list by class id
+        public static StatusResult<List<UserMaster>> GetStudentListByTestId(int testId)
+        {
+            StatusResult<List<UserMaster>> rslt = new StatusResult<List<UserMaster>>();
+            UserMaster user;
+            string p_out = "1";
+            string err_code;
+
+            CDataAccess objCDataAccess = CDataAccess.NewCDataAccess();
+            DbCommand objDbCommand = objCDataAccess.GetMyCommand(false, IsolationLevel.ReadCommitted, "application", false);
+
+
+            List<DSSQLParam> objList = new List<DSSQLParam>();
+
+             
+            objList.Add(new DSSQLParam("p_test_Id", testId, ParameterDirection.Input));
+            objList.Add(new DSSQLParam("p_out", string.Empty, ParameterDirection.Output));
+            objList.Add(new DSSQLParam("p_err_code", string.Empty, ParameterDirection.Output));
+            objList.Add(new DSSQLParam("p_err_msg", string.Empty, ParameterDirection.Output));
+
+
+
+            try
+            {
+                using (DbDataReader dr = objCDataAccess.ExecuteReader(objDbCommand, SP_PREFIX + "pkg_tuc_user_mast.sp_get_std_by_test", CommandType.StoredProcedure, objList))
+                {
+                    p_out = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_out")].Value.ToString();
+                    if (p_out == "1")
+                    {
+                        err_code = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_code")].Value.ToString();
+                        rslt.Status = "FAILED";
+                        rslt.Message = err_code + "~" + objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
+                        return rslt;
+                    }
+                    else
+                    {
+                        rslt.Status = "SUCCESS";
+                        rslt.Message = objDbCommand.Parameters[CParameter.GetOutputParameterName("p_err_msg")].Value.ToString();
+                    }
+
+                    rslt.Result = new List<UserMaster>();
+                    while (dr.Read())
+                    {
+                        user = new UserMaster();
+                        user.Id = dr["ID"].ToString();
+                        user.UserName = dr["USERNAME"].ToString();
+                        user.FirstName = dr["FIRST_NAME"].ToString();
+                        user.LastName = dr["LAST_NAME"].ToString();
+                        user.PhoneNumber = dr["PHONE_NUMBER"].ToString();
+                        user.Email = dr["EMAIL"].ToString();
+                        user.RoleId = Convert.ToInt32(dr["ROLE_ID"].ToString());
+                        user.ClassId = dr["CLASS_ID"] == null ? "" : dr["CLASS_ID"].ToString();
+                        user.ClassName = dr["CLASS_NAME"] == null ? "" : dr["CLASS_NAME"].ToString();
+                        user.RoleName = dr["ROLE_NAME"] == null ? "" : dr["ROLE_NAME"].ToString();
+                        user.AverageGrade = dr["avg_grade"] == null ? 0 : Convert.ToDouble(dr["avg_grade"].ToString());
+
+                        rslt.Result.Add(user);
+                    }
+                    dr.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                rslt.Status = "FAILED";
+                rslt.Message = ex.Message;
+            }
+            finally
+            {
+                objDbCommand.Connection.Close();
+                objCDataAccess.Dispose(objDbCommand);
+                objList.Clear();
+            }
+            return rslt;
+        }
+
 
 
 

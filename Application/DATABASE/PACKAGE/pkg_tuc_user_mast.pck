@@ -107,6 +107,12 @@ create or replace package pkg_tuc_user_mast is
                              p_out        out number,
                              p_err_code   out nvarchar2,
                              p_err_msg    out nvarchar2);
+                             
+  procedure sp_get_std_by_test(p_test_id in  tuc_test.test_id%type, 
+                                p_out      out number,
+                                p_err_code out nvarchar2,
+                                p_err_msg  out nvarchar2,
+                                T_CURSOR   out sys_refcursor);
 
 end pkg_tuc_user_mast;
 /
@@ -1216,6 +1222,90 @@ procedure sp_check_active (  p_in in number,
       p_err_msg  := sqlerrm;
   end sp_check_active;
 
+ procedure sp_get_std_by_test(p_test_id in  tuc_test.test_id%type, 
+                                p_out      out number,
+                                p_err_code out nvarchar2,
+                                p_err_msg  out nvarchar2,
+                                T_CURSOR   out sys_refcursor) is
+                                
+  v_class_id    tuc_class.class_id%type;
+  v_subject_id  tuc_subject.subject_id%type;
+  begin
+    P_OUT := 0;
+  
+    IF P_OUT = 0 THEN
+      pkg_tuc_user_mast.IS_NULL('Test Id',
+                                p_test_id,
+                                'USR-sp_get_std_by_test',
+                                P_OUT,
+                                P_ERR_CODE,
+                                P_ERR_MSG);
+    ELSE
+      RETURN;
+    END IF;
+   
+  
+    if p_test_id = 0 then
+      p_out      := 1;
+      p_err_code := 'usr-1065';
+      p_err_msg  := 'Please select a test!';
+      rollback;
+      return;
+    
+    end if;
+  
+    IF P_OUT <> 0 THEN
+      RETURN;
+    END IF;
+    
+    select subject_id into v_subject_id from tuc_test t where  t.test_id = p_test_id;
+    select class_id into v_class_id from tuc_subject s where s.subject_id = v_subject_id;
+    
+  
+    open T_CURSOR for
+      select t.id,
+             t.username,
+             t.email,
+             t.first_name,
+             t.last_name,
+             t.phone_number,
+             t.last_logged_in,
+             t.session_exp_time,
+             t.session_id,
+             t.role_id,
+             --  AVG GRADE CALCULATION START
+             (select CAST(nvl(avg(grade), 0.0) AS DECIMAL(8, 2))
+                from TUC_result rslt
+               where rslt.student_id = t.id
+                 and rslt.test_id in
+                     (select tst.test_id
+                        from TUC_TEST tst
+                       where subject_id in
+                             (select sub.subject_id
+                                from tuc_subject sub
+                               where sub.class_id = t.class_id))) avg_grade,
+             -- AVG GRADE CALCULATION END
+             t.class_id,
+             (select upper(role_name)
+                from tuc_sys_role
+               where role_id = t.role_id) as role_name,
+             (select upper(class_name)
+                from tuc_class
+               where class_id = t.class_id) as class_name
+        from tuc_sys_user_mast t
+       where T.STATUS <> 'D'
+         and role_id = 3
+         and t.class_id = v_class_id
+       order by username;
+  
+    p_err_msg := 'Data found successfully.';
+  exception
+    when others then
+      p_out      := 1;
+      p_err_code := sqlcode;
+      p_err_msg  := sqlerrm;
+      rollback;
+  end sp_get_std_by_test;
 
 
 end pkg_tuc_user_mast;
