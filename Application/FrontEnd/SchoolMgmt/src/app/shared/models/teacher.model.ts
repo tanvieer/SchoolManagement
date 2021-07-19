@@ -26,7 +26,7 @@ export class Teacher {
     LastName!:string;    
     PhoneNumber!:string;   
     RoleId!: number;
-    ClassId!: number;
+    ClassId: number = -1;
     FullName!:string;
     Session!:string;    
     SessionExpireTime!:string;    

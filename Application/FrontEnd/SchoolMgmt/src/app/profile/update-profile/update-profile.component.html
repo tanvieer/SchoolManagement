@@ -46,12 +46,12 @@
               
               </div> 
 
-              <div class="form-group" *ngIf="service.formData.RoleId==3">
+              <!--<div class="form-group" *ngIf="service.formData.RoleId==3">
                   <label for="exampleInputAssignClass2" >Assign Class</label> 
                   <select name="ClassId" id="userType" class="form-control" [(ngModel)]="service.formData.ClassId" required>
                     <option *ngFor="let option of classList" [value]="option.ClassId" >{{option.ClassName}}</option>
                   </select> 
-              </div>
+              </div>-->
             </div>
  
           </div>
@@ -59,7 +59,7 @@
 
 
           <div class="card-footer">
-            <button [disabled]="form.invalid" type="submit" class="btn btn-primary">Save</button>
+            <button [disabled]="form.invalid" type="submit" class="btn btn-primary">Update</button>
             &nbsp;
             <button routerLink="/change-password" type="button" class="btn btn-warning">Change Password</button>
           </div> 

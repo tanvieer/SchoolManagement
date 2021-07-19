@@ -16,6 +16,9 @@ export class UpdateProfileComponent implements OnInit {
   public roleList: Role[] = [];
   private _role!: Role;
   public classList: TucClass[] = []; 
+  private currentUserName !: string;
+  private currentRole !: string;
+  private currentClass !:string;
 
 
   constructor(public service: UsersService,
@@ -24,14 +27,20 @@ export class UpdateProfileComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
+    
+    let username = localStorage.getItem("UserName") ?? "";
+    this.currentUserName = username;
     //console.log(this.arouter.snapshot.params.id);
     this.resetForm();
-    let username = localStorage.getItem("UserName") ?? "";
-    console.log(" printing user name " + username);
+    
+    //console.log(" printing user name " + username);
     this.getUserInfo(username);
   }
 
   parseData(jsonData: any) { 
+
+    this.currentRole = jsonData.RoleId;
+    this.currentClass = jsonData.ClassId;
     this.service.formData = {
       Id: jsonData.Id,
       index: 1,
@@ -100,7 +109,7 @@ export class UpdateProfileComponent implements OnInit {
     this.roleList.push(this._role);
   }
 
-  initiateClass() {
+  /*initiateClass() {
     this.service.getClassList().subscribe((res : any)  =>{  
        if (res.Status == "SUCCESS"){
           this.parseClassData(res.Result);
@@ -109,7 +118,7 @@ export class UpdateProfileComponent implements OnInit {
          this.toastr.error(res.Message, 'User Update Error'); 
        } 
      });
-  }
+  }*/
 
 
   resetForm(form?: NgForm) {
@@ -120,7 +129,7 @@ export class UpdateProfileComponent implements OnInit {
     this.service.formData = {
       Id: '',
       index: 1,
-      UserName: '',
+      UserName: this.currentUserName,
       Password: '',
       Email: '',
       FirstName: '',
@@ -140,7 +149,7 @@ export class UpdateProfileComponent implements OnInit {
     }
 
     this.initiateRoles();
-    this.initiateClass();
+    //this.initiateClass();
   }
 
 
@@ -158,15 +167,21 @@ export class UpdateProfileComponent implements OnInit {
 
 
   onSubmit(form : NgForm){ 
+      form.value.ClassId= this.currentClass;  
+      form.value.RoleId= this.currentRole;
+
       //console.log(form.value);
       //console.log("===========Before Submit=======");
-      this.service.updateUser(form.value,this.arouter.snapshot.params.id).subscribe((res : any)  =>{ 
+      // form.value
+      //return;
+
+      this.service.updateUser(form.value,this.currentUserName).subscribe((res : any)  =>{ 
         // this._statusResultO as statusResultO;
         // console.log(res.Message);
          if (res.Status == "SUCCESS"){
           this.toastr.success(res.Message, 'User Update Success');
-          this.getUserInfo(this.arouter.snapshot.params.id);
-          this.router.navigate(['/user-list']);
+          this.getUserInfo(this.currentUserName);
+          //this.router.navigate(['/user-list']);
          } 
          else {
            this.toastr.error(res.Message, 'User Update Error'); 
