@@ -37,7 +37,7 @@
        </div>
      </div>
 
-     <button class="btn btn-primary" type="submit">Submit</button>
+     <button [disabled]="f.file.errors?.required"  class="btn btn-primary" type="submit">Submit</button>
    </form>
 
  </div>
