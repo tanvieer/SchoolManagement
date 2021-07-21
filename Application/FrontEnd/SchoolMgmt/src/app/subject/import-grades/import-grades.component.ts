@@ -35,8 +35,7 @@ export class ImportGradesComponent implements OnInit {
 
   onTestChange(_id: string) {
     this.selectedTest = _id;
-   
-
+     
     for(let i = 0; i < this.testList.length; i++){ 
 
       if(this.testList[i].TestId == this.selectedTest){
@@ -50,8 +49,7 @@ export class ImportGradesComponent implements OnInit {
  onSubjectChange(_id: string) {
     this.selectedSubject = _id;
     this.loadTestData(this.selectedSubject); 
-    this.isEnabledDownload = false;
-
+    this.selectedTest = '';
   }
 
   loadSubjectData() {
@@ -175,7 +173,7 @@ export class ImportGradesComponent implements OnInit {
 
   downloadFile() { 
 
-   if (this.selectedTest == undefined){
+   if (this.selectedTest == undefined || this.selectedTest == ''){
     this.toastr.error('Please select a test', 'Download Template');
     return;
    }
